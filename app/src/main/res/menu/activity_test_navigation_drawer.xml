@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_chats"
+            android:icon="@drawable/chat_24"
+            android:title="@string/menu_chats" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile_24"
+            android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_self"
+            android:icon="@drawable/self_24"
+            android:title="@string/menu_self" />
+        <item
+            android:id="@+id/nav_create_chat"
+            android:icon="@drawable/createchat_24"
+            android:title="@string/menu_create_chat" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/search_24"
+            android:title="@string/menu_search" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings_24"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/about_24"
+            android:title="@string/menu_about" />
+    </group>
+</menu>
