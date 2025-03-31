@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_self" />
 
     <fragment
-        android:id="@+id/nav_profile"
-        android:name="ru.linedown.nefeslechat.ui.profile.ProfileFragment"
-        android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" />
-
-    <fragment
         android:id="@+id/nav_self"
         android:name="ru.linedown.nefeslechat.ui.self.SelfFragment"
         android:label="@string/menu_self"

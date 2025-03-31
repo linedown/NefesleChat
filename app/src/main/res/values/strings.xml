@@ -13,4 +13,19 @@
     <string name="menu_create_chat">Создать чат</string>
     <string name="menu_search">Поиск людей</string>
     <string name="menu_about">О программе</string>
+    <string name="nefeslechat_android_v1">NefesleChat для Android v1</string>
+    <string name="fio_template">Фамилия Имя Отчество</string>
+    <string name="status_template">Статус</string>
+    <string name="account_label">Аккаунт</string>
+    <string name="phone_template">+7 999 999 99 99</string>
+    <string name="mail_template">pochta1999@pochta.ru</string>
+    <string name="phone_label">Номер телефона</string>
+    <string name="mail_label">Почта</string>
+    <string name="settings_label">Настройки</string>
+    <string name="show_notifications_label">Показывать уведомления</string>
+    <string name="private_chats_label">Личных чатов</string>
+    <string name="group_chats_label">Групповых чатов</string>
+    <string name="theme_const_str">Тема приложения</string>
+    <string name="dark_theme_label">Тёмная тема</string>
+    <string name="user_settings_const_str">Пользовательские настройки</string>
 </resources>

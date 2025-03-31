@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.w3c.dom.Text;
+
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -18,14 +20,20 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SettingsViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
+        SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textSettings;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        TextView fioStr = binding.fioStr;
+        TextView statusStr = binding.statusStr;
+        TextView phoneStr = binding.phoneStr;
+        TextView mailStr = binding.mailStr;
+        settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+            fioStr.setText(settings.getFio());
+            statusStr.setText(settings.getStatus());
+            phoneStr.setText(settings.getPhoneStr());
+            mailStr.setText(settings.getMail());
+        });
         return root;
     }
 

@@ -9,10 +9,6 @@
             android:icon="@drawable/chat_24"
             android:title="@string/menu_chats" />
         <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/profile_24"
-            android:title="@string/menu_profile" />
-        <item
             android:id="@+id/nav_self"
             android:icon="@drawable/self_24"
             android:title="@string/menu_self" />
