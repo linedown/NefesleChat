@@ -28,8 +28,7 @@ public class CreateChatFragment extends Fragment {
         binding = FragmentCreateChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.createChatText;
-        createChatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        createChatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

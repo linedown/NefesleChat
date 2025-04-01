@@ -28,4 +28,6 @@
     <string name="theme_const_str">Тема приложения</string>
     <string name="dark_theme_label">Тёмная тема</string>
     <string name="user_settings_const_str">Пользовательские настройки</string>
+    <string name="create_chat_text">Создать чат</string>
+    <string name="hint_create_chat_text">Название группового чата</string>
 </resources>

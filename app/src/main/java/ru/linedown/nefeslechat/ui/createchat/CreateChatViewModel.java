@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 public class CreateChatViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    //private final MutableLiveData<String> mText;
 
     public CreateChatViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Здесь будет создание чата");
+//        mText = new MutableLiveData<>();
+//        mText.setValue("Здесь будет создание чата");
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+//    public LiveData<String> getText() {
+//        return mText;
+//    }
 }
