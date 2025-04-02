@@ -10,7 +10,7 @@ public class SelfViewModel extends ViewModel {
 
     public SelfViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Здесь будет избранное");
+        mText.setValue("Здесь будут ваши сообщения в избранном");
     }
 
     public LiveData<String> getText() {

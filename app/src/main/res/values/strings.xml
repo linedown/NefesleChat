@@ -30,4 +30,5 @@
     <string name="user_settings_const_str">Пользовательские настройки</string>
     <string name="create_chat_text">Создать чат</string>
     <string name="hint_create_chat_text">Название группового чата</string>
+    <string name="input_message_text_hint">Введите сообщение</string>
 </resources>
