@@ -31,4 +31,17 @@
     <string name="create_chat_text">Создать чат</string>
     <string name="hint_create_chat_text">Название группового чата</string>
     <string name="input_message_text_hint">Введите сообщение</string>
+    <string name="login_button_text">Войти в аккаунт</string>
+    <string name="title_activity_login">Вход в аккаунт</string>
+    <string name="prompt_email">Логин</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти в аккаунт</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="action_sign_up">Зарегистрироваться</string>
+    <string name="prompt_replay_password">Повтор пароля</string>
+    <string name="sign_in_button_transition_text">Авторизация</string>
+    <string name="sign_up_button_transition_text">Регистрация</string>
+    <string name="register_label_const">Регистрация</string>
+    <string name="login_label_const">Вход в аккаунт</string>
+    <string name="exit_button_text_const">Выйти</string>
 </resources>
