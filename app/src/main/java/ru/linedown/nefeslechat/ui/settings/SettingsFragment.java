@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment {
         });
         exitButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         });
