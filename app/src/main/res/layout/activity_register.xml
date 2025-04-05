@@ -75,9 +75,10 @@
         android:id="@+id/on_sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:backgroundTint="@color/green"
+        android:layout_marginTop="124dp"
+        android:backgroundTint="#bbb"
         android:text="@string/sign_in_button_transition_text"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,13 +88,14 @@
         android:id="@+id/registerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/comic_neue"
         android:text="@string/register_label_const"
+        android:textColor="@color/black"
         android:textSize="27sp"
         app:layout_constraintBottom_toTopOf="@+id/usernameRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
