@@ -1,5 +1,8 @@
 package ru.linedown.nefeslechat.ui.settings;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.w3c.dom.Text;
@@ -42,10 +49,10 @@ public class SettingsFragment extends Fragment {
             mailStr.setText(settings.getMail());
         });
         exitButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
-            startActivity(intent);
+            confirmExitDialogFragment confirmExitDialogFragment = new confirmExitDialogFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            confirmExitDialogFragment.show(transaction, "dialog");
         });
         return root;
     }
@@ -54,5 +61,28 @@ public class SettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public static class confirmExitDialogFragment extends DialogFragment{
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Подтверждение");
+            builder.setMessage("Вы точно хотите выйти из аккаунта?");
+            builder.setPositiveButton("Да", (dialog, which) -> {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+                startActivity(intent);
+            });
+            builder.setNegativeButton("Отмена", (dialog, which) -> {
+                dialog.cancel();
+            });
+            builder.setCancelable(true);
+
+            return builder.create();
+        }
     }
 }

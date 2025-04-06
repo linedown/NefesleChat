@@ -19,13 +19,13 @@
         android:text="@string/login_label_const"
         android:textColor="@color/black"
         android:textSize="27sp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameRegister"
+        app:layout_constraintBottom_toTopOf="@+id/usernameLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/usernameRegister"
+        android:id="@+id/usernameLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="176dp"
@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameLogin" />
 
     <Button
         android:id="@+id/loginButton"
