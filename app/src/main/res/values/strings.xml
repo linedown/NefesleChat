@@ -44,4 +44,8 @@
     <string name="register_label_const">Регистрация</string>
     <string name="login_label_const">Вход в аккаунт</string>
     <string name="exit_button_text_const">Выйти</string>
+    <string name="token_hint_str">Токен</string>
+    <string name="item_notes_name">Заметки</string>
+    <string name="item_raspisanie_name">Расписание</string>
+    <string name="create_note_const_str">Создать заметку</string>
 </resources>

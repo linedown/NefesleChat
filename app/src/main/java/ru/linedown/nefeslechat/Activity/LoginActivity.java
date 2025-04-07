@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,12 +39,12 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             Toast.makeText(LoginActivity.this, "Вы вошли в аккаунт " + loginText.getText(), Toast.LENGTH_SHORT).show();
 
-            Notification notification = new NotificationCompat.Builder(this, "LOGIN")
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "LOGIN")
                     .setContentTitle("Вход")
                     .setContentText("Вы вошли в аккаунт под пользователем " + loginText.getText())
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .build();
-            notificationManager.notify(69, notification);
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(69, notification.build());
 
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

@@ -12,6 +12,20 @@
     tools:context=".Activity.LoginActivity">
 
     <EditText
+        android:id="@+id/tokenRegister"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="208dp"
+        android:autofillHints="@string/prompt_email"
+        android:hint="@string/token_hint_str"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
         android:id="@+id/passwordRegister2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,17 +58,16 @@
         android:id="@+id/passwordRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:autofillHints="@string/prompt_password"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/tokenRegister" />
 
     <Button
         android:id="@+id/registerButton"
