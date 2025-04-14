@@ -12,6 +12,8 @@ navigationFragment = "2.8.7"
 navigationUi = "2.8.7"
 legacySupportV4 = "1.0.0"
 annotation = "1.6.0"
+rxandroid = "3.0.2"
+rxjava = "3.1.5"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -26,6 +28,8 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
