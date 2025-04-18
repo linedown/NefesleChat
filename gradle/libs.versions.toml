@@ -1,5 +1,6 @@
 [versions]
 agp = "8.8.0"
+gson = "2.13.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -14,8 +15,10 @@ legacySupportV4 = "1.0.0"
 annotation = "1.6.0"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
+monitor = "1.7.1"
 
 [libraries]
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -30,6 +33,7 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

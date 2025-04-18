@@ -45,10 +45,13 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.legacy.support.v4)
     implementation(libs.annotation)
+    implementation(libs.monitor)
     testImplementation(libs.junit)
+    testImplementation(libs.monitor)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
     implementation(libs.rxandroid)
     implementation(libs.rxjava)
+    implementation(libs.gson)
 }

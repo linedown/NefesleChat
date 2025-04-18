@@ -2,8 +2,23 @@ package ru.linedown.nefeslechat;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import android.content.Context;
+import android.content.res.AssetManager;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -14,6 +29,7 @@ import io.reactivex.rxjava3.core.Observable;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
     @Test
     public void sortBooks(){
 
@@ -28,7 +44,7 @@ public class ExampleUnitTest {
     Observable.fromIterable(books).filter(book -> book.location.equals("Москва")).filter(book -> book.price > 400.0)
             .distinct(book -> book.title).map(book -> "Автор книги: " + book .author + " название книги: " + book.title)
             .subscribe(System.out::println);
-}
+    }
 }
 
 class Book{

@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "name": "Мужская футболка linedown",
+        "category_main": "man",
+        "category_inner": "футболки",
+        "color": "Чёрный",
+        "price": 990,
+        "src": "../includes/images/blackTshirtLinedown.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Мужские шорты linedown",
+        "category_main": "man",
+        "category_inner": "шорты",
+        "color": "Зелёный",
+        "price": 890,
+        "src": "../includes/images/greenShortsLinedown.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Мужские шорты linedown",
+        "category_main": "man",
+        "category_inner": "шорты",
+        "color": "Чёрный",
+        "price": 890,
+        "src": "../includes/images/blackShortsLinedown.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Женские ботинки linedown",
+        "category_main": "woman",
+        "category_inner": "ботинки",
+        "color": "Серый",
+        "price": 2590,
+        "src": "../includes/images/geryBootsLinedown.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Женская толстовка linedown",
+        "category_main": "woman",
+        "category_inner": "толстовки",
+        "color": "Серый",
+        "price": 4990,
+        "src": "../includes/images/greyHoodiesLinedown.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Женские ботинки linedown",
+        "category_main": "woman",
+        "category_inner": "ботинки",
+        "color": "Синий",
+        "price": 2590,
+        "src": "../includes/images/blueBootsLinedown.webp"
+    },
+    {
+        "id": 7,
+        "name": "USB-накопитель linedown 64 гб",
+        "category_main": "accessories",
+        "category_inner": "флешки",
+        "color": "Синий",
+        "price": 499,
+        "src": "../includes/images/blueUSBLinedown.jpg"
+    },
+    {
+        "id": 8,
+        "name": "USB-накопитель linedown 32 гб",
+        "category_main": "accessories",
+        "category_inner": "флешки",
+        "color": "Чёрный",
+        "price": 499,
+        "src": "../includes/images/blackUSBLinedown.jpeg"
+    },
+    {
+        "id": 9,
+        "name": "Кружка linedown",
+        "category_main": "accessories",
+        "category_inner": "кружки",
+        "color": "Зелёный",
+        "price": 699,
+        "src": "../includes/images/greenCupLinedown.jpg"
+    },
+    {
+        "id": 10,
+        "name": "Кружка linedown",
+        "category_main": "accessories",
+        "category_inner": "кружки",
+        "color": "Белый",
+        "price": 699,
+        "src": "../includes/images/whiteCap.jpg"
+    }
+]
