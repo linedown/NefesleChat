@@ -55,6 +55,7 @@ class Book{
     final String location;
     final String currency;
 
+
     public Book(String title, String author, long id, double price, String location, String currency) {
         this.title = title;
         this.author = author;
