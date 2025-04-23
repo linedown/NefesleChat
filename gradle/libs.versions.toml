@@ -16,6 +16,7 @@ annotation = "1.6.0"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
 monitor = "1.7.1"
+extensionOkhttp = "2.19.1"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -24,16 +25,17 @@ ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.2.1" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+annotation = { group = "androidx.annotation", name = "annotation", version = "1.9.1" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.10" }
 monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
+extension-okhttp = { group = "com.google.android.exoplayer", name = "extension-okhttp", version.ref = "extensionOkhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

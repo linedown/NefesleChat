@@ -48,4 +48,5 @@
     <string name="item_notes_name">Заметки</string>
     <string name="item_raspisanie_name">Расписание</string>
     <string name="create_note_const_str">Создать заметку</string>
+    <string name="lastname_str">Фамилия</string>
 </resources>

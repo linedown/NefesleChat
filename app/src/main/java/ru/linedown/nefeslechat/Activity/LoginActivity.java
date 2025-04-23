@@ -12,7 +12,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.test.InstrumentationRegistry;
 
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +34,8 @@ import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     final String LOGIN_KEY = "login_key";
+    final String TOKEN_KEY = "token_key";
+    final String PASSWORD_KEY = "password_key";
     private ActivityLoginBinding binding;
     String savedLogin;
     EditText loginText;
