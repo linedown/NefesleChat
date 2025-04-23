@@ -31,6 +31,109 @@ import io.reactivex.rxjava3.core.Observable;
 public class ExampleUnitTest {
 
     @Test
+    public void parseJson(){
+        String jsonStr = "[\n" +
+                "    {\n" +
+                "        \"id\": 1,\n" +
+                "        \"name\": \"Мужская футболка linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"футболки\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 990,\n" +
+                "        \"src\": \"../includes/images/blackTshirtLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 2,\n" +
+                "        \"name\": \"Мужские шорты linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"шорты\",\n" +
+                "        \"color\": \"Зелёный\",\n" +
+                "        \"price\": 890,\n" +
+                "        \"src\": \"../includes/images/greenShortsLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 3,\n" +
+                "        \"name\": \"Мужские шорты linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"шорты\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 890,\n" +
+                "        \"src\": \"../includes/images/blackShortsLinedown.jpeg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 4,\n" +
+                "        \"name\": \"Женские ботинки linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"ботинки\",\n" +
+                "        \"color\": \"Серый\",\n" +
+                "        \"price\": 2590,\n" +
+                "        \"src\": \"../includes/images/geryBootsLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 5,\n" +
+                "        \"name\": \"Женская толстовка linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"толстовки\",\n" +
+                "        \"color\": \"Серый\",\n" +
+                "        \"price\": 4990,\n" +
+                "        \"src\": \"../includes/images/greyHoodiesLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 6,\n" +
+                "        \"name\": \"Женские ботинки linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"ботинки\",\n" +
+                "        \"color\": \"Синий\",\n" +
+                "        \"price\": 2590,\n" +
+                "        \"src\": \"../includes/images/blueBootsLinedown.webp\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 7,\n" +
+                "        \"name\": \"USB-накопитель linedown 64 гб\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"флешки\",\n" +
+                "        \"color\": \"Синий\",\n" +
+                "        \"price\": 499,\n" +
+                "        \"src\": \"../includes/images/blueUSBLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 8,\n" +
+                "        \"name\": \"USB-накопитель linedown 32 гб\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"флешки\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 499,\n" +
+                "        \"src\": \"../includes/images/blackUSBLinedown.jpeg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 9,\n" +
+                "        \"name\": \"Кружка linedown\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"кружки\",\n" +
+                "        \"color\": \"Зелёный\",\n" +
+                "        \"price\": 699,\n" +
+                "        \"src\": \"../includes/images/greenCupLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 10,\n" +
+                "        \"name\": \"Кружка linedown\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"кружки\",\n" +
+                "        \"color\": \"Белый\",\n" +
+                "        \"price\": 699,\n" +
+                "        \"src\": \"../includes/images/whiteCap.jpg\"\n" +
+                "    }\n" +
+                "]";
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Accessory>>(){}.getType();
+
+        List<Accessory> accessories = gson.fromJson(jsonStr, listType);
+
+        for(Accessory accessory : accessories) System.out.println(accessory);
+    }
+
+    @Test
     public void sortBooks(){
 
     List<Book> books = List.of(
@@ -44,6 +147,75 @@ public class ExampleUnitTest {
     Observable.fromIterable(books).filter(book -> book.location.equals("Москва")).filter(book -> book.price > 400.0)
             .distinct(book -> book.title).map(book -> "Автор книги: " + book .author + " название книги: " + book.title)
             .subscribe(System.out::println);
+    }
+}
+
+class Accessory{
+    @SerializedName("id")
+    final int id;
+    @SerializedName("name")
+    final String name;
+    @SerializedName("category_main")
+    final String categoryMain;
+    @SerializedName("category_inner")
+    final String categoryInner;
+    @SerializedName("color")
+    final String color;
+    @SerializedName("price")
+    final int price;
+    @SerializedName("src")
+    final String src;
+
+    public Accessory(int id, String name, String categoryMain, String categoryInner, String color, int price, String src) {
+        this.id = id;
+        this.name = name;
+        this.categoryMain = categoryMain;
+        this.categoryInner = categoryInner;
+        this.color = color;
+        this.price = price;
+        this.src = src;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCategoryMain() {
+        return categoryMain;
+    }
+
+    public String getCategoryInner() {
+        return categoryInner;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Accessory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoryMain='" + categoryMain + '\'' +
+                ", categoryInner='" + categoryInner + '\'' +
+                ", color='" + color + '\'' +
+                ", price=" + price +
+                ", src='" + src + '\'' +
+                '}';
     }
 }
 
