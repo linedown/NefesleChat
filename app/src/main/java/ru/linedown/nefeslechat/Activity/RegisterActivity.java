@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Отправлять HttpRequest на сервер для проверки корректности login и lastName
+        // Отправлять HttpRequest на сервер для проверки корректности login, lastName и использовании токена
         JsonObject json = new JsonObject();
         json.addProperty("reg_token", token);
         json.addProperty("last_name", lastName);
