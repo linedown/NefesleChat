@@ -96,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void transitionToMessenger(){
-
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);

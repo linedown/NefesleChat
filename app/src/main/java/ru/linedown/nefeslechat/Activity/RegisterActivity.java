@@ -1,6 +1,7 @@
 package ru.linedown.nefeslechat.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,10 @@ import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private final String domain = "http://linedown.ru:3254/api";
+    final String LOGIN_KEY = "login_key";
+    final String TOKEN_KEY = "token_key";
+    final String FIO_KEY = "fio_key";
+    final String PASSWORD_KEY = "password_key";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(bodyResponse.equals("OK")){
             Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + login, Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
+            sharedPreferences.edit().putString(LOGIN_KEY, login).apply();
+            sharedPreferences.edit().putString(FIO_KEY, lastName).apply();
+            sharedPreferences.edit().putString(TOKEN_KEY, token).apply();
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
