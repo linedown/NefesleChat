@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void verificationRegistration(String login, String lastName, String token, String password, String password2) throws IOException {
         if(login.isBlank() || lastName.isBlank() || token.isBlank() || password.isBlank() || password2.isBlank()){
             Toast.makeText(RegisterActivity.this, "Не все поля заполнены!", Toast.LENGTH_SHORT).show();
@@ -74,6 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(RegisterActivity.this, "Пароли не совпадают!", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Для разрешения проблемы с потоками
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 
         // Отправлять HttpRequest на сервер для проверки корректности login, lastName и использовании токена
         JsonObject json = new JsonObject();
@@ -91,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
         Response response = okHttpClient.newCall(request).execute();
         String bodyResponse = response.body().string();
 
-        if(bodyResponse.equals("OK")){
+        if(response.isSuccessful()){
             Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + login, Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
             sharedPreferences.edit().putString(LOGIN_KEY, login).apply();
@@ -100,6 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
-        } else Toast.makeText(RegisterActivity.this, "Проблема " + bodyResponse, Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(RegisterActivity.this, "Ошибка: " + bodyResponse, Toast.LENGTH_SHORT).show();
     }
 }

@@ -31,8 +31,12 @@ import ru.linedown.nefeslechat.Activity.RegisterActivity;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
+    SharedPreferences sharedPreferences;
 
     private FragmentSettingsBinding binding;
+    final String LOGIN_KEY = "login_key";
+    final String TOKEN_KEY = "token_key";
+    final String FIO_KEY = "fio_key";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,11 +49,12 @@ public class SettingsFragment extends Fragment {
         TextView statusStr = binding.statusStr;
         TextView phoneStr = binding.phoneStr;
         TextView mailStr = binding.mailStr;
+        sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
         settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
-            fioStr.setText(settings.getFio());
+            fioStr.setText(sharedPreferences.getString(FIO_KEY, ""));
             statusStr.setText(settings.getStatus());
             phoneStr.setText(settings.getPhoneStr());
-            mailStr.setText(settings.getMail());
+            mailStr.setText(sharedPreferences.getString(LOGIN_KEY, ""));
         });
         exitButton.setOnClickListener(v -> {
             confirmExitDialogFragment confirmExitDialogFragment = new confirmExitDialogFragment();
