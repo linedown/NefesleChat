@@ -13,11 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.os.StrictMode;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,6 +31,11 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
 
@@ -36,9 +44,11 @@ public class LoginActivity extends AppCompatActivity {
     final String LOGIN_KEY = "login_key";
     final String TOKEN_KEY = "token_key";
     final String PASSWORD_KEY = "password_key";
+    private final String domain = "http://linedown.ru:3254/api/auth";
     private ActivityLoginBinding binding;
     String savedLogin;
     EditText loginText;
+    EditText passwordText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         loginText = binding.usernameLogin;
+        passwordText = binding.passwordLogin;
 
         loadLogin();
         if(!savedLogin.isEmpty()) transitionToMessenger();
@@ -54,20 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = binding.loginButton;
         final Button registerTransitionButton = binding.signUpTransitionButton;
 
-        NotificationChannel notificationChannel = new NotificationChannel("LOGIN", "LOGIN CHANNEL", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(notificationChannel);
-
         loginButton.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Вы вошли в аккаунт " + loginText.getText(), Toast.LENGTH_SHORT).show();
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "LOGIN")
-                    .setContentTitle("Вход")
-                    .setContentText("Вы вошли в аккаунт под пользователем " + loginText.getText())
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            notificationManager.notify(69, notification.build());
-
-            transitionToMessenger();
+            try {
+                verificationAuthorization();
+            } catch (IOException e) {
+                Log.d("VerificationException", "Исключение при исполнение запроса " + e.getMessage());
+            }
         });
 
         registerTransitionButton.setOnClickListener(v -> {
@@ -84,7 +87,50 @@ public class LoginActivity extends AppCompatActivity {
         saveLogin();
     }
 
+    private void verificationAuthorization() throws IOException {
+        String login = loginText.getText().toString();
+        String password = passwordText.getText().toString();
 
+        if(login.isBlank() || password.isBlank()){
+            Toast.makeText(LoginActivity.this, "Не все поля заполнены!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Для разрешения проблемы с потоками
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+        JsonObject json = new JsonObject();
+        json.addProperty("email", login);
+        json.addProperty("password", password);
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
+
+        Request request = new Request.Builder().url(domain)
+                .post(requestbody).build();
+        Response response = okHttpClient.newCall(request).execute();
+        String bodyResponse = response.body().string();
+
+        if(!response.isSuccessful()){
+            Toast.makeText(LoginActivity.this, "Ошибка: " + bodyResponse, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        NotificationChannel notificationChannel = new NotificationChannel("LOGIN", "LOGIN CHANNEL", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        Toast.makeText(LoginActivity.this, "Вы вошли в аккаунт " + loginText.getText(), Toast.LENGTH_SHORT).show();
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "LOGIN")
+                .setContentTitle("Вход")
+                .setContentText("Вы вошли в аккаунт под пользователем " + loginText.getText())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notificationManager.notify(69, notification.build());
+
+        transitionToMessenger();
+    }
     private void saveLogin(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
         sharedPreferences.edit().putString(LOGIN_KEY, loginText.getText().toString()).apply();
