@@ -66,127 +66,127 @@ public class ExampleUnitTest {
     }
 
 
-//    @Test
-//    public void parseJson(){
-//        String jsonStr = "[\n" +
-//                "    {\n" +
-//                "        \"id\": 1,\n" +
-//                "        \"name\": \"Мужская футболка linedown\",\n" +
-//                "        \"category_main\": \"man\",\n" +
-//                "        \"category_inner\": \"футболки\",\n" +
-//                "        \"color\": \"Чёрный\",\n" +
-//                "        \"price\": 990,\n" +
-//                "        \"src\": \"../includes/images/blackTshirtLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 2,\n" +
-//                "        \"name\": \"Мужские шорты linedown\",\n" +
-//                "        \"category_main\": \"man\",\n" +
-//                "        \"category_inner\": \"шорты\",\n" +
-//                "        \"color\": \"Зелёный\",\n" +
-//                "        \"price\": 890,\n" +
-//                "        \"src\": \"../includes/images/greenShortsLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 3,\n" +
-//                "        \"name\": \"Мужские шорты linedown\",\n" +
-//                "        \"category_main\": \"man\",\n" +
-//                "        \"category_inner\": \"шорты\",\n" +
-//                "        \"color\": \"Чёрный\",\n" +
-//                "        \"price\": 890,\n" +
-//                "        \"src\": \"../includes/images/blackShortsLinedown.jpeg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 4,\n" +
-//                "        \"name\": \"Женские ботинки linedown\",\n" +
-//                "        \"category_main\": \"woman\",\n" +
-//                "        \"category_inner\": \"ботинки\",\n" +
-//                "        \"color\": \"Серый\",\n" +
-//                "        \"price\": 2590,\n" +
-//                "        \"src\": \"../includes/images/geryBootsLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 5,\n" +
-//                "        \"name\": \"Женская толстовка linedown\",\n" +
-//                "        \"category_main\": \"woman\",\n" +
-//                "        \"category_inner\": \"толстовки\",\n" +
-//                "        \"color\": \"Серый\",\n" +
-//                "        \"price\": 4990,\n" +
-//                "        \"src\": \"../includes/images/greyHoodiesLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 6,\n" +
-//                "        \"name\": \"Женские ботинки linedown\",\n" +
-//                "        \"category_main\": \"woman\",\n" +
-//                "        \"category_inner\": \"ботинки\",\n" +
-//                "        \"color\": \"Синий\",\n" +
-//                "        \"price\": 2590,\n" +
-//                "        \"src\": \"../includes/images/blueBootsLinedown.webp\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 7,\n" +
-//                "        \"name\": \"USB-накопитель linedown 64 гб\",\n" +
-//                "        \"category_main\": \"accessories\",\n" +
-//                "        \"category_inner\": \"флешки\",\n" +
-//                "        \"color\": \"Синий\",\n" +
-//                "        \"price\": 499,\n" +
-//                "        \"src\": \"../includes/images/blueUSBLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 8,\n" +
-//                "        \"name\": \"USB-накопитель linedown 32 гб\",\n" +
-//                "        \"category_main\": \"accessories\",\n" +
-//                "        \"category_inner\": \"флешки\",\n" +
-//                "        \"color\": \"Чёрный\",\n" +
-//                "        \"price\": 499,\n" +
-//                "        \"src\": \"../includes/images/blackUSBLinedown.jpeg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 9,\n" +
-//                "        \"name\": \"Кружка linedown\",\n" +
-//                "        \"category_main\": \"accessories\",\n" +
-//                "        \"category_inner\": \"кружки\",\n" +
-//                "        \"color\": \"Зелёный\",\n" +
-//                "        \"price\": 699,\n" +
-//                "        \"src\": \"../includes/images/greenCupLinedown.jpg\"\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "        \"id\": 10,\n" +
-//                "        \"name\": \"Кружка linedown\",\n" +
-//                "        \"category_main\": \"accessories\",\n" +
-//                "        \"category_inner\": \"кружки\",\n" +
-//                "        \"color\": \"Белый\",\n" +
-//                "        \"price\": 699,\n" +
-//                "        \"src\": \"../includes/images/whiteCap.jpg\"\n" +
-//                "    }\n" +
-//                "]";
-//
-//        Gson gson = new Gson();
-//        Type listType = new TypeToken<List<Accessory>>(){}.getType();
-//
-//        List<Accessory> accessories = gson.fromJson(jsonStr, listType);
-//
-//        for(Accessory accessory : accessories) System.out.println(accessory);
-//
-//        System.out.println(accessories.getFirst().src);
-//
-//    }
-//
-//    @Test
-//    public void sortBooks(){
-//
-//    List<Book> books = List.of(
-//            new Book("Шантарам", "Грегори Дэвид Робертс", 1, 780.0, "Москва", "₽"),
-//            new Book("Три товарища", "Эрих Мария Ремарк", 2, 480.0, "Москва", "₽"),
-//            new Book("Цветы для Элджернона", "Даниел Киз", 3, 380.0, "Москва", "₽"),
-//            new Book(" Атлант расправил плечи", "Айн Рэнд", 4, 880.0, "Ставрополь", "₽"),
-//            new Book(" Атлант расправил плечи", "Айн Рэнд", 4, 580.0, "Сочи", "₽")
-//    );
-//
-//    Observable.fromIterable(books).filter(book -> book.location.equals("Москва")).filter(book -> book.price > 400.0)
-//            .distinct(book -> book.title).map(book -> "Автор книги: " + book .author + " название книги: " + book.title)
-//            .subscribe(System.out::println);
-//    }
+    @Test
+    public void parseJson(){
+        String jsonStr = "[\n" +
+                "    {\n" +
+                "        \"id\": 1,\n" +
+                "        \"name\": \"Мужская футболка linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"футболки\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 990,\n" +
+                "        \"src\": \"../includes/images/blackTshirtLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 2,\n" +
+                "        \"name\": \"Мужские шорты linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"шорты\",\n" +
+                "        \"color\": \"Зелёный\",\n" +
+                "        \"price\": 890,\n" +
+                "        \"src\": \"../includes/images/greenShortsLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 3,\n" +
+                "        \"name\": \"Мужские шорты linedown\",\n" +
+                "        \"category_main\": \"man\",\n" +
+                "        \"category_inner\": \"шорты\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 890,\n" +
+                "        \"src\": \"../includes/images/blackShortsLinedown.jpeg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 4,\n" +
+                "        \"name\": \"Женские ботинки linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"ботинки\",\n" +
+                "        \"color\": \"Серый\",\n" +
+                "        \"price\": 2590,\n" +
+                "        \"src\": \"../includes/images/geryBootsLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 5,\n" +
+                "        \"name\": \"Женская толстовка linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"толстовки\",\n" +
+                "        \"color\": \"Серый\",\n" +
+                "        \"price\": 4990,\n" +
+                "        \"src\": \"../includes/images/greyHoodiesLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 6,\n" +
+                "        \"name\": \"Женские ботинки linedown\",\n" +
+                "        \"category_main\": \"woman\",\n" +
+                "        \"category_inner\": \"ботинки\",\n" +
+                "        \"color\": \"Синий\",\n" +
+                "        \"price\": 2590,\n" +
+                "        \"src\": \"../includes/images/blueBootsLinedown.webp\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 7,\n" +
+                "        \"name\": \"USB-накопитель linedown 64 гб\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"флешки\",\n" +
+                "        \"color\": \"Синий\",\n" +
+                "        \"price\": 499,\n" +
+                "        \"src\": \"../includes/images/blueUSBLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 8,\n" +
+                "        \"name\": \"USB-накопитель linedown 32 гб\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"флешки\",\n" +
+                "        \"color\": \"Чёрный\",\n" +
+                "        \"price\": 499,\n" +
+                "        \"src\": \"../includes/images/blackUSBLinedown.jpeg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 9,\n" +
+                "        \"name\": \"Кружка linedown\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"кружки\",\n" +
+                "        \"color\": \"Зелёный\",\n" +
+                "        \"price\": 699,\n" +
+                "        \"src\": \"../includes/images/greenCupLinedown.jpg\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 10,\n" +
+                "        \"name\": \"Кружка linedown\",\n" +
+                "        \"category_main\": \"accessories\",\n" +
+                "        \"category_inner\": \"кружки\",\n" +
+                "        \"color\": \"Белый\",\n" +
+                "        \"price\": 699,\n" +
+                "        \"src\": \"../includes/images/whiteCap.jpg\"\n" +
+                "    }\n" +
+                "]";
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Accessory>>(){}.getType();
+
+        List<Accessory> accessories = gson.fromJson(jsonStr, listType);
+
+        for(Accessory accessory : accessories) System.out.println(accessory);
+
+        System.out.println(accessories.getFirst().src);
+
+    }
+
+    @Test
+    public void sortBooks(){
+
+    List<Book> books = List.of(
+            new Book("Шантарам", "Грегори Дэвид Робертс", 1, 780.0, "Москва", "₽"),
+            new Book("Три товарища", "Эрих Мария Ремарк", 2, 480.0, "Москва", "₽"),
+            new Book("Цветы для Элджернона", "Даниел Киз", 3, 380.0, "Москва", "₽"),
+            new Book(" Атлант расправил плечи", "Айн Рэнд", 4, 880.0, "Ставрополь", "₽"),
+            new Book(" Атлант расправил плечи", "Айн Рэнд", 4, 580.0, "Сочи", "₽")
+    );
+
+    Observable.fromIterable(books).filter(book -> book.location.equals("Москва")).filter(book -> book.price > 400.0)
+            .distinct(book -> book.title).map(book -> "Автор книги: " + book .author + " название книги: " + book.title)
+            .subscribe(System.out::println);
+    }
 }
 class RegistrationForm {
     @SerializedName("reg_token")

@@ -23,8 +23,6 @@ import okhttp3.Response;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
 public class RegisterActivity extends AppCompatActivity {
-
-
     private ActivityRegisterBinding binding;
     private final String domain = "http://linedown.ru:3254/api";
 
@@ -86,12 +84,13 @@ public class RegisterActivity extends AppCompatActivity {
                 .post(requestbody).build();
         // Следующие две строки - заглушки. ОБЯЗАТЕЛЬНО ДОДЕЛАТЬ!
         Response response = okHttpClient.newCall(request).execute();
-        System.out.println("Напишу чё-нибудь" + response.body().string());
+        String bodyResponse = response.body().string();
 
-        Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + login, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-
+        if(bodyResponse.equals("OK")){
+            Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + login, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+        } else Toast.makeText(RegisterActivity.this, "Проблема " + bodyResponse, Toast.LENGTH_SHORT).show();
     }
 }
