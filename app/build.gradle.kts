@@ -56,4 +56,10 @@ dependencies {
     implementation(libs.rxandroid)
     implementation(libs.rxjava)
     implementation(libs.gson)
+    implementation(libs.nv.websocket.client)
+
+    implementation(libs.spring.websocket)
+    implementation(libs.spring.messaging)
+    implementation(libs.jakarta.websocket.client.api)
+    implementation(libs.tyrus.standalone.client)
 }

@@ -1,6 +1,7 @@
 [versions]
 agp = "8.8.0"
 gson = "2.13.0"
+jakartaWebsocketClientApi = "2.2.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -13,13 +14,17 @@ navigationFragment = "2.8.7"
 navigationUi = "2.8.7"
 legacySupportV4 = "1.0.0"
 annotation = "1.6.0"
+nvWebsocketClient = "2.14"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
 monitor = "1.7.1"
 extensionOkhttp = "2.19.1"
+springWebsocket = "6.2.6"
+tyrusStandaloneClient = "2.2.0"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jakarta-websocket-client-api = { module = "jakarta.websocket:jakarta.websocket-client-api", version.ref = "jakartaWebsocketClientApi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -32,10 +37,14 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 annotation = { group = "androidx.annotation", name = "annotation", version = "1.9.1" }
+nv-websocket-client = { module = "com.neovisionaries:nv-websocket-client", version.ref = "nvWebsocketClient" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.10" }
 monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 extension-okhttp = { group = "com.google.android.exoplayer", name = "extension-okhttp", version.ref = "extensionOkhttp" }
+spring-messaging = { module = "org.springframework:spring-messaging", version.ref = "springWebsocket" }
+spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "springWebsocket" }
+tyrus-standalone-client = { module = "org.glassfish.tyrus.bundles:tyrus-standalone-client", version.ref = "tyrusStandaloneClient" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
