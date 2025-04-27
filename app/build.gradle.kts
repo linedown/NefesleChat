@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.monitor)
     implementation(libs.extension.okhttp)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.urlconnection)
     testImplementation(libs.junit)
     testImplementation(libs.monitor)
     androidTestImplementation(libs.ext.junit)

@@ -24,10 +24,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -79,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
                     notificationManager.notify(69, notification.build());
                     transitionToMessenger();
-                } else Toast.makeText(LoginActivity.this, "Ошибка: " + result, Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
 
             }
             @Override
@@ -113,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                 json.addProperty("email", login);
                 json.addProperty("password", password);
 
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
                 final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
 

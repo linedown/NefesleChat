@@ -17,12 +17,17 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
+import okhttp3.CookieJar;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.JavaNetCookieJar;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -116,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                 json.addProperty("last_name", lastName);
                 json.addProperty("password", password);
                 json.addProperty("email", login);
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
                 final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
 

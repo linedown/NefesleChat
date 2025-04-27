@@ -16,6 +16,7 @@ navigationUi = "2.8.7"
 legacySupportV4 = "1.0.0"
 annotation = "1.6.0"
 nvWebsocketClient = "2.14"
+okhttp = "4.12.0"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
 monitor = "1.7.1"
@@ -40,6 +41,8 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 annotation = { group = "androidx.annotation", name = "annotation", version = "1.9.1" }
 nv-websocket-client = { module = "com.neovisionaries:nv-websocket-client", version.ref = "nvWebsocketClient" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttp" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.10" }
 monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
