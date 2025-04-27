@@ -35,8 +35,6 @@ public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
     final String LOGIN_KEY = "login_key";
-    final String TOKEN_KEY = "token_key";
-    final String FIO_KEY = "fio_key";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +49,7 @@ public class SettingsFragment extends Fragment {
         TextView mailStr = binding.mailStr;
         sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
         settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
-            fioStr.setText(sharedPreferences.getString(FIO_KEY, ""));
+            fioStr.setText(settings.getFio());
             statusStr.setText(settings.getStatus());
             phoneStr.setText(settings.getPhoneStr());
             mailStr.setText(sharedPreferences.getString(LOGIN_KEY, ""));
@@ -73,6 +71,7 @@ public class SettingsFragment extends Fragment {
 
     public static class confirmExitDialogFragment extends DialogFragment{
         SharedPreferences sharedPreferences;
+        final String PASSWORD_KEY = "password_key";
 
         @NonNull
         @Override
@@ -85,7 +84,7 @@ public class SettingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
                 sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
-                sharedPreferences.edit().clear().apply();
+                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
                 dialog.cancel();
                 startActivity(intent);
             });

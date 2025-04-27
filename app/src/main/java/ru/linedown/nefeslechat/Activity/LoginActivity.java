@@ -24,13 +24,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.List;
-
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,15 +35,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     final String LOGIN_KEY = "login_key";
-    final String TOKEN_KEY = "token_key";
     final String PASSWORD_KEY = "password_key";
     private final String domain = "http://linedown.ru:3254/api/auth";
     private ActivityLoginBinding binding;
     String savedLogin;
+    String savedPassword;
     EditText loginText;
     EditText passwordText;
 
@@ -59,19 +57,36 @@ public class LoginActivity extends AppCompatActivity {
         loginText = binding.usernameLogin;
         passwordText = binding.passwordLogin;
 
-        loadLogin();
-        if(!savedLogin.isEmpty()) transitionToMessenger();
+        loadSharedData();
+        if(!savedLogin.isEmpty() && !savedPassword.isEmpty()) transitionToMessenger();
 
         final Button loginButton = binding.loginButton;
         final Button registerTransitionButton = binding.signUpTransitionButton;
 
-        loginButton.setOnClickListener(v -> {
-            try {
-                verificationAuthorization();
-            } catch (IOException e) {
-                Log.d("VerificationException", "Исключение при исполнение запроса " + e.getMessage());
+        loginButton.setOnClickListener(v -> verificationAuthorization(new MyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(result.equals("OK")){
+                    NotificationChannel notificationChannel = new NotificationChannel("LOGIN", "LOGIN CHANNEL", NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                    notificationManager.createNotificationChannel(notificationChannel);
+
+                    Toast.makeText(LoginActivity.this, "Вы вошли в аккаунт " + loginText.getText(), Toast.LENGTH_SHORT).show();
+                    NotificationCompat.Builder notification = new NotificationCompat.Builder(LoginActivity.this, "LOGIN")
+                            .setContentTitle("Вход")
+                            .setContentText("Вы вошли в аккаунт под пользователем " + loginText.getText())
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    notificationManager.notify(69, notification.build());
+                    transitionToMessenger();
+                } else Toast.makeText(LoginActivity.this, "Ошибка: " + result, Toast.LENGTH_SHORT).show();
+
             }
-        });
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+            }
+        }));
 
         registerTransitionButton.setOnClickListener(v -> {
             //Toast.makeText(LoginActivity.this, "Проверка обработчика событий", Toast.LENGTH_SHORT).show();
@@ -87,58 +102,50 @@ public class LoginActivity extends AppCompatActivity {
         saveLogin();
     }
 
-    private void verificationAuthorization() throws IOException {
+    private Disposable verificationAuthorization(MyCallback callback) {
         String login = loginText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if(login.isBlank() || password.isBlank()){
-            Toast.makeText(LoginActivity.this, "Не все поля заполнены!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Observable<String> observable = Observable.fromCallable(() -> {
+            try{
+                if(login.isBlank() || password.isBlank()) return "Не все поля заполнены!";
+                JsonObject json = new JsonObject();
+                json.addProperty("email", login);
+                json.addProperty("password", password);
 
-        // Для разрешения проблемы с потоками
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+                OkHttpClient okHttpClient = new OkHttpClient();
+                final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
 
-        JsonObject json = new JsonObject();
-        json.addProperty("email", login);
-        json.addProperty("password", password);
+                Request request = new Request.Builder().url(domain)
+                        .post(requestbody).build();
+                Response response = okHttpClient.newCall(request).execute();
+                String bodyResponse = response.body().string();
 
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
+                if(!response.isSuccessful()) return "Ошибка: " + bodyResponse;
+                return "OK";
+            } catch(Exception e){
+                Log.d("AsyncException", "Текст исключения: " + e.getMessage());
+            }
+            return "Пусто";
+        });
 
-        Request request = new Request.Builder().url(domain)
-                .post(requestbody).build();
-        Response response = okHttpClient.newCall(request).execute();
-        String bodyResponse = response.body().string();
-
-        if(!response.isSuccessful()){
-            Toast.makeText(LoginActivity.this, "Ошибка: " + bodyResponse, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        NotificationChannel notificationChannel = new NotificationChannel("LOGIN", "LOGIN CHANNEL", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(notificationChannel);
-
-        Toast.makeText(LoginActivity.this, "Вы вошли в аккаунт " + loginText.getText(), Toast.LENGTH_SHORT).show();
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "LOGIN")
-                .setContentTitle("Вход")
-                .setContentText("Вы вошли в аккаунт под пользователем " + loginText.getText())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        notificationManager.notify(69, notification.build());
-
-        transitionToMessenger();
+        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        callback::onSuccess,
+                        error -> callback.onError(error.getMessage())
+                );
     }
     private void saveLogin(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
         sharedPreferences.edit().putString(LOGIN_KEY, loginText.getText().toString()).apply();
+        sharedPreferences.edit().putString(PASSWORD_KEY, passwordText.getText().toString()).apply();
     }
 
-    private void loadLogin(){
+    private void loadSharedData(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
         savedLogin = sharedPreferences.getString(LOGIN_KEY, "");
+        savedPassword = sharedPreferences.getString(PASSWORD_KEY, "");
     }
 
     private void transitionToMessenger(){

@@ -35,8 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private final String domain = "http://linedown.ru:3254/api";
     final String LOGIN_KEY = "login_key";
-    final String TOKEN_KEY = "token_key";
-    final String FIO_KEY = "fio_key";
     final String PASSWORD_KEY = "password_key";
     Disposable disposable;
 
@@ -72,8 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + loginText, Toast.LENGTH_SHORT).show();
                                             SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
                                             sharedPreferences.edit().putString(LOGIN_KEY, loginText).apply();
-                                            sharedPreferences.edit().putString(FIO_KEY, lastNameText).apply();
-                                            sharedPreferences.edit().putString(TOKEN_KEY, tokenText).apply();
+                                            sharedPreferences.edit().putString(PASSWORD_KEY, passwordText).apply();
                                             transitionToMessenger();
                                         } else Toast.makeText(RegisterActivity.this, "Ошибка: " + result, Toast.LENGTH_SHORT).show();
                                     }

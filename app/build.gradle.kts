@@ -56,4 +56,5 @@ dependencies {
     implementation(libs.rxandroid)
     implementation(libs.rxjava)
     implementation(libs.gson)
+    implementation(libs.lombok);
 }
