@@ -38,8 +38,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.neovisionaries.ws.client.*;
-
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -58,21 +56,21 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    @Test
-    public void testingWedSocket() throws InterruptedException {
-        WebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-
-        stompClient.setMessageConverter(new StringMessageConverter());
-
-        String url = "ws://linedown.ru:8000/portfolio";
-
-        StompSessionHandler sessionHandler = new MyStompSessionHandler();
-        stompClient.connectAsync(url, sessionHandler);
-        stompClient.start();
-        Thread.sleep(60_000);
-        stompClient.stop();
-    }
+//    @Test
+//    public void testingWedSocket() throws InterruptedException {
+//        WebSocketClient client = new StandardWebSocketClient();
+//        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//
+//        stompClient.setMessageConverter(new StringMessageConverter());
+//
+//        String url = "ws://linedown.ru:8000/portfolio";
+//
+//        StompSessionHandler sessionHandler = new MyStompSessionHandler();
+//        stompClient.connectAsync(url, sessionHandler);
+//        stompClient.start();
+//        Thread.sleep(60_000);
+//        stompClient.stop();
+//    }
 
 //    @Test
 //    public void testRequest() throws IOException{
@@ -218,120 +216,120 @@ public class ExampleUnitTest {
 //    }
 }
 
-class MyStompSessionHandler extends StompSessionHandlerAdapter {
-    @Override
-    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-        session.subscribe("/topic/greeting", new StompFrameHandler() {
-
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return String.class;
-            }
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                System.out.println(payload);
-            }
-
-        });
-    }
-}
-class RegistrationForm {
-    @SerializedName("reg_token")
-    private String reg_token;
-
-    @SerializedName("last_name")
-    private String last_name;
-
-    @SerializedName("password")
-    private String password;
-
-    @SerializedName("email")
-    private String email;
-}
-class Accessory{
-    @SerializedName("id")
-    final int id;
-    @SerializedName("name")
-    final String name;
-    @SerializedName("category_main")
-    final String categoryMain;
-    @SerializedName("category_inner")
-    final String categoryInner;
-    @SerializedName("color")
-    final String color;
-    @SerializedName("price")
-    final int price;
-    @SerializedName("src")
-    final String src;
-
-    public Accessory(int id, String name, String categoryMain, String categoryInner, String color, int price, String src) {
-        this.id = id;
-        this.name = name;
-        this.categoryMain = categoryMain;
-        this.categoryInner = categoryInner;
-        this.color = color;
-        this.price = price;
-        this.src = src;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCategoryMain() {
-        return categoryMain;
-    }
-
-    public String getCategoryInner() {
-        return categoryInner;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public String getSrc() {
-        return src;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "Accessory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", categoryMain='" + categoryMain + '\'' +
-                ", categoryInner='" + categoryInner + '\'' +
-                ", color='" + color + '\'' +
-                ", price=" + price +
-                ", src='" + src + '\'' +
-                '}';
-    }
-}
-
-class Book{
-    final String title;
-    final String author;
-    final long id;
-    final double price;
-    final String location;
-    final String currency;
-
-
-    public Book(String title, String author, long id, double price, String location, String currency) {
-        this.title = title;
-        this.author = author;
-        this.id = id;
-        this.price = price;
-        this.location = location;
-        this.currency = currency;
-    }
-}
+//class MyStompSessionHandler extends StompSessionHandlerAdapter {
+//    @Override
+//    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+//        session.subscribe("/topic/greeting", new StompFrameHandler() {
+//
+//            @Override
+//            public Type getPayloadType(StompHeaders headers) {
+//                return String.class;
+//            }
+//            @Override
+//            public void handleFrame(StompHeaders headers, Object payload) {
+//                System.out.println(payload);
+//            }
+//
+//        });
+//    }
+//}
+//class RegistrationForm {
+//    @SerializedName("reg_token")
+//    private String reg_token;
+//
+//    @SerializedName("last_name")
+//    private String last_name;
+//
+//    @SerializedName("password")
+//    private String password;
+//
+//    @SerializedName("email")
+//    private String email;
+//}
+//class Accessory{
+//    @SerializedName("id")
+//    final int id;
+//    @SerializedName("name")
+//    final String name;
+//    @SerializedName("category_main")
+//    final String categoryMain;
+//    @SerializedName("category_inner")
+//    final String categoryInner;
+//    @SerializedName("color")
+//    final String color;
+//    @SerializedName("price")
+//    final int price;
+//    @SerializedName("src")
+//    final String src;
+//
+//    public Accessory(int id, String name, String categoryMain, String categoryInner, String color, int price, String src) {
+//        this.id = id;
+//        this.name = name;
+//        this.categoryMain = categoryMain;
+//        this.categoryInner = categoryInner;
+//        this.color = color;
+//        this.price = price;
+//        this.src = src;
+//    }
+//
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public String getCategoryMain() {
+//        return categoryMain;
+//    }
+//
+//    public String getCategoryInner() {
+//        return categoryInner;
+//    }
+//
+//    public String getColor() {
+//        return color;
+//    }
+//
+//    public int getPrice() {
+//        return price;
+//    }
+//
+//    public String getSrc() {
+//        return src;
+//    }
+//
+//    @NonNull
+//    @Override
+//    public String toString() {
+//        return "Accessory{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", categoryMain='" + categoryMain + '\'' +
+//                ", categoryInner='" + categoryInner + '\'' +
+//                ", color='" + color + '\'' +
+//                ", price=" + price +
+//                ", src='" + src + '\'' +
+//                '}';
+//    }
+//}
+//
+//class Book{
+//    final String title;
+//    final String author;
+//    final long id;
+//    final double price;
+//    final String location;
+//    final String currency;
+//
+//
+//    public Book(String title, String author, long id, double price, String location, String currency) {
+//        this.title = title;
+//        this.author = author;
+//        this.id = id;
+//        this.price = price;
+//        this.location = location;
+//        this.currency = currency;
+//    }
+//}

@@ -1,5 +1,6 @@
 package ru.linedown.nefeslechat.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +25,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
+
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private final String domain = "http://linedown.ru:3254/api";
@@ -31,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     final String TOKEN_KEY = "token_key";
     final String FIO_KEY = "fio_key";
     final String PASSWORD_KEY = "password_key";
+    Disposable disposable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,13 +57,37 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText passwordField2 = binding.passwordRegister2;
 
         registerButton.setOnClickListener(v -> {
+            String loginText = mailField.getText().toString();
+            String lastNameText = loginField.getText().toString();
+            String tokenText = tokenField.getText().toString();
+            String passwordText = passwordField.getText().toString();
+            String password2Text = passwordField2.getText().toString();
             try {
-                verificationRegistration(mailField.getText().toString(), loginField.getText().toString(),
-                        tokenField.getText().toString(), passwordField.getText().toString(), passwordField2.getText().toString());
+                disposable =
+                        verificationRegistration(loginText, lastNameText, tokenText, passwordText, password2Text,
+                                new MyCallback() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        if(result.equals("OK")){
+                                            Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + loginText, Toast.LENGTH_SHORT).show();
+                                            SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
+                                            sharedPreferences.edit().putString(LOGIN_KEY, loginText).apply();
+                                            sharedPreferences.edit().putString(FIO_KEY, lastNameText).apply();
+                                            sharedPreferences.edit().putString(TOKEN_KEY, tokenText).apply();
+                                            transitionToMessenger();
+                                        } else Toast.makeText(RegisterActivity.this, "Ошибка: " + result, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+                                    }
+                                });
             } catch (IOException e) {
                 Log.d("VerificationException", "Исключение при исполнение запроса " + e.getMessage());
             }
         });
+
 
         loginTransitionButton.setOnClickListener(v -> {
             //Toast.makeText(RegisterActivity.this, "Проверка обработчика событий", Toast.LENGTH_SHORT).show();
@@ -65,46 +97,56 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
-
-    public void verificationRegistration(String login, String lastName, String token, String password, String password2) throws IOException {
-        if(login.isBlank() || lastName.isBlank() || token.isBlank() || password.isBlank() || password2.isBlank()){
-            Toast.makeText(RegisterActivity.this, "Не все поля заполнены!", Toast.LENGTH_SHORT).show();
-            return;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
+    }
 
-        if(!password.equals(password2)){
-            Toast.makeText(RegisterActivity.this, "Пароли не совпадают!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // Для разрешения проблемы с потоками
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+    public Disposable verificationRegistration(String login, String lastName, String token, String password, String password2, MyCallback callback) throws IOException {
 
-        // Отправлять HttpRequest на сервер для проверки корректности login, lastName и использовании токена
-        JsonObject json = new JsonObject();
-        json.addProperty("reg_token", token);
-        json.addProperty("last_name", lastName);
-        json.addProperty("password", password);
-        json.addProperty("email", login);
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
+        Observable<String> observable = Observable.fromCallable(() -> {
+            try{
+                if(login.isBlank() || lastName.isBlank() || token.isBlank() || password.isBlank() || password2.isBlank())
+                    return "Не все поля заполнены!";
+                if(!password.equals(password2)) return "Пароли не совпадают!";
 
-        Request request = new Request.Builder().url(domain + "/auth/register")
-                .post(requestbody).build();
-        // Следующие две строки - заглушки. ОБЯЗАТЕЛЬНО ДОДЕЛАТЬ!
-        Response response = okHttpClient.newCall(request).execute();
-        String bodyResponse = response.body().string();
+                // Отправлять HttpRequest на сервер для проверки корректности login, lastName и использовании токена
+                JsonObject json = new JsonObject();
+                json.addProperty("reg_token", token);
+                json.addProperty("last_name", lastName);
+                json.addProperty("password", password);
+                json.addProperty("email", login);
+                OkHttpClient okHttpClient = new OkHttpClient();
+                final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
 
-        if(response.isSuccessful()){
-            Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + login, Toast.LENGTH_SHORT).show();
-            SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
-            sharedPreferences.edit().putString(LOGIN_KEY, login).apply();
-            sharedPreferences.edit().putString(FIO_KEY, lastName).apply();
-            sharedPreferences.edit().putString(TOKEN_KEY, token).apply();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-        } else Toast.makeText(RegisterActivity.this, "Ошибка: " + bodyResponse, Toast.LENGTH_SHORT).show();
+                Request request = new Request.Builder().url(domain + "/auth/register")
+                        .post(requestbody).build();
+
+                Response response = okHttpClient.newCall(request).execute();
+                String bodyResponse = response.body().string();
+
+                if(response.isSuccessful()) return "OK";
+                else return bodyResponse;
+            } catch (Exception e){
+                Log.d("AsyncException", "Текст исключения: " + e.getMessage());
+            }
+            return "Пусто";
+        });
+
+        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        callback::onSuccess,
+                        error -> callback.onError(error.getMessage())
+                );
+    }
+
+    public void transitionToMessenger(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 }
