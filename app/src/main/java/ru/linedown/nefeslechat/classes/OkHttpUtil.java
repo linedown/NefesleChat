@@ -61,8 +61,13 @@ public class OkHttpUtil {
         return new Gson().fromJson(responseBody, UserDetailsDTO.class);
     }
 
-    public static UserDetailsDTO getOtherUser(int id){
-        return null;
+    public static UserDetailsDTO getOtherUser(int id) throws IOException {
+        Request request = new Request.Builder().url(baseUrl + userProfilePath + "/" + id).get().build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        return new Gson().fromJson(responseBody, UserDetailsDTO.class);
     }
 
     public static String getJWTToken(){
