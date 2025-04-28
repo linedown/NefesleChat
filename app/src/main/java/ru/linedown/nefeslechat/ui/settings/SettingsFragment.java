@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +27,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+
 import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.Activity.MainActivity;
 import ru.linedown.nefeslechat.Activity.RegisterActivity;
+import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
     SharedPreferences sharedPreferences;
+    UserDetailsDTO currentUser;
 
     private FragmentSettingsBinding binding;
     final String LOGIN_KEY = "login_key";
@@ -42,17 +49,27 @@ public class SettingsFragment extends Fragment {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        // Переделать в асинхронку
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+        try {
+            currentUser = OkHttpUtil.getCurrentUser();
+        } catch (IOException e) {
+            Log.d("IOException", "SettingsFragment. Текст сообщения" + e.getMessage());
+        }
+
         Button exitButton = binding.exitButton;
         TextView fioStr = binding.fioStr;
         TextView statusStr = binding.statusStr;
-        TextView phoneStr = binding.phoneStr;
+        TextView roleStr = binding.roleStr;
         TextView mailStr = binding.mailStr;
         sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
         settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
-            fioStr.setText(settings.getFio());
-            statusStr.setText(settings.getStatus());
-            phoneStr.setText(settings.getPhoneStr());
-            mailStr.setText(sharedPreferences.getString(LOGIN_KEY, ""));
+            String fio = currentUser.getFirstName() + " " + currentUser.getLastName() + " " + currentUser.getPatronymic();
+            fioStr.setText(fio);
+            statusStr.setText("Статус-заглушка");
+            roleStr.setText(currentUser.getRole());
+            mailStr.setText(currentUser.getEmail());
         });
         exitButton.setOnClickListener(v -> {
             confirmExitDialogFragment confirmExitDialogFragment = new confirmExitDialogFragment();
@@ -71,8 +88,6 @@ public class SettingsFragment extends Fragment {
 
     public static class confirmExitDialogFragment extends DialogFragment{
         SharedPreferences sharedPreferences;
-        final String PASSWORD_KEY = "password_key";
-
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -84,7 +99,7 @@ public class SettingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
                 sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
-                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
+                sharedPreferences.edit().clear().apply();
                 dialog.cancel();
                 startActivity(intent);
             });

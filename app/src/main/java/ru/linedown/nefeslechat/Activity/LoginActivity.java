@@ -1,28 +1,18 @@
 package ru.linedown.nefeslechat.Activity;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -32,10 +22,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.JavaNetCookieJar;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
@@ -45,12 +32,9 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
-    final String LOGIN_KEY = "login_key";
-    final String PASSWORD_KEY = "password_key";
-    private final String domain = "http://linedown.ru:3254/api/auth";
+    final String JWT_TOKEN = "jwt_token";
     private ActivityLoginBinding binding;
-    String savedLogin;
-    String savedPassword;
+    String savedToken;
     EditText loginText;
     EditText passwordText;
     OkHttpClient okHttpClient;
@@ -66,8 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         loginText = binding.usernameLogin;
         passwordText = binding.passwordLogin;
 
-        loadSharedData();
-        if(!savedLogin.isEmpty() && !savedPassword.isEmpty()) transitionToMessenger();
+        loadSharedToken();
+        if(!savedToken.isEmpty()) {
+            OkHttpUtil.setJWTToken(savedToken);
+            transitionToMessenger();
+        }
 
         final Button loginButton = binding.loginButton;
         final Button registerTransitionButton = binding.signUpTransitionButton;
@@ -108,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveLogin();
     }
 
     private Disposable verificationAuthorization(MyCallback callback) {
@@ -139,19 +125,18 @@ public class LoginActivity extends AppCompatActivity {
                         error -> callback.onError(error.getMessage())
                 );
     }
-    private void saveLogin(){
+    private void saveToken(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
-        sharedPreferences.edit().putString(LOGIN_KEY, loginText.getText().toString()).apply();
-        sharedPreferences.edit().putString(PASSWORD_KEY, passwordText.getText().toString()).apply();
+        sharedPreferences.edit().putString(JWT_TOKEN, OkHttpUtil.getJWTToken()).apply();
     }
 
-    private void loadSharedData(){
+    private void loadSharedToken(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
-        savedLogin = sharedPreferences.getString(LOGIN_KEY, "");
-        savedPassword = sharedPreferences.getString(PASSWORD_KEY, "");
+        savedToken = sharedPreferences.getString(JWT_TOKEN, "");
     }
 
     private void transitionToMessenger(){
+        saveToken();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);

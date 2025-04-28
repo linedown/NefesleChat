@@ -11,13 +11,18 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private UserDetailsDTO currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +52,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

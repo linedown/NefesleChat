@@ -1,33 +1,20 @@
 package ru.linedown.nefeslechat.Activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
-import okhttp3.CookieJar;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.JavaNetCookieJar;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
@@ -40,9 +27,7 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
-    private final String domain = "http://linedown.ru:3254/api";
-    final String LOGIN_KEY = "login_key";
-    final String PASSWORD_KEY = "password_key";
+    final String JWT_TOKEN = "jwt_token";
     Disposable disposable;
 
     @Override
@@ -76,8 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         if(result.equals("OK")){
                                             Toast.makeText(RegisterActivity.this, "Вы зарегистрировали аккаунт " + loginText, Toast.LENGTH_SHORT).show();
                                             SharedPreferences sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
-                                            sharedPreferences.edit().putString(LOGIN_KEY, loginText).apply();
-                                            sharedPreferences.edit().putString(PASSWORD_KEY, passwordText).apply();
+                                            sharedPreferences.edit().putString(JWT_TOKEN, OkHttpUtil.getJWTToken()).apply();
                                             transitionToMessenger();
                                         } else Toast.makeText(RegisterActivity.this, "Ошибка: " + result, Toast.LENGTH_SHORT).show();
                                     }

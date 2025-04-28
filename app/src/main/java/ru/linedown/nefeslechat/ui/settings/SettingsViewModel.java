@@ -11,13 +11,13 @@ public class SettingsViewModel extends ViewModel {
     public static class SettingsData{
         private String fio;
         private String status;
-        private String phoneStr;
+        private String role;
         private String mail;
 
-        public SettingsData(String fio, String status, String phoneStr, String mail){
+        public SettingsData(String fio, String status, String role, String mail){
             this.fio = fio;
             this.status = status;
-            this.phoneStr = phoneStr;
+            this.role = role;
             this.mail = mail;
         }
 
@@ -29,12 +29,12 @@ public class SettingsViewModel extends ViewModel {
             this.mail = mail;
         }
 
-        public String getPhoneStr() {
-            return phoneStr;
+        public String getRole() {
+            return role;
         }
 
-        public void setPhoneStr(String phoneStr) {
-            this.phoneStr = phoneStr;
+        public void setPhoneStr(String role) {
+            this.role = role;
         }
 
         public String getStatus() {
@@ -56,7 +56,7 @@ public class SettingsViewModel extends ViewModel {
 
     public SettingsViewModel() {
         mSettings = new MutableLiveData<>();
-        mSettings.setValue(new SettingsData("Тестовый Пример Фио", "В сети", "+7 913 567 87 53", "test1006@gmail.com"));
+        mSettings.setValue(new SettingsData("Тестовый Пример Фио", "В сети", "Шаблонная роль", "test1006@gmail.com"));
     }
 
     public LiveData<SettingsData> getSettings() {
