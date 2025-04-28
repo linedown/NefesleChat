@@ -28,12 +28,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.JavaNetCookieJar;
+import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.entity.RegistrationForm;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -116,23 +118,17 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!password.equals(password2)) return "Пароли не совпадают!";
 
                 // Отправлять HttpRequest на сервер для проверки корректности login, lastName и использовании токена
-                JsonObject json = new JsonObject();
-                json.addProperty("reg_token", token);
-                json.addProperty("last_name", lastName);
-                json.addProperty("password", password);
-                json.addProperty("email", login);
-                OkHttpClient okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
-                final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
 
-                Request request = new Request.Builder().url(domain + "/auth/register")
-                        .post(requestbody).build();
+                RegistrationForm rf = new RegistrationForm();
+                rf.setEmail(login);
+                rf.setLast_name(lastName);
+                rf.setReg_token(token);
+                rf.setPassword(password);
 
-                Response response = okHttpClient.newCall(request).execute();
-                String bodyResponse = response.body().string();
+                Response response = OkHttpUtil.processAuthentification(rf);
 
                 if(response.isSuccessful()) return "OK";
-                else return bodyResponse;
+                else return response.body().string();
             } catch (Exception e){
                 Log.d("AsyncException", "Текст исключения: " + e.getMessage());
             }

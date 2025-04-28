@@ -38,7 +38,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
+import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class LoginActivity extends AppCompatActivity {
@@ -51,10 +53,13 @@ public class LoginActivity extends AppCompatActivity {
     String savedPassword;
     EditText loginText;
     EditText passwordText;
+    OkHttpClient okHttpClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
+                (new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -113,20 +118,14 @@ public class LoginActivity extends AppCompatActivity {
         Observable<String> observable = Observable.fromCallable(() -> {
             try{
                 if(login.isBlank() || password.isBlank()) return "Не все поля заполнены!";
-                JsonObject json = new JsonObject();
-                json.addProperty("email", login);
-                json.addProperty("password", password);
 
-                OkHttpClient okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
-                final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                RequestBody requestbody = RequestBody.create(String.valueOf(json), JSON);
+                AuthorizationForm af = new AuthorizationForm();
+                af.setEmail(login);
+                af.setPassword(password);
 
-                Request request = new Request.Builder().url(domain)
-                        .post(requestbody).build();
-                Response response = okHttpClient.newCall(request).execute();
-                String bodyResponse = response.body().string();
+                Response response = OkHttpUtil.processAuthentification(af);
 
-                if(!response.isSuccessful()) return "Ошибка: " + bodyResponse;
+                if(!response.isSuccessful()) return "Ошибка: " + response.body().string();
                 return "OK";
             } catch(Exception e){
                 Log.d("AsyncException", "Текст исключения: " + e.getMessage());

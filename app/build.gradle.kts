@@ -59,4 +59,6 @@ dependencies {
     implementation(libs.rxjava)
     implementation(libs.gson)
     implementation(libs.lombok);
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 }
