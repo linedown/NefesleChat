@@ -1,6 +1,7 @@
 package ru.linedown.nefeslechat.ui.settings;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.VISIBLE;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,19 +30,22 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.Activity.MainActivity;
 import ru.linedown.nefeslechat.Activity.RegisterActivity;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
+import ru.linedown.nefeslechat.interfaces.MyCallbackForUser;
 
 public class SettingsFragment extends Fragment {
-    SharedPreferences sharedPreferences;
-    UserDetailsDTO currentUser;
-
+    //UserDetailsDTO currentUser;
     private FragmentSettingsBinding binding;
-    final String LOGIN_KEY = "login_key";
+    private Disposable disposable;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,28 +53,67 @@ public class SettingsFragment extends Fragment {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        // Переделать в асинхронку
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
-
-        try {
-            currentUser = OkHttpUtil.getCurrentUser();
-        } catch (IOException e) {
-            Log.d("IOException", "SettingsFragment. Текст сообщения" + e.getMessage());
-        }
-
         Button exitButton = binding.exitButton;
         TextView fioStr = binding.fioStr;
         TextView statusStr = binding.statusStr;
         TextView roleStr = binding.roleStr;
         TextView mailStr = binding.mailStr;
-        sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
-        settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
-            String fio = currentUser.getFirstName() + " " + currentUser.getLastName() + " " + currentUser.getPatronymic();
-            fioStr.setText(fio);
-            statusStr.setText("Статус-заглушка");
-            roleStr.setText(currentUser.getRole());
-            mailStr.setText(currentUser.getEmail());
+
+        TextView groupOrAcademicTitle = binding.groupOrAcademicTitle;
+        TextView groupOrAcademicTitleLabel = binding.groupOrAcademicTitleLabel;
+
+        View underGroupOrAcademicTitleDivider = binding.underGroupOrAcademicDivider;
+        TextView academicDegree = binding.academicDegree;
+        TextView academicDegreeLabel = binding.academicDegreeLabel;
+
+
+        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
+            try{
+                return OkHttpUtil.getCurrentUser();
+            } catch (IOException e) {
+                Log.d("IOException", "SettingsFragment. Текст сообщения" + e.getMessage());
+            }
+            return null;
         });
+
+        MyCallbackForUser mcfu = new MyCallbackForUser() {
+            @Override
+            public void onSuccess(UserDetailsDTO result) {
+                String role = result.getRole();
+                String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
+                fioStr.setText(fio);
+                statusStr.setText("Статус-заглушка");
+                Log.d("Роль: ", role);
+                Log.d("ФИО: ", fio);
+                roleStr.setText(role);
+                mailStr.setText(result.getEmail());
+
+                if(role.equals("Преподаватель")) {
+                    groupOrAcademicTitleLabel.setText("Учёное звание");
+                    groupOrAcademicTitle.setText(result.getAcademicTitle());
+
+                    underGroupOrAcademicTitleDivider.setVisibility(VISIBLE);
+                    academicDegree.setVisibility(VISIBLE);
+                    academicDegreeLabel.setVisibility(VISIBLE);
+
+                    academicDegree.setText(result.getAcademicDegree());
+                    academicDegreeLabel.setText("Учёная должность");
+                } else {
+                    groupOrAcademicTitleLabel.setText("Группа");
+                    groupOrAcademicTitle.setText(result.getGroupName());
+                }
+            }
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+            }
+        };
+
+        disposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mcfu::onSuccess, error -> mcfu.onError(error.getMessage())
+                );
+
         exitButton.setOnClickListener(v -> {
             confirmExitDialogFragment confirmExitDialogFragment = new confirmExitDialogFragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -83,6 +126,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
         binding = null;
     }
 

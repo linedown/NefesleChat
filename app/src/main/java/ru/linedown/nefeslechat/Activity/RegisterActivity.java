@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
@@ -110,9 +111,14 @@ public class RegisterActivity extends AppCompatActivity {
                 rf.setPassword(password);
 
                 Response response = OkHttpUtil.processAuthentification(rf);
+                ResponseBody responseBody = response.body();
+                String responseStr = responseBody.string();
+
+                response.close();
+                responseBody.close();
 
                 if(response.isSuccessful()) return "OK";
-                else return response.body().string();
+                else return responseStr;
             } catch (Exception e){
                 Log.d("AsyncException", "Текст исключения: " + e.getMessage());
             }

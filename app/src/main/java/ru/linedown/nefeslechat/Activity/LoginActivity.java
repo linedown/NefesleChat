@@ -19,11 +19,11 @@ import java.net.CookiePolicy;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private Disposable verificationAuthorization(MyCallback callback) {
+    private void verificationAuthorization(MyCallback callback) {
         String login = loginText.getText().toString();
         String password = passwordText.getText().toString();
 
@@ -110,8 +110,11 @@ public class LoginActivity extends AppCompatActivity {
                 af.setPassword(password);
 
                 Response response = OkHttpUtil.processAuthentification(af);
-
-                if(!response.isSuccessful()) return "Ошибка: " + response.body().string();
+                ResponseBody responseBody = response.body();
+                String responseStr = responseBody.string();
+                response.close();
+                responseBody.close();
+                if(!response.isSuccessful()) return "Ошибка: " + responseStr;
                 return "OK";
             } catch(Exception e){
                 Log.d("AsyncException", "Текст исключения: " + e.getMessage());
@@ -119,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             return "Пусто";
         });
 
-        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         callback::onSuccess,
                         error -> callback.onError(error.getMessage())

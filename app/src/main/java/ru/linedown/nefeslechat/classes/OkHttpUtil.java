@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.entity.RegistrationForm;
 
@@ -56,18 +57,24 @@ public class OkHttpUtil {
         Request request = new Request.Builder().url(baseUrl + myProfilePath).get().build();
 
         Response response = okHttpClient.newCall(request).execute();
-        String responseBody = response.body().string();
+        ResponseBody responseBody = response.body();
+        String responseStr = responseBody.string();
+        response.close();
+        responseBody.close();
 
-        return new Gson().fromJson(responseBody, UserDetailsDTO.class);
+        return new Gson().fromJson(responseStr, UserDetailsDTO.class);
     }
 
     public static UserDetailsDTO getOtherUser(int id) throws IOException {
         Request request = new Request.Builder().url(baseUrl + userProfilePath + "/" + id).get().build();
 
         Response response = okHttpClient.newCall(request).execute();
-        String responseBody = response.body().string();
+        ResponseBody responseBody = response.body();
+        String responseBodyStr = responseBody.string();
+        response.close();
+        responseBody.close();
 
-        return new Gson().fromJson(responseBody, UserDetailsDTO.class);
+        return new Gson().fromJson(responseBodyStr, UserDetailsDTO.class);
     }
 
     public static String getJWTToken(){

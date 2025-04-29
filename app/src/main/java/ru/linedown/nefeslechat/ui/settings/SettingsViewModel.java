@@ -13,12 +13,24 @@ public class SettingsViewModel extends ViewModel {
         private String status;
         private String role;
         private String mail;
+        private String groupOrAcademicTitle;
+        private String academicDegree;
 
-        public SettingsData(String fio, String status, String role, String mail){
+        public SettingsData(String fio, String status, String role, String mail, String groupOrAcademicTitle){
             this.fio = fio;
             this.status = status;
             this.role = role;
             this.mail = mail;
+            this.groupOrAcademicTitle = groupOrAcademicTitle;
+        }
+
+        public SettingsData(String fio, String status, String role, String mail, String groupOrAcademicTitle, String academicDegree){
+            this.fio = fio;
+            this.status = status;
+            this.role = role;
+            this.mail = mail;
+            this.groupOrAcademicTitle = groupOrAcademicTitle;
+            this.academicDegree = academicDegree;
         }
 
         public String getMail() {
@@ -52,11 +64,30 @@ public class SettingsViewModel extends ViewModel {
         public void setFio(String fio) {
             this.fio = fio;
         }
+
+        public String getAcademicDegree() {
+            return academicDegree;
+        }
+
+        public void setAcademicDegree(String academicDegree) {
+            this.academicDegree = academicDegree;
+        }
+
+        public String getGroupOrAcademicTitle() {
+            return groupOrAcademicTitle;
+        }
+
+        public void setGroupOrAcademicTitle(String groupOrAcademicTitle) {
+            this.groupOrAcademicTitle = groupOrAcademicTitle;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
     }
 
     public SettingsViewModel() {
         mSettings = new MutableLiveData<>();
-        mSettings.setValue(new SettingsData("Тестовый Пример Фио", "В сети", "Шаблонная роль", "test1006@gmail.com"));
     }
 
     public LiveData<SettingsData> getSettings() {
