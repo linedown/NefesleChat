@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.self;
+package ru.linedown.nefeslechat.ui.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import ru.linedown.nefeslechat.databinding.FragmentSelfBinding;
+import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 
-public class SelfFragment extends Fragment {
+public class ChatFragment extends Fragment {
 
-    private FragmentSelfBinding binding;
+    private FragmentChatBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SelfViewModel selfViewModel =
-                new ViewModelProvider(this).get(SelfViewModel.class);
+//        SelfViewModel selfViewModel =
+//                new ViewModelProvider(this).get(SelfViewModel.class);
 
-        binding = FragmentSelfBinding.inflate(inflater, container, false);
+        binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSelf;
-        selfViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        selfViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
