@@ -3,10 +3,12 @@ package ru.linedown.nefeslechat.classes;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -30,6 +32,7 @@ public class OkHttpUtil {
     private static final String domainAuthorization = "/auth";
     private static final String userProfilePath = "/user-profile";
     private static final String myProfilePath = "/my-profile";
+    private static final String searchPath = "/users?last-name=";
     private static long user_id;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static String JWTToken = "";
@@ -75,6 +78,20 @@ public class OkHttpUtil {
         responseBody.close();
 
         return new Gson().fromJson(responseBodyStr, UserDetailsDTO.class);
+    }
+
+    public static List<UserInListDTO> getListUsers(String searchRequest) throws IOException {
+        Request request = new Request.Builder().url(baseUrl + searchPath + searchRequest).get().build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        ResponseBody responseBody = response.body();
+
+        List<UserInListDTO> users = new Gson().fromJson(responseBody.string(), new TypeToken<ArrayList<UserInListDTO>>(){}.getType());
+
+        response.close();
+        responseBody.close();
+
+        return users;
     }
 
     public static String getJWTToken(){
