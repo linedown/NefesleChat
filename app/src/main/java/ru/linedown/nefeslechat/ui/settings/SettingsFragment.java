@@ -149,9 +149,7 @@ public class SettingsFragment extends Fragment {
                 dialog.cancel();
                 startActivity(intent);
             });
-            builder.setNegativeButton("Отмена", (dialog, which) -> {
-                dialog.cancel();
-            });
+            builder.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
             builder.setCancelable(true);
 
             return builder.create();

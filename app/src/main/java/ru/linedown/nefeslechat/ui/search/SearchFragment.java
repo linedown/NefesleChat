@@ -74,6 +74,7 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onSuccess(List<UserInListDTO> result) {
                     for(UserInListDTO user: result){
+                        results.removeAllViews();
                         TextView userView = new TextView(getActivity());
                         userView.setTextSize(20);
                         String resultStr = user.getName() + ". Роль: " + user.getRole() + ". Кафедра: " + user.getDepartment();

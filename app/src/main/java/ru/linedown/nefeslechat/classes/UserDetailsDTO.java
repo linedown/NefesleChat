@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDetailsDTO {
-
     private Integer id;
 
     private String firstName;

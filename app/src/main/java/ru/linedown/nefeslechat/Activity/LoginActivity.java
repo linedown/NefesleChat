@@ -37,13 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     String savedToken;
     EditText loginText;
     EditText passwordText;
-    OkHttpClient okHttpClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        okHttpClient = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
-                (new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
