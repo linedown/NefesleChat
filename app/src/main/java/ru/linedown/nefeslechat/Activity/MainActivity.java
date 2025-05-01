@@ -1,6 +1,9 @@
 package ru.linedown.nefeslechat.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -13,16 +16,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
+import ru.linedown.nefeslechat.interfaces.MyCallbackForUser;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private UserDetailsDTO currentUser;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +43,39 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        View infoBarView = navigationView.getHeaderView(0);
+        TextView nameInBar = infoBarView.findViewById(R.id.UserNameLabel);
+        TextView loginInBar = infoBarView.findViewById(R.id.mailLabel);
+
+        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
+            try{
+                return OkHttpUtil.getCurrentUser();
+            } catch (IOException e) {
+                Log.d("IOException", "NavHeaderMain. Текст сообщения: " + e.getMessage());
+            }
+            return null;
+        });
+
+        MyCallbackForUser mcfu = new MyCallbackForUser() {
+            @Override
+            public void onSuccess(UserDetailsDTO result) {
+                String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
+                nameInBar.setText(fio);
+                loginInBar.setText(result.getEmail());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+            }
+        };
+
+        disposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mcfu::onSuccess, error -> mcfu.onError(error.getMessage())
+                );
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_chats, R.id.nav_chat, R.id.nav_settings,
                 R.id.nav_create_chat, R.id.nav_search, R.id.nav_about, R.id.nav_notes, R.id.nav_raspisanie)
@@ -57,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 }

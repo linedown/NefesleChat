@@ -71,7 +71,7 @@ public class SettingsFragment extends Fragment {
             try{
                 return OkHttpUtil.getCurrentUser();
             } catch (IOException e) {
-                Log.d("IOException", "SettingsFragment. Текст сообщения" + e.getMessage());
+                Log.d("IOException", "SettingsFragment. Текст сообщения: " + e.getMessage());
             }
             return null;
         });
