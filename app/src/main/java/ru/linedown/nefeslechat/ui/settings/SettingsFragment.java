@@ -79,6 +79,7 @@ public class SettingsFragment extends Fragment {
         MyCallbackForUser mcfu = new MyCallbackForUser() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
+                // UserDetailsDTO result = OkHttpUtil.getCurrentUser();
                 String role = result.getRole();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 fioStr.setText(fio);

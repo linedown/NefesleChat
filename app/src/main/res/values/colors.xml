@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#360</color>
+
+    <color name="nedowhite">#E4E3E3</color>
+    <color name="neccessarygreen">#039156</color>
+
 </resources>

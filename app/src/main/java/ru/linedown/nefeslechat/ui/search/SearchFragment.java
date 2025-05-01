@@ -77,6 +77,7 @@ public class SearchFragment extends Fragment {
                         results.removeAllViews();
                         TextView userView = new TextView(getActivity());
                         userView.setTextSize(20);
+
                         String resultStr = user.getName() + ". Роль: " + user.getRole() + ". Кафедра: " + user.getDepartment();
 
                         userView.setText(resultStr);

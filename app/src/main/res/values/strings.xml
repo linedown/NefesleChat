@@ -2,8 +2,8 @@
     <string name="app_name">NefesleChat</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">linedown</string>
-    <string name="nav_header_subtitle">linedown2013@gmail.ru</string>
+    <string name="nav_header_title">User</string>
+    <string name="nav_header_subtitle">User@gmail.ru</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="menu_self">Избранное</string>
@@ -32,17 +32,17 @@
     <string name="hint_create_chat_text">Название группового чата</string>
     <string name="input_message_text_hint">Введите сообщение</string>
     <string name="login_button_text">Войти в аккаунт</string>
-    <string name="title_activity_login">Вход в аккаунт</string>
+    <string name="title_activity_login">Авторизация</string>
     <string name="prompt_email">Логин</string>
     <string name="prompt_password">Пароль</string>
     <string name="action_sign_in">Войти в аккаунт</string>
-    <string name="action_sign_in_short">Войти</string>
+    <string name="action_sign_in_short">Вход</string>
     <string name="action_sign_up">Зарегистрироваться</string>
     <string name="prompt_replay_password">Повтор пароля</string>
-    <string name="sign_in_button_transition_text">Авторизация</string>
+    <string name="sign_in_button_transition_text">Войти</string>
     <string name="sign_up_button_transition_text">Регистрация</string>
-    <string name="register_label_const">Регистрация</string>
-    <string name="login_label_const">Вход в аккаунт</string>
+    <string name="register_label_const"><b>Регистрация</b></string>
+    <string name="login_label_const"><b>Авторизация</b></string>
     <string name="exit_button_text_const">Выйти</string>
     <string name="token_hint_str">Токен</string>
     <string name="item_notes_name">Заметки</string>

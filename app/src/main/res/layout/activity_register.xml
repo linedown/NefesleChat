@@ -9,13 +9,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/nedowhite"
     tools:context=".Activity.LoginActivity">
 
     <EditText
         android:id="@+id/lastName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
         android:autofillHints="@string/prompt_email"
         android:hint="@string/lastname_str"
         android:inputType="textEmailAddress"
@@ -23,13 +23,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/maleRegister" />
 
     <EditText
         android:id="@+id/tokenRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
         android:autofillHints="@string/prompt_email"
         android:hint="@string/token_hint_str"
         android:inputType="textEmailAddress"
@@ -37,13 +36,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
     <EditText
         android:id="@+id/passwordRegister2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:autofillHints=""
         android:hint="@string/prompt_replay_password"
         android:imeOptions="actionDone"
@@ -58,7 +56,7 @@
         android:id="@+id/maleRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="172dp"
         android:autofillHints="@string/prompt_email"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
@@ -72,7 +70,6 @@
         android:id="@+id/passwordRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:autofillHints="@string/prompt_password"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -86,28 +83,30 @@
     <Button
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/neccessarygreen"
         android:text="@string/action_sign_up"
-        android:backgroundTint="@color/green"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordRegister2"
-        app:layout_constraintVertical_bias="0.025" />
+        app:layout_constraintVertical_bias="0.203" />
 
     <Button
         android:id="@+id/on_sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
-        android:backgroundTint="#bbb"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/nedowhite"
         android:text="@string/sign_in_button_transition_text"
-        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textColor="@color/neccessarygreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
@@ -115,14 +114,26 @@
         android:id="@+id/registerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="64dp"
         android:fontFamily="@font/comic_neue"
         android:text="@string/register_label_const"
-        android:textColor="@color/black"
+        android:textColor="@color/neccessarygreen"
         android:textSize="27sp"
-        app:layout_constraintBottom_toTopOf="@+id/maleRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="91dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
