@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.0"
+circleimageview = "3.1.0"
+coreSplashscreen = "1.0.1"
 gson = "2.13.0"
 jakartaWebsocketClientApi = "2.2.0"
 junit = "4.13.2"
@@ -25,6 +27,8 @@ springWebsocket = "6.2.6"
 tyrusStandaloneClient = "2.2.0"
 
 [libraries]
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jakarta-websocket-client-api = { module = "jakarta.websocket:jakarta.websocket-client-api", version.ref = "jakartaWebsocketClientApi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -38,10 +40,10 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final Button registerButton = binding.registerButton;
-        final Button loginTransitionButton = binding.onSignInButton;
+        final ImageButton registerButton = binding.registerButton;
+        final TextView loginTransitionButton = binding.onSignInButton;
 
-        final EditText mailField = binding.maleRegister;
+        final EditText mailField = binding.mailRegister;
         final EditText loginField = binding.lastName;
         final EditText tokenField = binding.tokenRegister;
         final EditText passwordField = binding.passwordRegister;

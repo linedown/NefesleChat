@@ -11,5 +11,6 @@
 
     <color name="nedowhite">#E4E3E3</color>
     <color name="neccessarygreen">#039156</color>
+    <color name="avatarBorder">#048</color>
 
 </resources>

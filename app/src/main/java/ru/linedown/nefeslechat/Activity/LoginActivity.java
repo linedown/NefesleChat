@@ -12,6 +12,8 @@ import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.CookieManager;
@@ -53,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             transitionToMessenger();
         }
 
-        final Button loginButton = binding.loginButton;
-        final Button registerTransitionButton = binding.signUpTransitionButton;
+        final ImageButton loginButton = binding.loginButton;
+        final TextView registerTransitionButton = binding.signUpTransitionButton;
 
         loginButton.setOnClickListener(v -> verificationAuthorization(new MyCallback() {
             @Override

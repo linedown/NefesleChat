@@ -61,4 +61,6 @@ dependencies {
     implementation(libs.lombok);
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+    implementation(libs.core.splashscreen)
+    implementation(libs.circleimageview)
 }

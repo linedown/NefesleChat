@@ -1,5 +1,6 @@
 package ru.linedown.nefeslechat.Activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -45,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
 
         View infoBarView = navigationView.getHeaderView(0);
-        TextView nameInBar = infoBarView.findViewById(R.id.UserNameLabel);
+        TextView infoInBar = infoBarView.findViewById(R.id.InfoLabel);
         TextView loginInBar = infoBarView.findViewById(R.id.mailLabel);
+        TextView userInBar = infoBarView.findViewById(R.id.userLabel);
+        CircleImageView civ = infoBarView.findViewById(R.id.avatar);
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
             try{
@@ -60,8 +64,17 @@ public class MainActivity extends AppCompatActivity {
         MyCallbackForUser mcfu = new MyCallbackForUser() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
+                String role = result.getRole();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
-                nameInBar.setText(fio);
+                userInBar.setTypeface(null, Typeface.BOLD);
+                userInBar.setText(fio);
+                if(role.equals("Преподаватель")){
+                    String info = result.getAcademicTitle() + " • " + result.getAcademicDegree();
+                    infoInBar.setText(info);
+                } else {
+                    String info = role + " • " + result.getGroupName();
+                    infoInBar.setText(info);
+                }
                 loginInBar.setText(result.getEmail());
             }
 

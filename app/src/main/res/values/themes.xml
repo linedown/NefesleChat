@@ -10,13 +10,19 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+<!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
+<!--        <item name="windowSplashScreenBackground">@color/white</item>  &lt;!&ndash; Фон Splash Screen &ndash;&gt;-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item> &lt;!&ndash; Иконка Splash Screen &ndash;&gt;-->
         <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.NefesleChat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.NefesleChat.NoActionBar</item> <!-- Тема, к которой переключаемся после Splash Screen -->
     </style>
 
     <style name="Theme.NefesleChat.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
