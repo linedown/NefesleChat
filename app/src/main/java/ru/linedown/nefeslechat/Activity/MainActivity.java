@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +26,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         TextView loginInBar = infoBarView.findViewById(R.id.mailLabel);
         TextView userInBar = infoBarView.findViewById(R.id.userLabel);
         CircleImageView civ = infoBarView.findViewById(R.id.avatar);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
             try{
@@ -90,13 +95,33 @@ public class MainActivity extends AppCompatActivity {
                 );
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_chats, R.id.nav_chat, R.id.nav_settings,
-                R.id.nav_create_chat, R.id.nav_search, R.id.nav_about, R.id.nav_notes, R.id.nav_raspisanie)
+                R.id.nav_chats, R.id.nav_settings,
+                R.id.nav_create_chat, R.id.nav_search, R.id.nav_about,
+                R.id.nav_notes, R.id.nav_raspisanie, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_logout) {
+                ConfirmExitDialogFragment confirmExitDialogFragment = new ConfirmExitDialogFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                confirmExitDialogFragment.show(transaction, "dialog");
+                return true;
+            } else {
+                boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            } else return false;
+        }
+        });
     }
 
 

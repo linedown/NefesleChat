@@ -52,4 +52,5 @@
     <string name="template_role">Шаблон роли</string>
     <string name="const_role_text">Роль пользователя</string>
     <string name="fio"><b>Фамилия Имя Отчество</b></string>
+    <string name="exit_item_Str">Выйти</string>
 </resources>

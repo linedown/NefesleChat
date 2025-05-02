@@ -5,6 +5,7 @@ import static android.view.View.VISIBLE;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.Activity.MainActivity;
 import ru.linedown.nefeslechat.Activity.RegisterActivity;
+import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
@@ -116,7 +118,7 @@ public class SettingsFragment extends Fragment {
                 );
 
         exitButton.setOnClickListener(v -> {
-            confirmExitDialogFragment confirmExitDialogFragment = new confirmExitDialogFragment();
+            ConfirmExitDialogFragment confirmExitDialogFragment = new ConfirmExitDialogFragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             confirmExitDialogFragment.show(transaction, "dialog");
@@ -133,27 +135,5 @@ public class SettingsFragment extends Fragment {
         binding = null;
     }
 
-    public static class confirmExitDialogFragment extends DialogFragment{
-        SharedPreferences sharedPreferences;
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Подтверждение");
-            builder.setMessage("Вы точно хотите выйти из аккаунта?");
-            builder.setPositiveButton("Да", (dialog, which) -> {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
-                sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
-                sharedPreferences.edit().clear().apply();
-                dialog.cancel();
-                startActivity(intent);
-            });
-            builder.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
-            builder.setCancelable(true);
 
-            return builder.create();
-        }
-    }
 }
