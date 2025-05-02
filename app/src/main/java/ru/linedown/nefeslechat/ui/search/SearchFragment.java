@@ -51,7 +51,6 @@ public class SearchFragment extends Fragment {
 
         searchButton.setOnClickListener(v -> {
             String searchText = searchEditText.getText().toString();
-            List<UserInListDTO> users = Collections.emptyList();
 
             Observable<List<UserInListDTO>> observable = Observable.fromCallable(() -> {
                 try {
