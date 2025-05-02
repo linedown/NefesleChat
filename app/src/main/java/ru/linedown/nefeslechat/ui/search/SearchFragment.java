@@ -114,7 +114,7 @@ public class SearchFragment extends Fragment {
                                 NavController navController = Navigation.findNavController(view);
                                 navController.navigate(R.id.action_nav_to_profile, null);
                             }
-                            Log.d("Айди пользователя:", " " + OkHttpUtil.getUserId());
+                            //Log.d("Айди пользователя:", " " + OkHttpUtil.getUserId());
                         });
 
                         results.addView(userView);
