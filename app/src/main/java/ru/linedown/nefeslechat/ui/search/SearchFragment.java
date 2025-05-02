@@ -45,14 +45,6 @@ public class SearchFragment extends Fragment {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        root.post(() -> {
-            int width = root.getWidth();
-            int height = root.getHeight();
-
-            Log.d("Размеры экрана", "Ширина: " + width + " Высота: " + height);
-        });
-
-
         EditText searchEditText = binding.searchEditText;
         Button searchButton = binding.searchButton;
         LinearLayout results = binding.searchResultsLayout;
