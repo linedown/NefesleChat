@@ -97,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 );
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_chats, R.id.nav_settings,
-                R.id.nav_create_chat, R.id.nav_search, R.id.nav_about,
+                R.id.nav_chats, R.id.nav_settings, R.id.nav_search,
                 R.id.nav_notes, R.id.nav_raspisanie, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
@@ -116,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 confirmExitDialogFragment.show(transaction, "dialog");
                 return true;
-            } else {
+            }
+            else {
                 boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
             if (handled) {
                 drawerLayout.closeDrawer(GravityCompat.START);

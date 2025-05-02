@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,8 +105,11 @@ public class ProfileFragment extends Fragment {
                         mcfu::onSuccess, error -> mcfu.onError(error.getMessage())
                 );
 
-        chatButton.setOnClickListener(v -> {
-            Log.d("Чат", "Скоро здесь будет чат с пользователем!");
+        chatButton.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("TitleToolBar", fioStr.getText().toString());
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_global_to_nav_chat, bundle);
         });
 
         return root;

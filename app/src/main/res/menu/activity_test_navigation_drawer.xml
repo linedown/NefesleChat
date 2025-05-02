@@ -10,14 +10,6 @@
             android:icon="@drawable/chat_24"
             android:title="@string/menu_chats" />
         <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/self_24"
-            android:title="@string/menu_self" />
-        <item
-            android:id="@+id/nav_create_chat"
-            android:icon="@drawable/createchat_24"
-            android:title="@string/menu_create_chat" />
-        <item
             android:id="@+id/nav_raspisanie"
             android:icon="@drawable/raspisanie_24"
             android:title="@string/item_raspisanie_name" />
@@ -33,10 +25,6 @@
             android:id="@+id/nav_notes"
             android:icon="@drawable/note_24"
             android:title="@string/item_notes_name" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/about_24"
-            android:title="@string/menu_about" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout_24"
