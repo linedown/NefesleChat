@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 
 public class ChatFragment extends Fragment {
@@ -23,8 +24,10 @@ public class ChatFragment extends Fragment {
 
         binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textSelf;
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        Bundle arguments = getArguments();
+        String toolbarTitle = arguments.getString("TitleToolBar");
+        toolbar.setTitle(toolbarTitle);
         return root;
     }
 
