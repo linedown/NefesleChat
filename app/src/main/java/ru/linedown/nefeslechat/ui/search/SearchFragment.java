@@ -110,7 +110,7 @@ public class SearchFragment extends Fragment {
                             else {
                                 OkHttpUtil.setUserId(userView.getId());
 
-                                // Далее будет описан на фрагмент профиля
+                                // Далее будет описан переход на фрагмент профиля
                                 NavController navController = Navigation.findNavController(view);
                                 navController.navigate(R.id.action_nav_to_profile, null);
                             }
