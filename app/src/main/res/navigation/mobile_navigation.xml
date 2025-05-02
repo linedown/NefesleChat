@@ -31,7 +31,10 @@
         android:id="@+id/nav_search"
         android:name="ru.linedown.nefeslechat.ui.search.SearchFragment"
         android:label="@string/menu_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action android:id="@+id/action_nav_to_profile"
+            app:destination="@id/nav_profile"/>
+    </fragment>
     <fragment
         android:id="@+id/nav_about"
         android:name="ru.linedown.nefeslechat.ui.about.AboutFragment"
@@ -47,4 +50,10 @@
         android:name="ru.linedown.nefeslechat.ui.raspisanie.RaspisanieFragment"
         android:label="@string/item_raspisanie_name"
         tools:layout="@layout/fragment_raspisanie"/>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="ru.linedown.nefeslechat.ui.profile.ProfileFragment"
+        android:label="Профиль пользователя"
+        tools:layout="@layout/fragment_profile"
+        />
 </navigation>

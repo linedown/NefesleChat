@@ -1,5 +1,6 @@
 package ru.linedown.nefeslechat.Activity;
 
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private UserDetailsDTO currentUser;
     private Disposable disposable;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TextView loginInBar = infoBarView.findViewById(R.id.mailLabel);
         TextView userInBar = infoBarView.findViewById(R.id.userLabel);
         CircleImageView civ = infoBarView.findViewById(R.id.avatar);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
             try{
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         MyCallbackForUser mcfu = new MyCallbackForUser() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
+                getSharedPreferences("LoginInfo", MODE_PRIVATE).edit().putString("id", "" + result.getId()).apply();
                 String role = result.getRole();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 userInBar.setTypeface(null, Typeface.BOLD);
@@ -138,5 +140,12 @@ public class MainActivity extends AppCompatActivity {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else super.onBackPressed();
     }
 }

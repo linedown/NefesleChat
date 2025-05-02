@@ -1,12 +1,18 @@
 package ru.linedown.nefeslechat.ui.search;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -17,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -26,6 +33,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.Activity.MainActivity;
+import ru.linedown.nefeslechat.Activity.RegisterActivity;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.UserInListDTO;
@@ -76,11 +85,29 @@ public class SearchFragment extends Fragment {
                     for(UserInListDTO user: result){
                         results.removeAllViews();
                         TextView userView = new TextView(getActivity());
+                        userView.setId(user.getId());
                         userView.setTextSize(20);
+                        userView.setTypeface(null, Typeface.BOLD_ITALIC);
 
-                        String resultStr = user.getName() + ". Роль: " + user.getRole() + ". Кафедра: " + user.getDepartment();
+                        String resultStr = user.getName() + ". Роль: " + user.getRole();
 
                         userView.setText(resultStr);
+                        userView.setOnClickListener(view -> {
+                            if(userView.getId() == Integer.parseInt(getActivity()
+                                    .getSharedPreferences("LoginInfo", MODE_PRIVATE)
+                                    .getString("id", "0")))
+                                Toast.makeText(getActivity(),
+                                    "Это вы! Перейдите в раздел настроек для показа профиля!",
+                                        Toast.LENGTH_SHORT).show();
+                            else {
+                                OkHttpUtil.setUserId(userView.getId());
+
+                                // Далее будет описан на фрагмент профиля
+                                NavController navController = Navigation.findNavController(view);
+                                navController.navigate(R.id.action_nav_to_profile, null);
+                            }
+                            Log.d("Айди пользователя:", " " + OkHttpUtil.getUserId());
+                        });
 
                         results.addView(userView);
                     }

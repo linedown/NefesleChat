@@ -53,4 +53,5 @@
     <string name="const_role_text">Роль пользователя</string>
     <string name="fio"><b>Фамилия Имя Отчество</b></string>
     <string name="exit_item_Str">Выйти</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

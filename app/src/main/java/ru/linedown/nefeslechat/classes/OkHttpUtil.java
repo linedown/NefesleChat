@@ -33,7 +33,7 @@ public class OkHttpUtil {
     private static final String userProfilePath = "/user-profile";
     private static final String myProfilePath = "/my-profile";
     private static final String searchPath = "/users?last-name=";
-    private static long user_id;
+    private static int user_id;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static String JWTToken = "";
     static List<Cookie> cookies;
@@ -103,6 +103,14 @@ public class OkHttpUtil {
         okHttpClient.cookieJar().saveFromResponse(new HttpUrl.Builder().scheme("http")
                         .host(baseUrlWithoutApi).build(),
                 List.of(new Cookie.Builder().name("JWT").value(JWTToken).domain(baseUrlWithoutApi).build()));
+    }
+
+    public static void setUserId(int id){
+        user_id = id;
+    }
+
+    public static int getUserId(){
+        return user_id;
     }
 
 }

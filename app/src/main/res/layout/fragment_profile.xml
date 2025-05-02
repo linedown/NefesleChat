@@ -4,20 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings.SettingsFragment">
-
-    <TextView
-        android:id="@+id/user_settings_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/user_settings_const_str"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".ui.profile.ProfileFragment">
 
     <LinearLayout
         android:id="@+id/profileLayout"
@@ -57,7 +44,7 @@
             android:id="@+id/info_const_str"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/account_label"
+            android:text="Данные пользователя"
             android:textColor="@color/green"
             android:textSize="20sp" />
 
@@ -194,63 +181,12 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/the"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_theme_label_divider">
-
-        <TextView
-            android:id="@+id/dark_theme_const_str"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/dark_theme_label"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/theme_const_str" />
-
-        <TextView
-            android:id="@+id/theme_const_str"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/theme_const_str"
-            android:textColor="@color/green"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Switch
-            android:id="@+id/switch_theme"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/under_dark_theme_label_divider"
-            android:layout_width="409dp"
-            android:layout_height="1dp"
-            android:layout_marginEnd="4dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch_theme" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/about_str"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/nefeslechat_android_v1"
         android:textAlignment="center"
@@ -258,9 +194,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/top_theme_label_divider"
@@ -271,28 +205,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notifLayout" />
 
-    <View
-        android:id="@+id/under_user_settings_label_divider"
-        android:layout_width="409dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_settings_label" />
 
     <Button
-        android:id="@+id/exitButton"
+        android:id="@+id/transitionToChatButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:backgroundTint="@color/neccessarygreen"
-        android:text="@string/exit_button_text_const"
-        app:layout_constraintBottom_toTopOf="@+id/about_str"
+        android:text="Написать сообщение"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/the"
-        app:layout_constraintVertical_bias="0.239" />
+        app:layout_constraintTop_toBottomOf="@+id/notifLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
