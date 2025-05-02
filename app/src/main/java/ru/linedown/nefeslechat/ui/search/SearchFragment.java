@@ -82,12 +82,20 @@ public class SearchFragment extends Fragment {
             MyCallbackForUserList mcful = new MyCallbackForUserList() {
                 @Override
                 public void onSuccess(List<UserInListDTO> result) {
+                    results.removeAllViews();
+                    if(result.isEmpty()) {
+                        TextView emptyResultInfoView = new TextView(getActivity());
+                        emptyResultInfoView.setTextSize(20);
+                        emptyResultInfoView.setTypeface(null, Typeface.BOLD);
+                        emptyResultInfoView.setText("По данному запросу не удалось найти пользователей");
+                        results.addView(emptyResultInfoView);
+                        return;
+                    }
                     for(UserInListDTO user: result){
-                        results.removeAllViews();
                         TextView userView = new TextView(getActivity());
                         userView.setId(user.getId());
                         userView.setTextSize(20);
-                        userView.setTypeface(null, Typeface.BOLD_ITALIC);
+                        userView.setTypeface(null, Typeface.BOLD);
 
                         String resultStr = user.getName() + ". Роль: " + user.getRole();
 
