@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private UserDetailsDTO currentUser;
     private Disposable disposable;
 
     @Override
