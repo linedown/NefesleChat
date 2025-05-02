@@ -34,6 +34,7 @@ import ru.linedown.nefeslechat.ui.raspisanie.RaspisanieViewModel;
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private final int userId = OkHttpUtil.getUserId();
+    String firstLastName;
 
     Disposable disposable;
     @Override
@@ -73,6 +74,7 @@ public class ProfileFragment extends Fragment {
             public void onSuccess(UserDetailsDTO result) {
                 // UserDetailsDTO result = OkHttpUtil.getCurrentUser();
                 String role = result.getRole();
+                firstLastName = result.getFirstName() + " " + result.getLastName();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 fioStr.setText(fio);
                 statusStr.setText("Статус-заглушка");
@@ -107,7 +109,7 @@ public class ProfileFragment extends Fragment {
 
         chatButton.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putString("TitleToolBar", fioStr.getText().toString());
+            bundle.putString("TitleToolBar", firstLastName);
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_global_to_nav_chat, bundle);
         });
