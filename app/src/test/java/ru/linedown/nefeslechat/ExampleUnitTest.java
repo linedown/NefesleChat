@@ -92,25 +92,39 @@ public class ExampleUnitTest {
 
         StompSessionHandler sessionHandler = new MyStompSessionHandler();
         WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-        headers.add("JWT", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb21zeXQyMDAyQGdtYWlsLmNvbSIsImV4cCI6MTc0NzU5MjM0MCwiaWF0IjoxNzQ2Mjc4MzQwfQ.vslTx2xOAsfH6Mte_wPu6NIlVVLmS-Xvh0QR5tG2PVN5RNjAoDgVQtkZI1x873ifLhlkHp0OnJnk4zcrNqT5Rg");
+        headers.add("JWT", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZ2dAZ2dnLmNvbSIsImV4cCI6MTc0NzU5MjM3NCwiaWF0IjoxNzQ2Mjc4Mzc0fQ.ebb-DAFSztSOP20JhbiDxn8K1yGDF-jc9HnM84VtI_M3R4bP1WA_NeGQsOSoJsylgOFawsktVi0lK1kY7qSvJw");
         CompletableFuture<StompSession> connection =  stompClient.connectAsync(url, headers, sessionHandler);
         StompSession session = connection.get();
 
         Scanner scanner = new Scanner(System.in);
 
-        while(true) {
-            String text = "Ужас";
-            if(scanner.nextLine() != null) text = scanner.nextLine();
+        String text = "Ужас";
+        //if(scanner.nextLine() != null) text = scanner.nextLine();
 
-            if(text.equals("!")) {
-                break;
-            }
+//            if(text.equals("!")) {
+//                break;
+//            }
 
-            MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
-            WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
+        MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
+        WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
 
-            session.send("/app/user/2", webSocketDTO);
-        }
+        session.send("/app/user/1", webSocketDTO);
+
+//        while(true) {
+//            String text = "Ужас";
+//            //if(scanner.nextLine() != null) text = scanner.nextLine();
+//
+////            if(text.equals("!")) {
+////                break;
+////            }
+//
+//            MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
+//            WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
+//
+//            session.send("/app/user/1", webSocketDTO);
+//
+//            break;
+//        }
         session.disconnect();
         scanner.close();
     }
