@@ -106,6 +106,7 @@ public class ProfileFragment extends Fragment {
         chatButton.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putString("TitleToolBar", firstLastName);
+            bundle.putString("UserId", String.valueOf(userId));
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_global_to_nav_chat, bundle);
         });

@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.linedown.nefeslechat.entity.MessageTypeEnum;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class NefesleMessage {
+public class LastMessageInfo {
     String message;
-    String tyoe;
+    MessageTypeEnum type;
     Date createOn;
 }

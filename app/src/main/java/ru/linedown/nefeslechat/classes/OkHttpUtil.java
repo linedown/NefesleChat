@@ -1,5 +1,7 @@
 package ru.linedown.nefeslechat.classes;
 
+import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -9,6 +11,8 @@ import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
@@ -27,16 +31,34 @@ public class OkHttpUtil {
     private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
             (new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
     private static final String baseUrl = "http://linedown.ru:3254/api";
+    @Getter
     private static final String baseUrlWithoutApi = "linedown.ru";
     private static final String domainRegistation = "/auth/register";
     private static final String domainAuthorization = "/auth";
     private static final String userProfilePath = "/user-profile";
     private static final String myProfilePath = "/my-profile";
     private static final String searchPath = "/users?last-name=";
+    @Getter
+    private static final String websocketHeader = "ws://";
+    @Getter
+    private static final String afterBaseUrl = ":3254/api";
+    @Getter
+    private static final String messagingUrl = "/messenger";
+    @Getter
+    private static final String userUrl = "/app/user/";
+    @Getter
+    private static final String topicUrl = "/topic/user/";
+    @Getter
+    @Setter
+    private static String textMessage;
     private static int user_id;
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static String JWTToken = "";
     static List<Cookie> cookies;
+    public static boolean stopWebSocket = false;
+    @Getter
+    @Setter
+    private static int myId;
 
     public static Response processAuthentification(AuthorizationForm af) throws IOException {
         boolean regFlag = af instanceof RegistrationForm;
