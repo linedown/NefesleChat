@@ -33,6 +33,20 @@ android {
         viewBinding = true
     }
     buildToolsVersion = "35.0.0"
+
+    packaging {
+        resources {
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/license.md"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/spring/aot.factories"
+            excludes += "META-INF/spring.schemas"
+            excludes += "META-INF/spring.tooling"
+            excludes += "META-INF/spring.handlers"
+            excludes += "META-INF/notice.txt"
+        }
+    }
 }
 
 dependencies {
@@ -61,6 +75,19 @@ dependencies {
     implementation(libs.lombok);
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
+    testImplementation(libs.lombok)
     implementation(libs.core.splashscreen)
     implementation(libs.circleimageview)
+
+    implementation(libs.spring.websocket)
+    implementation(libs.spring.messaging)
+    //implementation(libs.jakarta.websocket.client.api)
+    implementation(libs.tyrus.standalone.client){
+        exclude(group = "javax.websocket", module = "javax.websocket-api")
+    }
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.16.1")
 }

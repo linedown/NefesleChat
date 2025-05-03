@@ -27,6 +27,8 @@ public class ChatFragment extends Fragment {
         Bundle arguments = getArguments();
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
+
+
         return root;
     }
 

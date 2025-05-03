@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,9 +27,31 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import io.reactivex.rxjava3.core.Observable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -37,6 +61,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 //import org.springframework.messaging.simp.stomp.StompFrameHandler;
 //import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -56,6 +81,40 @@ import okhttp3.Response;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
+    @Test
+    public void WebSocketTest() throws ExecutionException, InterruptedException, TimeoutException {
+        WebSocketClient client = new StandardWebSocketClient();
+        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+
+        String url = "ws://linedown.ru:3254/api/messenger";
+
+        StompSessionHandler sessionHandler = new MyStompSessionHandler();
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        headers.add("JWT", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb21zeXQyMDAyQGdtYWlsLmNvbSIsImV4cCI6MTc0NzU5MjM0MCwiaWF0IjoxNzQ2Mjc4MzQwfQ.vslTx2xOAsfH6Mte_wPu6NIlVVLmS-Xvh0QR5tG2PVN5RNjAoDgVQtkZI1x873ifLhlkHp0OnJnk4zcrNqT5Rg");
+        CompletableFuture<StompSession> connection =  stompClient.connectAsync(url, headers, sessionHandler);
+        StompSession session = connection.get();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while(true) {
+            String text = "Ужас";
+            if(scanner.nextLine() != null) text = scanner.nextLine();
+
+            if(text.equals("!")) {
+                break;
+            }
+
+            MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
+            WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
+
+            session.send("/app/user/2", webSocketDTO);
+        }
+        session.disconnect();
+        scanner.close();
+    }
+}
 //    @Test
 //    public void testingWedSocket() throws InterruptedException {
 //        WebSocketClient client = new StandardWebSocketClient();
@@ -214,7 +273,7 @@ public class ExampleUnitTest {
 //            .distinct(book -> book.title).map(book -> "Автор книги: " + book .author + " название книги: " + book.title)
 //            .subscribe(System.out::println);
 //    }
-}
+//}
 
 //class MyStompSessionHandler extends StompSessionHandlerAdapter {
 //    @Override
@@ -333,3 +392,66 @@ public class ExampleUnitTest {
 //        this.currency = currency;
 //    }
 //}
+
+enum MessageTypeEnum {
+    TEXT, FILE
+}
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+class MessagePayload {
+
+    private int id;
+
+    private String message;
+
+    @JsonProperty("chat_id")
+    private int chatId;
+
+    @JsonProperty("user_id")
+    private int userId;
+
+    @JsonProperty("chat_name")
+    private String chatName;
+
+    private MessageTypeEnum type;
+
+    @SerializedName("created_at")
+    private Date createdAt;
+}
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+class MessageDTO {
+
+    private MessageTypeEnum type;
+
+    private String message;
+}
+
+class MyStompSessionHandler extends StompSessionHandlerAdapter {
+
+    @Override
+    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+        session.subscribe("/topic/user/1", new StompFrameHandler() {
+
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return WebSocketDTO.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                Object messagePayloadObj = ((WebSocketDTO) payload).getPayload();
+                MessagePayload messagePayload = new ObjectMapper().convertValue(messagePayloadObj, MessagePayload.class);
+                System.out.printf("%s\n", messagePayload.getMessage());
+            }
+        });
+    }
+}
+
