@@ -1,6 +1,6 @@
 package ru.linedown.nefeslechat.interfaces;
 
-public interface MyCallback {
-    void onSuccess(String result);
+public interface MyCallback<T> {
+    void onSuccess(T result);
     void onError(String errorMessage);
 }

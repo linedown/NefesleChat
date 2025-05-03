@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 disposable =
                         verificationRegistration(loginText, lastNameText, tokenText, passwordText, password2Text,
-                                new MyCallback() {
+                                new MyCallback<String>() {
                                     @Override
                                     public void onSuccess(String result) {
                                         if(result.equals("OK")){

@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.entity;
 
 import java.util.Date;
 

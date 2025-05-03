@@ -1,6 +1,5 @@
 package ru.linedown.nefeslechat.Activity;
 
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,9 +28,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.UserDetailsDTO;
+import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
-import ru.linedown.nefeslechat.interfaces.MyCallbackForUser;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         });
 
-        MyCallbackForUser mcfu = new MyCallbackForUser() {
+        MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
                 getSharedPreferences("LoginInfo", MODE_PRIVATE).edit().putString("id", "" + result.getId()).apply();
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 userInBar.setTypeface(null, Typeface.BOLD);
                 userInBar.setText(fio);
-                if(role.equals("Преподаватель")){
+                if (role.equals("Преподаватель")) {
                     String info = result.getAcademicTitle() + " • " + result.getAcademicDegree();
                     infoInBar.setText(info);
                 } else {

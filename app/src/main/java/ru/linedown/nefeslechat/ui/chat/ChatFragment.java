@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;

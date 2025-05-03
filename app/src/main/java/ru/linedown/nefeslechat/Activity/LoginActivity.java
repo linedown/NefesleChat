@@ -10,20 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.JavaNetCookieJar;
-import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.R;
@@ -58,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         final ImageButton loginButton = binding.loginButton;
         final TextView registerTransitionButton = binding.signUpTransitionButton;
 
-        loginButton.setOnClickListener(v -> verificationAuthorization(new MyCallback() {
+        loginButton.setOnClickListener(v -> verificationAuthorization(new MyCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 if(result.equals("OK")){

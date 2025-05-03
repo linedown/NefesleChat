@@ -30,9 +30,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.UserInListDTO;
+import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSearchBinding;
-import ru.linedown.nefeslechat.interfaces.MyCallbackForUserList;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class SearchFragment extends Fragment {
 
@@ -62,11 +62,11 @@ public class SearchFragment extends Fragment {
                 return Collections.emptyList();
             });
 
-            MyCallbackForUserList mcful = new MyCallbackForUserList() {
+            MyCallback<List<UserInListDTO>> mcful = new MyCallback<>() {
                 @Override
                 public void onSuccess(List<UserInListDTO> result) {
                     results.removeAllViews();
-                    if(result.isEmpty()) {
+                    if (result.isEmpty()) {
                         TextView emptyResultInfoView = new TextView(getActivity());
                         emptyResultInfoView.setTextSize(20);
                         emptyResultInfoView.setTypeface(null, Typeface.BOLD);
@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment {
                         results.addView(emptyResultInfoView);
                         return;
                     }
-                    for(UserInListDTO user: result){
+                    for (UserInListDTO user : result) {
                         TextView userView = new TextView(getActivity());
                         userView.setId(user.getId());
                         userView.setTextSize(20);
@@ -84,11 +84,11 @@ public class SearchFragment extends Fragment {
 
                         userView.setText(resultStr);
                         userView.setOnClickListener(view -> {
-                            if(userView.getId() == Integer.parseInt(getActivity()
+                            if (userView.getId() == Integer.parseInt(getActivity()
                                     .getSharedPreferences("LoginInfo", MODE_PRIVATE)
                                     .getString("id", "0")))
                                 Toast.makeText(getActivity(),
-                                    "Это вы! Перейдите в раздел настроек для показа профиля!",
+                                        "Это вы! Перейдите в раздел настроек для показа профиля!",
                                         Toast.LENGTH_SHORT).show();
                             else {
                                 OkHttpUtil.setUserId(userView.getId());
@@ -103,6 +103,7 @@ public class SearchFragment extends Fragment {
                         results.addView(userView);
                     }
                 }
+
                 @Override
                 public void onError(String errorMessage) {
                     Log.d("ObserveError", "Текст ошибки: " + errorMessage);

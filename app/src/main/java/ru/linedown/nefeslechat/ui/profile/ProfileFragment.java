@@ -4,9 +4,7 @@ import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -25,10 +23,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.UserDetailsDTO;
+import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentProfileBinding;
-import ru.linedown.nefeslechat.interfaces.MyCallbackForUser;
-import ru.linedown.nefeslechat.ui.raspisanie.RaspisanieViewModel;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 
 public class ProfileFragment extends Fragment {
@@ -40,8 +37,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        RaspisanieViewModel raspisanieViewModel =
-                new ViewModelProvider(this).get(RaspisanieViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -69,7 +64,7 @@ public class ProfileFragment extends Fragment {
             return null;
         });
 
-        MyCallbackForUser mcfu = new MyCallbackForUser() {
+        MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
                 // UserDetailsDTO result = OkHttpUtil.getCurrentUser();
@@ -81,7 +76,7 @@ public class ProfileFragment extends Fragment {
                 roleStr.setText(role);
                 mailStr.setText(result.getEmail());
 
-                if(role.equals("Преподаватель")) {
+                if (role.equals("Преподаватель")) {
                     groupOrAcademicTitleLabel.setText("Учёное звание");
                     groupOrAcademicTitle.setText(result.getAcademicTitle());
 
@@ -96,6 +91,7 @@ public class ProfileFragment extends Fragment {
                     groupOrAcademicTitle.setText(result.getGroupName());
                 }
             }
+
             @Override
             public void onError(String errorMessage) {
                 Log.d("ObserveError", "Текст ошибки: " + errorMessage);

@@ -1,7 +1,5 @@
 package ru.linedown.nefeslechat.classes;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,6 +18,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import ru.linedown.nefeslechat.entity.UserDetailsDTO;
+import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.entity.RegistrationForm;
 

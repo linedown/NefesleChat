@@ -1,33 +1,19 @@
 package ru.linedown.nefeslechat.ui.settings;
 
-import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.VISIBLE;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -35,14 +21,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import ru.linedown.nefeslechat.Activity.LoginActivity;
-import ru.linedown.nefeslechat.Activity.MainActivity;
-import ru.linedown.nefeslechat.Activity.RegisterActivity;
 import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.UserDetailsDTO;
+import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
-import ru.linedown.nefeslechat.interfaces.MyCallbackForUser;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class SettingsFragment extends Fragment {
     //UserDetailsDTO currentUser;
@@ -77,7 +60,7 @@ public class SettingsFragment extends Fragment {
             return null;
         });
 
-        MyCallbackForUser mcfu = new MyCallbackForUser() {
+        MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
                 // UserDetailsDTO result = OkHttpUtil.getCurrentUser();
@@ -133,6 +116,4 @@ public class SettingsFragment extends Fragment {
         }
         binding = null;
     }
-
-
 }
