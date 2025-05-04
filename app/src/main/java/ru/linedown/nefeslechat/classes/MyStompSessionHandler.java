@@ -24,6 +24,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     }
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+        Log.d("Мой айди: ", "" + OkHttpUtil.getMyId());
         session.subscribe(OkHttpUtil.getTopicUrl() + OkHttpUtil.getMyId(), new StompFrameHandler() {
 
             @Override
@@ -33,10 +34,14 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
+                Log.d("1!!!!!!!!", "!!!!!!");
+                Log.d("2!!!!!!!!", "!!!!!!");
                 Object messagePayloadObj = ((WebSocketDTO) payload).getPayload();
                 MessagePayload messagePayload = new ObjectMapper().convertValue(messagePayloadObj, MessagePayload.class);
+                Log.d("Сообщение: ", messagePayload.getMessage());
 
                 messageSubject.onNext(messagePayload.getMessage());
+                Log.d("После onNext ", "работает");
             }
         });
     }

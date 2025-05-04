@@ -50,7 +50,7 @@ public class ChatFragment extends Fragment {
     Disposable disposable;
     Disposable disposableInner;
     Disposable messageDisposable;
-    private final PublishSubject<String> messageSubject = PublishSubject.create();
+    private final PublishSubject<String> messageSubject = PublishSubject.create(); // рассмотреть вариант с ReplaySubject
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

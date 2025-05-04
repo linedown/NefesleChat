@@ -33,6 +33,10 @@ public class MessagePayload {
 
     private MessageTypeEnum type;
 
+    private String filename;
+
     @JsonProperty("created_at")
     private Date createdAt;
+
+    private boolean seen;
 }
