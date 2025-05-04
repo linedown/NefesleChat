@@ -14,10 +14,14 @@ import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import java.lang.reflect.Type;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
-
+    private final PublishSubject<String> messageSubject;
+    public MyStompSessionHandler(PublishSubject<String> messageSubject) {
+        this.messageSubject = messageSubject;
+    }
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         session.subscribe(OkHttpUtil.getTopicUrl() + OkHttpUtil.getMyId(), new StompFrameHandler() {
@@ -31,15 +35,8 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 Object messagePayloadObj = ((WebSocketDTO) payload).getPayload();
                 MessagePayload messagePayload = new ObjectMapper().convertValue(messagePayloadObj, MessagePayload.class);
-                // Сделать логику вывода сообщения (внутри фонового потока)
-                //System.out.printf("%s\n", messagePayload.getMessage());
-//                Observable.fromCallable(() -> {
-//
-//                })
 
-                Log.d("Сообщение: ", messagePayload.getMessage());
-
-                //OkHttpUtil.setTextMessage(messagePayload.getMessage());
+                messageSubject.onNext(messagePayload.getMessage());
             }
         });
     }

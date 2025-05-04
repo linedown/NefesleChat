@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
                 try {
                     return OkHttpUtil.getListUsers(searchText);
                 } catch (IOException e) {
-                    Log.d("GetUsersProblem", "Текст ошибки: " + e.getMessage());
+                    Log.e("GetUsersProblem", "Текст ошибки: " + e.getMessage());
                 }
 
                 return Collections.emptyList();
@@ -106,7 +106,7 @@ public class SearchFragment extends Fragment {
 
                 @Override
                 public void onError(String errorMessage) {
-                    Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+                    Log.e("ObserveError", "Текст ошибки: " + errorMessage);
                 }
             };
 

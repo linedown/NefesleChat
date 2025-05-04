@@ -55,19 +55,11 @@ public class ProfileFragment extends Fragment {
         TextView academicDegree = binding.academicDegree;
         TextView academicDegreeLabel = binding.academicDegreeLabel;
 
-        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
-            try{
-                return OkHttpUtil.getOtherUser(userId);
-            } catch (IOException e) {
-                Log.d("IOException", "SettingsFragment. Текст сообщения: " + e.getMessage());
-            }
-            return null;
-        });
+        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> OkHttpUtil.getOtherUser(userId));
 
         MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
-                // UserDetailsDTO result = OkHttpUtil.getCurrentUser();
                 String role = result.getRole();
                 firstLastName = result.getFirstName() + " " + result.getLastName();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
@@ -94,7 +86,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                Log.d("ObserveError", "Текст ошибки: " + errorMessage);
+                Log.e("ObserveError", "Текст ошибки: " + errorMessage);
             }
         };
 

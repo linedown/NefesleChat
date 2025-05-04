@@ -55,7 +55,6 @@ public class OkHttpUtil {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static String JWTToken = "";
     static List<Cookie> cookies;
-    public static boolean stopWebSocket = false;
     @Getter
     @Setter
     private static int myId;
