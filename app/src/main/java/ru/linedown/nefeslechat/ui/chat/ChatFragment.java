@@ -1,6 +1,7 @@
 package ru.linedown.nefeslechat.ui.chat;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.GONE;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -71,14 +73,17 @@ public class ChatFragment extends Fragment {
         EditText inputField = binding.messageText;
         ImageView sendTextButton = binding.sendImage;
         TextView messageView = binding.messageView;
-        ConstraintLayout chatlayout = binding.chatLayout;
+        LinearLayout chatFormLayout = binding.chatFormLayout;
 
         messageDisposable = messageSubject.observeOn(AndroidSchedulers.mainThread()).subscribe(
                 message -> {
-                    if(!message.isEmpty()) messageView.setText("");
+                    if(!message.isEmpty()) {
+                        messageView.setText("");
+                        messageView.setVisibility(GONE);
+                    };
                     TextView textView = new TextView(getActivity());
                     textView.setText(message);
-                    chatlayout.addView(textView);
+                    chatFormLayout.addView(textView);
                 });
 
         Observable<String> observable = Observable.fromCallable(() -> {
