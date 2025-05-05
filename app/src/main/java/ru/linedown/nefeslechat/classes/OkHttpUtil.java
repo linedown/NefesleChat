@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.Getter;
@@ -132,6 +133,9 @@ public class OkHttpUtil {
 
     public static int getUserId(){
         return user_id;
+    }
+    public static void clearCookies(){
+        cookies = Collections.emptyList();
     }
 
 }

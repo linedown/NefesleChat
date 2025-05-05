@@ -13,4 +13,10 @@
     <color name="neccessarygreen">#039156</color>
     <color name="avatarBorder">#048</color>
 
+    <color name="studentSettingsColor">#00A7FF</color>
+    <color name="prepodSettingsColor">#FF8D00</color>
+    <color name="settingsBack">#C4C4C4</color>
+    <color name="otherSettingsColor">#777</color>
+    <color name="red">#FF0000</color>
+
 </resources>

@@ -39,6 +39,7 @@ public class ConfirmExitDialogFragment extends DialogFragment {
         Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
         sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
+        OkHttpUtil.clearCookies();
         dialog.cancel();
         startActivity(intent);
     }

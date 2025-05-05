@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -23,6 +26,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.TextUtils;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentProfileBinding;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
@@ -41,19 +45,25 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Button chatButton = binding.transitionToChatButton;
+        ImageButton chatButton = binding.goToChatButton;
 
-        TextView statusStr = binding.statusStr;
-        TextView roleStr = binding.roleStr;
-        TextView mailStr = binding.mailStr;
-        TextView fioStr = binding.fioStr;
+        LinearLayout profileOtherUserLayout = binding.profileOtherUserLayout;
 
-        TextView groupOrAcademicTitle = binding.groupOrAcademicTitle;
-        TextView groupOrAcademicTitleLabel = binding.groupOrAcademicTitleLabel;
+        TextView statusLabel = binding.statusLabel;
 
-        View underGroupOrAcademicTitleDivider = binding.underGroupOrAcademicDivider;
-        TextView academicDegree = binding.academicDegree;
-        TextView academicDegreeLabel = binding.academicDegreeLabel;
+        TextView fioLabel = binding.fioLabel;
+        ImageView avatar = binding.avatarView;
+        TextView roleLabel = binding.roleLabel;
+
+        TextView facultetOrDepartamentLabel = binding.facultetOrDepartamentLabel;
+        TextView facultetOrDepartament = binding.facultetOrDepartament;
+
+        TextView stepenOrGroupLabel = binding.stepenOrGroupLabel;
+        TextView stepenOrGroup = binding.stepenOrGroup;
+
+        TextView zvanieLabel = binding.zvanieLabel;
+        TextView zvanie = binding.zvanie;
+
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> OkHttpUtil.getOtherUser(userId));
 
@@ -63,24 +73,26 @@ public class ProfileFragment extends Fragment {
                 String role = result.getRole();
                 firstLastName = result.getFirstName() + " " + result.getLastName();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
-                fioStr.setText(fio);
-                statusStr.setText("Статус-заглушка");
-                roleStr.setText(role);
-                mailStr.setText(result.getEmail());
+                fioLabel.setText(fio);
+                roleLabel.setText(role);
 
                 if (role.equals("Преподаватель")) {
-                    groupOrAcademicTitleLabel.setText("Учёное звание");
-                    groupOrAcademicTitle.setText(result.getAcademicTitle());
+                    profileOtherUserLayout.setBackgroundResource(R.drawable.bg_prepod_settings);
+                    facultetOrDepartamentLabel.setText("Кафедра");
+                    TextUtils.setUnderlinedText(facultetOrDepartament, result.getDepartment());
+                    stepenOrGroupLabel.setText("Ученая степень");
+                    TextUtils.setUnderlinedText(stepenOrGroup, result.getAcademicDegree());
 
-                    underGroupOrAcademicTitleDivider.setVisibility(VISIBLE);
-                    academicDegree.setVisibility(VISIBLE);
-                    academicDegreeLabel.setVisibility(VISIBLE);
-
-                    academicDegree.setText(result.getAcademicDegree());
-                    academicDegreeLabel.setText("Учёная должность");
+                    zvanieLabel.setVisibility(VISIBLE);
+                    zvanieLabel.setText("Учёное звание");
+                    zvanie.setVisibility(VISIBLE);
+                    TextUtils.setUnderlinedText(zvanie, result.getAcademicTitle());
                 } else {
-                    groupOrAcademicTitleLabel.setText("Группа");
-                    groupOrAcademicTitle.setText(result.getGroupName());
+                    profileOtherUserLayout.setBackgroundResource(R.drawable.bg_student_settings);
+                    facultetOrDepartamentLabel.setText("Факультет");
+                    TextUtils.setUnderlinedText(facultetOrDepartament, result.getFaculty());
+                    stepenOrGroupLabel.setText("Учебная группа");
+                    TextUtils.setUnderlinedText(stepenOrGroup, result.getGroupName());
                 }
             }
 

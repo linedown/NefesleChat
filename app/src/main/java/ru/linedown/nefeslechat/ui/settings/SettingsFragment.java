@@ -2,12 +2,15 @@ package ru.linedown.nefeslechat.ui.settings;
 
 import static android.view.View.VISIBLE;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,13 +19,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.TextUtils;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSettingsBinding;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
@@ -37,19 +44,21 @@ public class SettingsFragment extends Fragment {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        Button exitButton = binding.exitButton;
+        ImageButton exitButton = binding.exitButton;
         TextView fioStr = binding.fioStr;
-        TextView statusStr = binding.statusStr;
+        TextView facultetStr = binding.facultetStr;
         TextView roleStr = binding.roleStr;
         TextView mailStr = binding.mailStr;
 
-        TextView groupOrAcademicTitle = binding.groupOrAcademicTitle;
         TextView groupOrAcademicTitleLabel = binding.groupOrAcademicTitleLabel;
+        TextView groupOrAcademicTitle = binding.groupOrAcademicTitle;
 
-        View underGroupOrAcademicTitleDivider = binding.underGroupOrAcademicDivider;
-        TextView academicDegree = binding.academicDegree;
-        TextView academicDegreeLabel = binding.academicDegreeLabel;
+        TextView formaOrZvanieLabel = binding.formaOrZvanieLabel;
+        TextView formaOrZvanie = binding.formaOrZvanie;
 
+        TextView expireDateStr = binding.expireStr;
+
+        LinearLayout profileLayout = binding.profileLayout;
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
             try{
@@ -67,26 +76,28 @@ public class SettingsFragment extends Fragment {
                 String role = result.getRole();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 fioStr.setText(fio);
-                statusStr.setText("Статус-заглушка");
                 Log.d("Роль: ", role);
                 Log.d("ФИО: ", fio);
                 roleStr.setText(role);
-                mailStr.setText(result.getEmail());
-
+                TextUtils.setUnderlinedText(mailStr, result.getEmail());
+                TextUtils.setUnderlinedText(facultetStr, result.getFaculty());
+                facultetStr.setText(result.getFaculty());
                 if(role.equals("Преподаватель")) {
-                    groupOrAcademicTitleLabel.setText("Учёное звание");
-                    groupOrAcademicTitle.setText(result.getAcademicTitle());
-
-                    underGroupOrAcademicTitleDivider.setVisibility(VISIBLE);
-                    academicDegree.setVisibility(VISIBLE);
-                    academicDegreeLabel.setVisibility(VISIBLE);
-
-                    academicDegree.setText(result.getAcademicDegree());
-                    academicDegreeLabel.setText("Учёная должность");
+                    profileLayout.setBackgroundResource(R.drawable.bg_prepod_settings);
+                    groupOrAcademicTitleLabel.setText("Ученая степень");
+                    TextUtils.setUnderlinedText(groupOrAcademicTitle, result.getAcademicDegree());
+                    formaOrZvanieLabel.setText("Ученое звание");
+                    TextUtils.setUnderlinedText(formaOrZvanie, result.getAcademicTitle());
                 } else {
-                    groupOrAcademicTitleLabel.setText("Группа");
-                    groupOrAcademicTitle.setText(result.getGroupName());
+                    profileLayout.setBackgroundResource(R.drawable.bg_student_settings);
+                    groupOrAcademicTitleLabel.setText("Учебная группа");
+                    TextUtils.setUnderlinedText(groupOrAcademicTitle, result.getGroupName());
+                    formaOrZvanieLabel.setText("Форма возмещения");
+                    TextUtils.setUnderlinedText(formaOrZvanie, result.getReimbursement());
                 }
+                Date expireDate = result.getEnabledUntil();
+                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+                TextUtils.setUnderlinedText(expireDateStr, formatDate.format(expireDate));
             }
             @Override
             public void onError(String errorMessage) {
