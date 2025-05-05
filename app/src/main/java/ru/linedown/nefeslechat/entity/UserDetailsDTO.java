@@ -34,8 +34,14 @@ public class UserDetailsDTO {
     private String academicTitle;
     private String academicDegree;
     // Заблокирован ли аккаунт - в случаен отчисления или увольнения
-    private Boolean isBlocked;
+    private boolean isBlocked;
 
     private String email;
     private String faculty;
+    // Статус онлайна
+    private boolean isOnline;
+
+    public boolean getIsOnline() {
+        return isOnline;
+    }
 }

@@ -81,7 +81,6 @@ public class SettingsFragment extends Fragment {
                 roleStr.setText(role);
                 TextUtils.setUnderlinedText(mailStr, result.getEmail());
                 TextUtils.setUnderlinedText(facultetStr, result.getFaculty());
-                facultetStr.setText(result.getFaculty());
                 if(role.equals("Преподаватель")) {
                     profileLayout.setBackgroundResource(R.drawable.bg_prepod_settings);
                     groupOrAcademicTitleLabel.setText("Ученая степень");

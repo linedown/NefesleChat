@@ -70,6 +70,8 @@ public class ProfileFragment extends Fragment {
         MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
+                String statusText = result.getIsOnline() ? "Онлайн" : "Оффлайн";
+                statusLabel.setText(statusText);
                 String role = result.getRole();
                 firstLastName = result.getFirstName() + " " + result.getLastName();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();

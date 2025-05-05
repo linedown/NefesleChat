@@ -2,38 +2,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.search.SearchFragment">
+    tools:context=".ui.search.SearchFragment"
+    android:background="@color/nedowhite">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/searchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/searchHeaderLayout"
+        android:layout_width="416dp"
+        android:layout_height="69dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/searchEditText"
-            android:layout_width="309dp"
-            android:layout_height="wrap_content"
+            android:layout_width="335dp"
+            android:layout_height="41dp"
+            android:background="@drawable/bg"
             android:ems="10"
-            android:hint="Введите фамилию пользователя"
+            android:hint="@string/inputLastname"
             android:inputType="text"
-            android:textSize="19sp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Поиск"
-            android:backgroundTint="@color/green"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/search"
+            app:layout_constraintEnd_toEndOf="@+id/searchEditText"
+            app:layout_constraintTop_toTopOf="@+id/searchEditText" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -41,12 +48,12 @@
         android:layout_width="409dp"
         android:layout_height="681dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="15sp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchLayout"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/searchHeaderLayout"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

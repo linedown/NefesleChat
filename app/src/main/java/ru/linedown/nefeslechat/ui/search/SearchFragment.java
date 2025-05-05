@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.ResultMessageLayout;
+import ru.linedown.nefeslechat.entity.ResultMessageAttributes;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSearchBinding;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
@@ -46,7 +49,7 @@ public class SearchFragment extends Fragment {
         View root = binding.getRoot();
 
         EditText searchEditText = binding.searchEditText;
-        Button searchButton = binding.searchButton;
+        ImageView searchButton = binding.searchButton;
         LinearLayout results = binding.searchResultsLayout;
 
         searchButton.setOnClickListener(v -> {
@@ -75,32 +78,30 @@ public class SearchFragment extends Fragment {
                         return;
                     }
                     for (UserInListDTO user : result) {
-                        TextView userView = new TextView(getActivity());
-                        userView.setId(user.getId());
-                        userView.setTextSize(20);
-                        userView.setTypeface(null, Typeface.BOLD);
-
-                        String resultStr = user.getName() + ". Роль: " + user.getRole();
-
-                        userView.setText(resultStr);
-                        userView.setOnClickListener(view -> {
-                            if (userView.getId() == Integer.parseInt(getActivity()
+                        String role = user.getRole();
+                        int resourceBackground = (role.equals("Преподаватель"))
+                                ? R.drawable.bg_prepod_settings : R.drawable.bg_student_settings;
+                        String departamentOrGroup = (role.equals("Преподаватель")) ? user.getDepartment() : user.getGroup();
+                        ResultMessageAttributes rma =
+                                new ResultMessageAttributes(user.getId(), user.getName(), departamentOrGroup, resourceBackground);
+                        ResultMessageLayout resultMessageLayout = new ResultMessageLayout(getActivity(), rma);
+                        resultMessageLayout.setOnClickListener(view -> {
+                            if (rma.getId() == Integer.parseInt(getActivity()
                                     .getSharedPreferences("LoginInfo", MODE_PRIVATE)
                                     .getString("id", "0")))
                                 Toast.makeText(getActivity(),
                                         "Это вы! Перейдите в раздел настроек для показа профиля!",
                                         Toast.LENGTH_SHORT).show();
                             else {
-                                OkHttpUtil.setUserId(userView.getId());
+                                OkHttpUtil.setUserId(rma.getId());
 
-                                // Далее будет описан переход на фрагмент профиля
                                 NavController navController = Navigation.findNavController(view);
                                 navController.navigate(R.id.action_nav_to_profile, null);
                             }
-                            //Log.d("Айди пользователя:", " " + OkHttpUtil.getUserId());
+                            Log.d("Айди пользователя:", " " + OkHttpUtil.getUserId());
                         });
 
-                        results.addView(userView);
+                        results.addView(resultMessageLayout);
                     }
                 }
 
