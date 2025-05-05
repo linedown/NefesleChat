@@ -18,6 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
@@ -36,9 +38,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.MessageDTO;
+import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
+import ru.linedown.nefeslechat.entity.MessageInChatDTO;
+import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
 import ru.linedown.nefeslechat.entity.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
@@ -71,19 +76,27 @@ public class ChatFragment extends Fragment {
                 .getString("id", "0")));
 
         EditText inputField = binding.messageText;
-        ImageView sendTextButton = binding.sendImage;
+        ImageView sendTextButton = binding.sendTextButton;
+        ImageView sendFileButton = binding.sendFileButton;
         TextView messageView = binding.messageView;
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
         messageDisposable = messageSubject.observeOn(AndroidSchedulers.mainThread()).subscribe(
                 message -> {
+                    int typeSender;
                     if(!message.isEmpty()) {
                         messageView.setText("");
                         messageView.setVisibility(GONE);
-                    };
-                    TextView textView = new TextView(getActivity());
-                    textView.setText(message);
-                    chatFormLayout.addView(textView);
+                    }
+                    MessageInChatDTO messageInChatDTO = new Gson().fromJson(message, MessageInChatDTO.class);
+                    MessageLayoutAttributes mla = new MessageLayoutAttributes(
+                            messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
+                            messageInChatDTO.getFilename());
+
+                    if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
+                    else typeSender = MessageLayout.COMPANION;
+                    MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
+                    chatFormLayout.addView(messageLayout);
                 });
 
         Observable<String> observable = Observable.fromCallable(() -> {

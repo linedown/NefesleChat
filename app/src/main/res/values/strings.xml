@@ -30,7 +30,7 @@
     <string name="user_settings_const_str">Пользовательские настройки</string>
     <string name="create_chat_text">Создать чат</string>
     <string name="hint_create_chat_text">Название группового чата</string>
-    <string name="input_message_text_hint">Введите сообщение</string>
+    <string name="input_message_text_hint">\t\tНапишите сообщение</string>
     <string name="login_button_text">Войти в аккаунт</string>
     <string name="title_activity_login">Авторизация</string>
     <string name="prompt_email">\t\tЭл. почта</string>
