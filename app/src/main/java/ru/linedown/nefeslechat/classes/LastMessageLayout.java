@@ -1,6 +1,5 @@
 package ru.linedown.nefeslechat.classes;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -8,11 +7,10 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -20,101 +18,107 @@ import lombok.Getter;
 import ru.linedown.nefeslechat.R;
 
 @Getter
-public class LastMessageLayout extends ConstraintLayout {
+public class LastMessageLayout extends LinearLayout {
 
     private ImageView iconChatView;
     private TextView chatNameView;
     private TextView messageView;
+    private LinearLayout horizontalLayout;
 
-    public LastMessageLayout(Context context) {
+    private int backgroundDraw;
+
+    private final int icon;
+
+    public static final int STUDENT = -1;
+    public static final int PREPOD = -2;
+    public static final int GROUP = -3;
+
+    private final int mode;
+
+    public LastMessageLayout(Context context, int icon, int mode) {
         super(context);
-        init(context, null);
+        this.icon = icon;
+        this.mode = mode;
+        init(context);
     }
 
-    public LastMessageLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
-    }
+    private void init(Context context) {
+        int dimension = (icon == R.drawable.group) ? 35 : 25;
 
-    public LastMessageLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs);
-    }
+        if(mode == STUDENT) backgroundDraw = R.drawable.bg_student_settings;
+        else if(mode == PREPOD) backgroundDraw = R.drawable.bg_prepod_settings;
+        else backgroundDraw = R.drawable.bg_group_chat;
 
-    private void init(Context context, AttributeSet attrs) {
-        // Устанавливаем параметры, как в XML
-        setId(R.id.lastMessageLayout1);  //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
-        setLayoutParams(new ViewGroup.LayoutParams(
+        setOrientation(LinearLayout.VERTICAL);
+        setId(R.id.message_view); // <------------ id сообщения класть
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 384, getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics())
-        ));
-        setPadding(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics()), 0, 0);  // marginTop реализован через padding.
-        setBackground(ContextCompat.getDrawable(context, R.drawable.bg_group_chat));
+        );
+
+        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics()), (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics()), 0, 0);
+
+        setLayoutParams(layoutParams);
+
+        setBackground(ContextCompat.getDrawable(context, backgroundDraw));
+
+        // Создаем горизонтальный LinearLayout для icon_chat_view и chat_name_view
+        horizontalLayout = new LinearLayout(context);
+        horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        horizontalParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics());
+        horizontalLayout.setLayoutParams(horizontalParams);
+        addView(horizontalLayout);
 
         // Создаем и настраиваем ImageView
         iconChatView = new ImageView(context);
-        iconChatView.setId(R.id.icon_chat_view); //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
-        iconChatView.setLayoutParams(new ViewGroup.LayoutParams(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 38, getResources().getDisplayMetrics())
-        ));
-        iconChatView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.group));
-        addView(iconChatView);
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimension, getResources().getDisplayMetrics()),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        iconParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()));
+        iconChatView.setLayoutParams(iconParams);
+        iconChatView.setImageDrawable(ContextCompat.getDrawable(context, icon)); // <---- меняется
+        horizontalLayout.addView(iconChatView);
 
         // Создаем и настраиваем TextView для chatName
         chatNameView = new TextView(context);
-        chatNameView.setId(R.id.chat_name_view);  //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
-        chatNameView.setLayoutParams(new ViewGroup.LayoutParams(
+        chatNameView.setId(R.id.chat_name_view); //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
+        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        chatNameView.setText("ИВБ-111");
+        );
+        nameParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()));
+        nameParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
+
+        chatNameView.setLayoutParams(nameParams);
+        chatNameView.setText("ИВБ-111"); // <---- меняется
         chatNameView.setTextColor(ContextCompat.getColor(context, R.color.white));
         chatNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         chatNameView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_bold));
-        addView(chatNameView);
+        horizontalLayout.addView(chatNameView);
 
         // Создаем и настраиваем TextView для message
         messageView = new TextView(context);
-        messageView.setId(R.id.message_view);  //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
-        messageView.setLayoutParams(new ViewGroup.LayoutParams(
+
+        LinearLayout.LayoutParams messageParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        messageView.setText("Привет сообщения");
+        );
+        messageParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()));
+        messageParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+        messageView.setLayoutParams(messageParams);
+
+        messageView.setText("Привет сообщения"); // <---- меняется
         messageView.setTextColor(ContextCompat.getColor(context, R.color.white));
         messageView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_light));
         addView(messageView);
-
-        // Применяем ConstraintSet для позиционирования
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(this);
-
-        // Constraints для iconChatView
-        constraintSet.connect(iconChatView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, getResources().getDisplayMetrics()));
-        constraintSet.connect(iconChatView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-        constraintSet.connect(iconChatView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-
-        // Constraints для chatNameView
-        constraintSet.connect(chatNameView.getId(), ConstraintSet.START, iconChatView.getId(), ConstraintSet.END, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-        constraintSet.connect(chatNameView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()));
-
-        // Constraints для messageView
-        constraintSet.connect(messageView.getId(), ConstraintSet.START, iconChatView.getId(), ConstraintSet.END, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-        constraintSet.connect(messageView.getId(), ConstraintSet.TOP, chatNameView.getId(), ConstraintSet.BOTTOM, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-
-        // Constraints для самого ConstraintLayout
-        constraintSet.connect(getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-        constraintSet.connect(getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraintSet.connect(getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-
-
-        constraintSet.applyTo(this);
-
     }
 
-
-    // Методы для динамического изменения данных
     public void setChatName(String name) {
         chatNameView.setText(name);
     }
@@ -132,4 +136,3 @@ public class LastMessageLayout extends ConstraintLayout {
     }
 
 }
-
