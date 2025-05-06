@@ -19,34 +19,19 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandler;
-import org.springframework.web.socket.WebSocketHttpHeaders;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
-
-import java.util.concurrent.CompletableFuture;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.subjects.PublishSubject;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.MessageDTO;
 import ru.linedown.nefeslechat.classes.MessageLayout;
-import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 import ru.linedown.nefeslechat.entity.MessageInChatDTO;
 import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
 import ru.linedown.nefeslechat.entity.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
-import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class ChatFragment extends Fragment {
     final String JWT_TOKEN = "jwt_token";
