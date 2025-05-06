@@ -36,6 +36,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.MessageDTO;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
@@ -50,20 +51,15 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 public class ChatFragment extends Fragment {
     final String JWT_TOKEN = "jwt_token";
     private FragmentChatBinding binding;
-    private Toolbar toolbar;
     private int userId;
-    StompSession session;
-    Disposable disposable;
     Disposable disposableInner;
-    Disposable messageDisposable;
-    private final PublishSubject<String> messageSubject = PublishSubject.create(); // рассмотреть вариант с ReplaySubject
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        toolbar = getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         Bundle arguments = getArguments();
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
@@ -80,57 +76,22 @@ public class ChatFragment extends Fragment {
         TextView messageView = binding.messageView;
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
-        messageDisposable = messageSubject.observeOn(AndroidSchedulers.mainThread()).subscribe(
-                message -> {
-                    int typeSender;
-                    if(!message.isEmpty()) {
-                        messageView.setText("");
-                        messageView.setVisibility(GONE);
-                    }
-                    MessageInChatDTO messageInChatDTO = new Gson().fromJson(message, MessageInChatDTO.class);
-                    MessageLayoutAttributes mla = new MessageLayoutAttributes(
-                            messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
-                            messageInChatDTO.getFilename());
-
-                    if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
-                    else typeSender = MessageLayout.COMPANION;
-                    MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
-                    chatFormLayout.addView(messageLayout);
-                });
-
-        Observable<String> observable = Observable.fromCallable(() -> {
-            WebSocketClient client = new StandardWebSocketClient();
-            WebSocketStompClient stompClient = new WebSocketStompClient(client);
-            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-
-            String url = OkHttpUtil.getWebsocketHeader() + OkHttpUtil.getBaseUrlWithoutApi()
-                    + OkHttpUtil.getAfterBaseUrl() + OkHttpUtil.getMessagingUrl();
-            StompSessionHandler sessionHandler = new MyStompSessionHandler(messageSubject);
-            WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-
-            headers.add("JWT", getActivity()
-                    .getSharedPreferences("LoginInfo", MODE_PRIVATE).getString(JWT_TOKEN, ""));
-
-            CompletableFuture<StompSession> connection = stompClient.connectAsync(url, headers, sessionHandler);
-
-            session = connection.join();
-            return "OK";
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-
-        MyCallback<String> myCallback = new MyCallback<>(){
-
-            @Override
-            public void onSuccess(String result) {
-                Log.d("Подключение к сессии", "Успешно подключено.  Session ID: " + session.getSessionId());
+        WebSocketConnection.subscribeOnMessageEvent(message -> {
+            int typeSender;
+            if(!message.isEmpty()) {
+                messageView.setText("");
+                messageView.setVisibility(GONE);
             }
+            MessageInChatDTO messageInChatDTO = new Gson().fromJson(message, MessageInChatDTO.class);
+            MessageLayoutAttributes mla = new MessageLayoutAttributes(
+                    messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
+                    messageInChatDTO.getFilename());
 
-            @Override
-            public void onError(String errorMessage) {
-                Log.e("Подключение к сессии: исключение", "Текст исключения: " + errorMessage);
-            }
-        };
-
-        disposable = observable.subscribe(myCallback::onSuccess, error -> myCallback.onError(error.getMessage()));
+            if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
+            else typeSender = MessageLayout.COMPANION;
+            MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
+            chatFormLayout.addView(messageLayout);
+        });
 
         sendTextButton.setOnClickListener(view -> {
             Observable<WebSocketDTO> observableInner = Observable.fromCallable(() -> {
@@ -144,8 +105,8 @@ public class ChatFragment extends Fragment {
                     .subscribe(result -> {
                         if(result == null) return;
                         try {
-                            if (session != null && session.isConnected()){
-                                session.send(OkHttpUtil.getUserUrl() + userId, result);
+                            if (WebSocketConnection.isConnected()){
+                                WebSocketConnection.getSession().send(OkHttpUtil.getUserUrl() + userId, result);
                                 inputField.setText("");
                             }
                             else Log.w("WebSocket", "Соединение WebSocket не активно. Сообщение не отправлено.");
@@ -164,33 +125,11 @@ public class ChatFragment extends Fragment {
 
         Log.d("ChatFragment", "onDestroyView() вызван");
 
-        if (session != null) {
-            if (session.isConnected()) {
-                Log.d("ChatFragment", "WebSocket соединение активно. Отключаемся...");
-                Completable.fromAction(() -> {
-                            session.disconnect();
-                            Log.d("ChatFragment", "WebSocket соединение отключено.");
-                        })
-                        .subscribeOn(Schedulers.io()) // Выполняем disconnect в IO потоке
-                        .subscribe(() -> {}, error -> Log.e("ChatFragment", "Ошибка отключения WebSocket", error));
-            } else Log.d("ChatFragment", "WebSocket соединение уже не активно.");
-        } else Log.d("ChatFragment", "WebSocket session равна null.");
-
-
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-            Log.d("ChatFragment", "Disposable (observable) отписан");
-        }
         if (disposableInner != null && !disposableInner.isDisposed()) {
             disposableInner.dispose();
             Log.d("ChatFragment", "Disposable (observableInner) отписан");
         }
-        if (messageDisposable != null && !messageDisposable.isDisposed()) {
-            messageDisposable.dispose();
-            Log.d("ChatFragment", "Disposable (messageDisposable) отписан");
-        }
-        messageSubject.onComplete();
-        Log.d("ChatFragment", "Subject завершён");
+        WebSocketConnection.unSubscribeOnMessageEvent();
         binding = null;
         Log.d("ChatFragment", "binding обнулен");
     }

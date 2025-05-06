@@ -72,6 +72,7 @@ public class ConfirmExitDialogFragment extends DialogFragment {
 
         dialog.cancel();
         disposable.dispose();
+        WebSocketConnection.disconnect();
         startActivity(intent);
     }
 }

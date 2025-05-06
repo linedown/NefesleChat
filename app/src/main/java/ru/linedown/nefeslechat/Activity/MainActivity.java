@@ -28,6 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UserDetailsDTO result) {
                 getSharedPreferences("LoginInfo", MODE_PRIVATE).edit().putString("id", "" + result.getId()).apply();
+                OkHttpUtil.setMyId(result.getId());
                 String role = result.getRole();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
                 userInBar.setTypeface(null, Typeface.BOLD);
@@ -123,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
             } else return false;
         }
         });
+
+        WebSocketConnection.connection(MainActivity.this);
     }
 
 
@@ -136,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(WebSocketConnection.isConnected()) WebSocketConnection.disconnect();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
