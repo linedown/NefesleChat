@@ -9,16 +9,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class ConfirmExitDialogFragment extends DialogFragment {
+    final String JWT_TOKEN = "jwt_token";
     SharedPreferences sharedPreferences;
     @NonNull
     @Override
@@ -37,10 +44,34 @@ public class ConfirmExitDialogFragment extends DialogFragment {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         Toast.makeText(getActivity(), "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
-        sharedPreferences = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        Log.d("Токен перед выходом: ", sharedPreferences.getString(JWT_TOKEN, ""));
         sharedPreferences.edit().clear().apply();
-        OkHttpUtil.clearCookies();
+        Observable<String> observable = Observable.fromCallable(() -> {
+            OkHttpUtil.clearCookies();
+            return "Успешно";
+        });
+
+        MyCallback<String> mc = new MyCallback<>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("Результат: ", result);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("Ошибка: ", errorMessage);
+            }
+        };
+
+        Disposable disposable = observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                        mc::onSuccess,
+                        error -> mc.onError(error.getMessage()
+                ));
+
         dialog.cancel();
+        disposable.dispose();
         startActivity(intent);
     }
 }

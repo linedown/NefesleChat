@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -37,7 +36,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.MessageDTO;
+import ru.linedown.nefeslechat.entity.MessageDTO;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;

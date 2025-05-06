@@ -1,8 +1,4 @@
-package ru.linedown.nefeslechat.classes;
-
-import ru.linedown.nefeslechat.entity.MessageTypeEnum;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package ru.linedown.nefeslechat.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +12,6 @@ import lombok.Setter;
 public class MessageDTO {
 
     private MessageTypeEnum type;
-
     private String message;
 }
 

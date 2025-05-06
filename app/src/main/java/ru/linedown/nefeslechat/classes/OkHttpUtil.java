@@ -1,6 +1,9 @@
 package ru.linedown.nefeslechat.classes;
 
+import android.util.Log;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,9 +14,12 @@ import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import lombok.Getter;
 import lombok.Setter;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
@@ -27,6 +33,7 @@ import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.entity.RegistrationForm;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class OkHttpUtil {
     private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
@@ -49,6 +56,7 @@ public class OkHttpUtil {
     private static final String userUrl = "/app/user/";
     @Getter
     private static final String topicUrl = "/topic/user/";
+    private static final String logoutUrl = "/auth/logout";
     @Getter
     @Setter
     private static String textMessage;
@@ -134,8 +142,11 @@ public class OkHttpUtil {
     public static int getUserId(){
         return user_id;
     }
-    public static void clearCookies(){
-        cookies = Collections.emptyList();
+    public static void clearCookies() throws IOException {
+        RequestBody requestBody = RequestBody.create(new byte[0]);
+        Request request = new Request.Builder().url(baseUrl + logoutUrl).post(requestBody).build();
+        Response response = okHttpClient.newCall(request).execute();
+        response.close();
     }
 
 }

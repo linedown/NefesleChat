@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void saveToken(){
         sharedPreferences = getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        Log.d("Токен пользователя", savedToken);
         sharedPreferences.edit().putString(JWT_TOKEN, OkHttpUtil.getJWTToken()).apply();
     }
 
