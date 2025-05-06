@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.profile;
+package ru.linedown.nefeslechat.ui;
 
 import static android.view.View.VISIBLE;
 
@@ -12,13 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;

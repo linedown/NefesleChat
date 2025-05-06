@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.chat;
+package ru.linedown.nefeslechat.ui;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.GONE;

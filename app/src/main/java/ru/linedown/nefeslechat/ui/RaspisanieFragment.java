@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.raspisanie;
+package ru.linedown.nefeslechat.ui;
 
 
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.FragmentRaspisanieBinding;
 
 public class RaspisanieFragment extends Fragment {

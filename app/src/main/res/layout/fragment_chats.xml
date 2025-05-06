@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/nedowhite"
     android:orientation="vertical"
-    tools:context=".ui.chats.ChatsFragment">
+    tools:context=".ui.ChatsFragment">
 
     <LinearLayout
         android:id="@+id/lastMessageLayout1"

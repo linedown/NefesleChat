@@ -1,6 +1,4 @@
-package ru.linedown.nefeslechat.ui.chats;
-
-import androidx.lifecycle.ViewModelProvider;
+package ru.linedown.nefeslechat.ui;
 
 import android.os.Bundle;
 
@@ -10,11 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.LastMessageLayout;
 import ru.linedown.nefeslechat.databinding.FragmentChatsBinding;
 
 public class ChatsFragment extends Fragment {
