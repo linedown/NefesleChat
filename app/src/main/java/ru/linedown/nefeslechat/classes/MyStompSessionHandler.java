@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import ru.linedown.nefeslechat.entity.LastMessageInChatDTO;
+import ru.linedown.nefeslechat.entity.ChatDTO;
 import ru.linedown.nefeslechat.entity.MessageInChatDTO;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
