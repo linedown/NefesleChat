@@ -31,12 +31,13 @@ public class WebSocketConnection {
     private static final String JWT_TOKEN = "jwt_token";
     @Getter
     private static StompSession session;
-    private static final PublishSubject<String> messageSubject = PublishSubject.create();
+    private static PublishSubject<String> messageSubject;
     private static final String url = OkHttpUtil.getWebsocketHeader() + OkHttpUtil.getBaseUrlWithoutApi()
             + OkHttpUtil.getAfterBaseUrl() + OkHttpUtil.getMessagingUrl();
 
     public static void connection(Context context){
         Observable<String> observable = Observable.fromCallable(() -> {
+            messageSubject = PublishSubject.create();
             WebSocketClient client = new StandardWebSocketClient();
             WebSocketStompClient stompClient = new WebSocketStompClient(client);
             stompClient.setMessageConverter(new MappingJackson2MessageConverter());

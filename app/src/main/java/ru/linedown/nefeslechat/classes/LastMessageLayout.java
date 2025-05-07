@@ -63,7 +63,6 @@ public class LastMessageLayout extends LinearLayout {
 
         setBackground(ContextCompat.getDrawable(context, backgroundDraw));
 
-        // Создаем горизонтальный LinearLayout для icon_chat_view и chat_name_view
         horizontalLayout = new LinearLayout(context);
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(
@@ -74,7 +73,6 @@ public class LastMessageLayout extends LinearLayout {
         horizontalLayout.setLayoutParams(horizontalParams);
         addView(horizontalLayout);
 
-        // Создаем и настраиваем ImageView
         iconChatView = new ImageView(context);
         LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimension, getResources().getDisplayMetrics()),
@@ -85,9 +83,8 @@ public class LastMessageLayout extends LinearLayout {
         iconChatView.setImageDrawable(ContextCompat.getDrawable(context, icon)); // <---- меняется
         horizontalLayout.addView(iconChatView);
 
-        // Создаем и настраиваем TextView для chatName
         chatNameView = new TextView(context);
-        chatNameView.setId(R.id.chat_name_view); //ВАЖНО: Убедитесь, что у вас нет конфликта ID. Лучше генерировать ID динамически, если это компонент для повторного использования.
+        chatNameView.setId(R.id.chat_name_view);
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -102,7 +99,6 @@ public class LastMessageLayout extends LinearLayout {
         chatNameView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_bold));
         horizontalLayout.addView(chatNameView);
 
-        // Создаем и настраиваем TextView для message
         messageView = new TextView(context);
 
         LinearLayout.LayoutParams messageParams = new LinearLayout.LayoutParams(
