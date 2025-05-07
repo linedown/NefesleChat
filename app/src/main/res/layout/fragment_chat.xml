@@ -49,6 +49,7 @@
             android:background="@drawable/bg"
             android:ems="10"
             android:hint="@string/input_message_text_hint"
+            android:paddingLeft="16dp"
             android:inputType="text"
             android:text=""
             android:textSize="16sp"

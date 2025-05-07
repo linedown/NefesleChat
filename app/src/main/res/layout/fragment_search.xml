@@ -23,6 +23,7 @@
             android:layout_height="41dp"
             android:background="@drawable/bg"
             android:ems="10"
+            android:paddingLeft="16dp"
             android:hint="@string/inputLastname"
             android:inputType="text"
             android:textSize="16sp"
