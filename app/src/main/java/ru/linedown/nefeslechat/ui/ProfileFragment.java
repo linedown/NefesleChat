@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -67,7 +69,7 @@ public class ProfileFragment extends Fragment {
         MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
             public void onSuccess(UserDetailsDTO result) {
-                String statusText = result.getIsOnline() ? "Онлайн" : "Оффлайн";
+                String statusText = OkHttpUtil.getStatusStr();
                 statusLabel.setText(statusText);
                 String role = result.getRole();
                 firstLastName = result.getFirstName() + " " + result.getLastName();

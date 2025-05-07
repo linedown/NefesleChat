@@ -57,6 +57,7 @@ public class OkHttpUtil {
     @Getter
     private static final String topicUrl = "/topic/user/";
     private static final String logoutUrl = "/auth/logout";
+    private static final String statusUrl = "/get-online-status/";
     @Getter
     @Setter
     private static String textMessage;
@@ -67,6 +68,8 @@ public class OkHttpUtil {
     @Getter
     @Setter
     private static int myId;
+    @Getter
+    private static String statusStr;
 
     public static Response processAuthentification(AuthorizationForm af) throws IOException {
         boolean regFlag = af instanceof RegistrationForm;
@@ -106,6 +109,16 @@ public class OkHttpUtil {
         String responseBodyStr = responseBody.string();
         response.close();
         responseBody.close();
+
+        Request requestStatus = new Request.Builder().url(baseUrl + statusUrl + user_id).get().build();
+        Response responseStatus = okHttpClient.newCall(requestStatus).execute();
+        ResponseBody responseBodyStatus = responseStatus.body();
+        boolean isOnline = Boolean.parseBoolean(responseBodyStatus.string());
+        if(isOnline) statusStr = "Онлайн";
+        else statusStr = "Оффлайн";
+
+        responseBodyStatus.close();
+        responseStatus.close();
 
         return new Gson().fromJson(responseBodyStr, UserDetailsDTO.class);
     }
