@@ -14,7 +14,7 @@
 
     <EditText
         android:id="@+id/lastName"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40px"
         android:autofillHints="@string/prompt_email"
@@ -24,11 +24,13 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tokenRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/tokenRegister"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <EditText
         android:id="@+id/mailRegister"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40px"
         android:autofillHints="@string/prompt_email"
@@ -38,11 +40,13 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastName" />
+        app:layout_constraintTop_toBottomOf="@+id/lastName"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <EditText
         android:id="@+id/passwordRegister2"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40px"
         android:autofillHints=""
@@ -53,11 +57,13 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegister"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <EditText
         android:id="@+id/tokenRegister"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="199dp"
         android:autofillHints="@string/prompt_email"
@@ -67,11 +73,13 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <EditText
         android:id="@+id/passwordRegister"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40px"
         android:autofillHints="@string/prompt_password"
@@ -82,7 +90,9 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mailRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/mailRegister"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <TextView
         android:id="@+id/registerLabel"
@@ -97,7 +107,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -111,14 +122,16 @@
 
     <ImageButton
         android:id="@+id/register_button"
-        android:layout_width="310dp"
+        android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="@color/nedowhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordRegister2"
-        android:backgroundTint="@color/nedowhite"
-        app:srcCompat="@drawable/bg_green" />
+        app:srcCompat="@drawable/bg_green"
+        android:layout_marginStart="35sp"
+        android:layout_marginEnd="35sp" />
 
     <TextView
         android:id="@+id/regText"

@@ -11,13 +11,14 @@
 
     <LinearLayout
         android:id="@+id/lastMessageLayout1"
-        android:layout_width="384dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="14sp"
         android:layout_marginTop="500sp"
+        android:layout_marginEnd="14sp"
         android:background="@drawable/bg_group_chat"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
