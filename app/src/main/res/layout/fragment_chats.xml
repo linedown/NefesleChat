@@ -18,7 +18,7 @@
         android:layout_marginEnd="14sp"
         android:background="@drawable/bg_group_chat"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"

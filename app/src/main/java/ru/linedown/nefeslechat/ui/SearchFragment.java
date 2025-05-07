@@ -73,6 +73,8 @@ public class SearchFragment extends Fragment {
                         emptyResultInfoView.setTextSize(20);
                         emptyResultInfoView.setTypeface(null, Typeface.BOLD);
                         emptyResultInfoView.setText("По данному запросу не удалось найти пользователей");
+                        emptyResultInfoView.setTextColor(getResources().getColor(R.color.otherSettingsColor));
+                        emptyResultInfoView.setPadding(50, 0, 0, 0);
                         results.addView(emptyResultInfoView);
                         return;
                     }

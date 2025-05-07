@@ -58,15 +58,10 @@ public class ChatFragment extends Fragment {
         EditText inputField = binding.messageText;
         ImageView sendTextButton = binding.sendTextButton;
         ImageView sendFileButton = binding.sendFileButton;
-        TextView messageView = binding.messageView;
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
         WebSocketConnection.subscribeOnMessageEvent(message -> {
             int typeSender;
-            if(!message.isEmpty()) {
-                messageView.setText("");
-                messageView.setVisibility(GONE);
-            }
             MessageInChatDTO messageInChatDTO = new Gson().fromJson(message, MessageInChatDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
                     messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),

@@ -77,8 +77,8 @@
 
             <ImageView
                 android:id="@+id/avatarView"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="14sp"
                 android:src="@drawable/man"
                 app:layout_constraintStart_toStartOf="parent"
@@ -187,11 +187,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginEnd="48sp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/date_expire"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:layout_marginEnd="50sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

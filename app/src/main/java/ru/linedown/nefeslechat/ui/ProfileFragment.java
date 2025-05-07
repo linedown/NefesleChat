@@ -70,7 +70,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onSuccess(UserDetailsDTO result) {
                 String statusText = OkHttpUtil.getStatusStr();
+                if(statusText.equals("В сети")) statusLabel.setBackgroundResource(R.drawable.bg_status_online);
                 statusLabel.setText(statusText);
+                statusLabel.setPadding(12, 6, 12, 6);
                 String role = result.getRole();
                 firstLastName = result.getFirstName() + " " + result.getLastName();
                 String fio = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();

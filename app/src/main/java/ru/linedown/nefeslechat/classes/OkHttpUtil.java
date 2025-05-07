@@ -113,9 +113,7 @@ public class OkHttpUtil {
         Request requestStatus = new Request.Builder().url(baseUrl + statusUrl + user_id).get().build();
         Response responseStatus = okHttpClient.newCall(requestStatus).execute();
         ResponseBody responseBodyStatus = responseStatus.body();
-        boolean isOnline = Boolean.parseBoolean(responseBodyStatus.string());
-        if(isOnline) statusStr = "Онлайн";
-        else statusStr = "Оффлайн";
+        statusStr = responseBodyStatus.string();
 
         responseBodyStatus.close();
         responseStatus.close();
