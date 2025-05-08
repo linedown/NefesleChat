@@ -22,12 +22,12 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
-import ru.linedown.nefeslechat.entity.MessageDTO;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
+import ru.linedown.nefeslechat.entity.MessageSendDTO;
 import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
@@ -75,7 +75,7 @@ public class ChatFragment extends Fragment {
             Observable<WebSocketDTO> observableInner = Observable.fromCallable(() -> {
                 String text = inputField.getText().toString();
                 if(text.isBlank()) return null;
-                MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
+                MessageSendDTO messageDTO = new MessageSendDTO(MessageTypeEnum.TEXT, text);
                 return new WebSocketDTO("sendMessage", messageDTO);
             });
 
