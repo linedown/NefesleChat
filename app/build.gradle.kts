@@ -87,7 +87,7 @@ dependencies {
         exclude(group = "javax.websocket", module = "javax.websocket-api")
     }
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.16.1")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.16.1")
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.core)
+    implementation(libs.jackson.annotations)
 }
