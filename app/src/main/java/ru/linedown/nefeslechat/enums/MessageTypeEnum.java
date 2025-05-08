@@ -1,5 +1,5 @@
 package ru.linedown.nefeslechat.enums;
 
 public enum MessageTypeEnum {
-    TEXT, FILE
+    TEXT, FILE, INFO
 }

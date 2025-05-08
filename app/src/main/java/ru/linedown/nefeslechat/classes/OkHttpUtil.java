@@ -29,6 +29,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import ru.linedown.nefeslechat.entity.ChatDTO;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
@@ -58,6 +59,8 @@ public class OkHttpUtil {
     private static final String topicUrl = "/topic/user/";
     private static final String logoutUrl = "/auth/logout";
     private static final String statusUrl = "/get-online-status/";
+    private static final String chatsUrl = "/chats";
+
     @Getter
     @Setter
     private static String textMessage;
@@ -133,6 +136,18 @@ public class OkHttpUtil {
         responseBody.close();
 
         return users;
+    }
+
+    public static List<ChatDTO> getListChats() throws IOException {
+        Request request = new Request.Builder().url(baseUrl + chatsUrl).get().build();
+        Response response = okHttpClient.newCall(request).execute();
+        ResponseBody responseBody = response.body();
+        List<ChatDTO> chats = new Gson().fromJson(responseBody.string(), new TypeToken<ArrayList<ChatDTO>>(){}.getType());
+
+        responseBody.close();
+        response.close();
+
+        return chats;
     }
 
     public static String getJWTToken(){

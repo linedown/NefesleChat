@@ -1,5 +1,5 @@
 package ru.linedown.nefeslechat.enums;
 
 public enum ChatTypeEnum {
-    SINGLE, MULTI
+    GROUP, SINGLE, STUDGROUP, DEPARTMENT
 }

@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import lombok.Getter;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.entity.LastMessageAttributes;
 
 @Getter
 public class LastMessageLayout extends LinearLayout {
@@ -31,25 +32,25 @@ public class LastMessageLayout extends LinearLayout {
     public static final int PREPOD = -2;
     public static final int GROUP = -3;
 
-    private final int chatType;
+    LastMessageAttributes lma;
 
-    public LastMessageLayout(Context context, int chatType) {
+    public LastMessageLayout(Context context, LastMessageAttributes lma) {
         super(context);
-        this.chatType = chatType;
+        this.lma = lma;
         init(context);
     }
 
     private void init(Context context) {
 
-        if(chatType == STUDENT) icon = R.drawable.man;
-        else if(chatType == PREPOD) icon = R.drawable.prepod;
+        if(lma.getChatType() == STUDENT) icon = R.drawable.man;
+        else if(lma.getChatType() == PREPOD) icon = R.drawable.prepod;
         else icon = R.drawable.group;
 
         int dimension = (icon == R.drawable.group) ? 35 : 25;
         int marginTop = (icon == R.drawable.prepod) ? 5 : 0;
 
         setOrientation(LinearLayout.VERTICAL);
-        setId(R.id.message_view); // <------------ id сообщения класть
+        setId(lma.getChatId()); // <------------ id сообщения класть
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -98,7 +99,7 @@ public class LastMessageLayout extends LinearLayout {
         nameParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
 
         chatNameView.setLayoutParams(nameParams);
-        chatNameView.setText("ИВБ-111"); // <---- меняется
+        chatNameView.setText(lma.getNameChat()); // <---- меняется
         chatNameView.setTextColor(ContextCompat.getColor(context, R.color.white));
         chatNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         chatNameView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_bold));
@@ -114,26 +115,9 @@ public class LastMessageLayout extends LinearLayout {
         messageParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
         messageView.setLayoutParams(messageParams);
 
-        messageView.setText("Привет сообщения"); // <---- меняется
+        messageView.setText(lma.getText());
         messageView.setTextColor(ContextCompat.getColor(context, R.color.white));
         messageView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_light));
         addView(messageView);
     }
-
-    public void setChatName(String name) {
-        chatNameView.setText(name);
-    }
-
-    public void setMessage(String message) {
-        messageView.setText(message);
-    }
-
-    public void setIcon(Drawable icon) {
-        iconChatView.setImageDrawable(icon);
-    }
-
-    public void setIcon(int resId) {
-        iconChatView.setImageResource(resId);
-    }
-
 }
