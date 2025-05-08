@@ -1,7 +1,6 @@
 package ru.linedown.nefeslechat.ui;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.view.View.GONE;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -28,9 +26,9 @@ import ru.linedown.nefeslechat.entity.MessageDTO;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
-import ru.linedown.nefeslechat.entity.MessageInChatDTO;
+import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
-import ru.linedown.nefeslechat.entity.MessageTypeEnum;
+import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 public class ChatFragment extends Fragment {
@@ -62,7 +60,7 @@ public class ChatFragment extends Fragment {
 
         WebSocketConnection.subscribeOnMessageEvent(message -> {
             int typeSender;
-            MessageInChatDTO messageInChatDTO = new Gson().fromJson(message, MessageInChatDTO.class);
+            MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
                     messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
                     messageInChatDTO.getFilename());

@@ -1,7 +1,5 @@
 package ru.linedown.nefeslechat.classes;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +12,8 @@ import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 
 import java.lang.reflect.Type;
 
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import ru.linedown.nefeslechat.entity.ChatDTO;
-import ru.linedown.nefeslechat.entity.MessageInChatDTO;
+import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
@@ -40,7 +36,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
                 Log.d("1!!!!!!!!", "!!!!!!");
                 Log.d("2!!!!!!!!", "!!!!!!");
                 Object messagePayloadObj = ((WebSocketDTO) payload).getPayload();
-                MessageInChatDTO messageInChatDTO = new ObjectMapper().convertValue(messagePayloadObj, MessageInChatDTO.class);
+                MessageAllInfoDTO messageInChatDTO = new ObjectMapper().convertValue(messagePayloadObj, MessageAllInfoDTO.class);
                 Log.d("Сообщение: ", messageInChatDTO.getMessage());
 
                 messageSubject.onNext(new Gson().toJson(messageInChatDTO));

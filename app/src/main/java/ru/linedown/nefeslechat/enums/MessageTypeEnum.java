@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.entity;
+package ru.linedown.nefeslechat.enums;
 
 public enum MessageTypeEnum {
     TEXT, FILE

@@ -1,7 +1,5 @@
 package ru.linedown.nefeslechat.entity;
 
-import androidx.annotation.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -10,13 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageInChatDTO {
+public class MessageAllInfoDTO {
 
     private int id;
 
