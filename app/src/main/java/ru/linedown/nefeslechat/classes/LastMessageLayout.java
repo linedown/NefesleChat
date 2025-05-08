@@ -25,29 +25,28 @@ public class LastMessageLayout extends LinearLayout {
     private TextView messageView;
     private LinearLayout horizontalLayout;
 
-    private int backgroundDraw;
-
-    private final int icon;
+    private int icon;
 
     public static final int STUDENT = -1;
     public static final int PREPOD = -2;
     public static final int GROUP = -3;
 
-    private final int mode;
+    private final int chatType;
 
-    public LastMessageLayout(Context context, int icon, int mode) {
+    public LastMessageLayout(Context context, int chatType) {
         super(context);
-        this.icon = icon;
-        this.mode = mode;
+        this.chatType = chatType;
         init(context);
     }
 
     private void init(Context context) {
-        int dimension = (icon == R.drawable.group) ? 35 : 25;
 
-        if(mode == STUDENT) backgroundDraw = R.drawable.bg_student_settings;
-        else if(mode == PREPOD) backgroundDraw = R.drawable.bg_prepod_settings;
-        else backgroundDraw = R.drawable.bg_group_chat;
+        if(chatType == STUDENT) icon = R.drawable.man;
+        else if(chatType == PREPOD) icon = R.drawable.prepod;
+        else icon = R.drawable.group;
+
+        int dimension = (icon == R.drawable.group) ? 35 : 25;
+        int marginTop = (icon == R.drawable.prepod) ? 5 : 0;
 
         setOrientation(LinearLayout.VERTICAL);
         setId(R.id.message_view); // <------------ id сообщения класть
@@ -64,7 +63,7 @@ public class LastMessageLayout extends LinearLayout {
 
         setLayoutParams(layoutParams);
 
-        setBackground(ContextCompat.getDrawable(context, backgroundDraw));
+        setBackground(ContextCompat.getDrawable(context, R.drawable.bg_read_chat));
 
         horizontalLayout = new LinearLayout(context);
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -82,6 +81,9 @@ public class LastMessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         iconParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()));
+        iconParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginTop, getResources().getDisplayMetrics()),
+                0, 0);
         iconChatView.setLayoutParams(iconParams);
         iconChatView.setImageDrawable(ContextCompat.getDrawable(context, icon)); // <---- меняется
         horizontalLayout.addView(iconChatView);

@@ -24,14 +24,17 @@ public class ChatsFragment extends Fragment {
         binding = FragmentChatsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        LastMessageLayout lml = new LastMessageLayout(getActivity(), R.drawable.man, LastMessageLayout.STUDENT);
+        LastMessageLayout lml = new LastMessageLayout(getActivity(), LastMessageLayout.PREPOD);
 
-        lml.setChatName("Роман Слесарев");
-        lml.setMessage("Ура заработало");
+        lml.setChatName("Олег Проурзин");
+        lml.setMessage("Я рад, что у вас всё получается");
 
         LinearLayout chatLayout = binding.chatsLayout;
 
-        LastMessageLayout lml2 = new LastMessageLayout(getActivity(), R.drawable.group, LastMessageLayout.GROUP);
+        LastMessageLayout lml2 = new LastMessageLayout(getActivity(), LastMessageLayout.STUDENT);
+
+        lml.setChatName("Роман Слесарев");
+        lml.setMessage("Ура заработало!");
 
         chatLayout.addView(lml);
         chatLayout.addView(lml2);
