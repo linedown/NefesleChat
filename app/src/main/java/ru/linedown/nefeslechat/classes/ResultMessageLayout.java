@@ -33,16 +33,6 @@ public class ResultMessageLayout extends LinearLayout {
         init();
     }
 
-    public ResultMessageLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public ResultMessageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
     private void init() {
         fioLabel = new TextView(getContext());
         infoLabel = new TextView(getContext());
@@ -56,7 +46,10 @@ public class ResultMessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.setMargins(dpToPx(25), dpToPx(10), dpToPx(25), 0);
+        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 25, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 25, getResources().getDisplayMetrics()),
+                0);
         setLayoutParams(layoutParams);
 
         fioLabel.setId(attributes.getId());
@@ -69,7 +62,9 @@ public class ResultMessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        fioParams.setMargins(dpToPx(20), dpToPx(10), 0, 0);
+        fioParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()),
+                0, 0);
         fioLabel.setLayoutParams(fioParams);
 
         infoLabel.setId(generateViewId());
@@ -83,15 +78,14 @@ public class ResultMessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        infoParams.setMargins(dpToPx(20), dpToPx(5), 0, dpToPx(10));
+        infoParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getResources().getDisplayMetrics()),
+                0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
         infoLabel.setLayoutParams(infoParams);
 
         addView(fioLabel);
         addView(infoLabel);
-    }
-
-    private int dpToPx(int dp) {
-        return (int) (dp * getContext().getResources().getDisplayMetrics().density);
     }
 
 }

@@ -18,7 +18,7 @@
     <color name="settingsBack">#C4C4C4</color>
     <color name="otherSettingsColor">#777</color>
     <color name="groupChatColor">#8200AC</color>
-    <color name="red">#5FC69B</color>
+    <color name="red">#FF0000</color>
     <color name="readChatColor">#4F5653</color>
 
 </resources>
