@@ -88,7 +88,6 @@ public class OkHttpUtil {
         Response response = okHttpClient.newCall(request).execute();
         cookies = okHttpClient.cookieJar().loadForRequest(request.url());
         for(Cookie cookie : cookies) if(cookie.name().equals("JWT")) JWTToken = cookie.value();
-        //for(Cookie cookie : cookies) Log.d("CookieTest: ", "Кука: " + cookie.domain());
         return response;
     }
 

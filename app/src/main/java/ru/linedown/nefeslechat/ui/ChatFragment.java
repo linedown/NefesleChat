@@ -48,12 +48,14 @@ public class ChatFragment extends Fragment {
         toolbar.setTitle(toolbarTitle);
         String chatType = arguments.getString("ChatType");
 
-        userId = Integer.parseInt(arguments.getString("UserId"));
-        Log.d("Id собеседника: ", "" + userId);
+        if(chatType.equals("Single")){
+            userId = Integer.parseInt(arguments.getString("UserId"));
+            Log.d("Id собеседника: ", "" + userId);
+        }
 
-        OkHttpUtil.setMyId(Integer.parseInt(getActivity()
-                .getSharedPreferences("LoginInfo", MODE_PRIVATE)
-                .getString("id", "0")));
+//        OkHttpUtil.setMyId(Integer.parseInt(getActivity()
+//                .getSharedPreferences("LoginInfo", MODE_PRIVATE)
+//                .getString("id", "0")));
 
         EditText inputField = binding.messageText;
         ImageView sendTextButton = binding.sendTextButton;
@@ -65,7 +67,7 @@ public class ChatFragment extends Fragment {
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
                     messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
-                    messageInChatDTO.getFilename(), chatType);
+                    messageInChatDTO.getFilename(), chatType, messageInChatDTO.getSenderName());
 
             if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
             else typeSender = MessageLayout.COMPANION;

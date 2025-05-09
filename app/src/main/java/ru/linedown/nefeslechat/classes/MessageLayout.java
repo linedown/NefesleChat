@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +65,7 @@ public class MessageLayout extends LinearLayout {
         setLayoutParams(layoutParams);
 
         senderNameView = new TextView(getContext());
-        senderNameView.setText("");
+        senderNameView.setText(messageLayoutAttributes.getSenderName());
         senderNameView.setTextColor(Color.WHITE);
         senderNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         senderNameView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_bold));
