@@ -24,6 +24,7 @@ public class MessageLayout extends LinearLayout {
     public static final int ME = -1;
     public static final int COMPANION = -2;
 
+    private TextView senderNameView;
     private TextView messageView;
     private ImageView fileView;
     private TextView timeView;
@@ -55,11 +56,34 @@ public class MessageLayout extends LinearLayout {
         setBackgroundResource(R.drawable.bg_green);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                dpToPx(209),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 209, getContext().getResources().getDisplayMetrics()),
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.setMargins(dpToPx(marginStart), dpToPx(15), dpToPx(10), 0);
+        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginStart, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getContext().getResources().getDisplayMetrics()),
+                0);
         setLayoutParams(layoutParams);
+
+        senderNameView = new TextView(getContext());
+        senderNameView.setText("");
+        senderNameView.setTextColor(Color.WHITE);
+        senderNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        senderNameView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_bold));
+
+        LinearLayout.LayoutParams senderNameParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        senderNameParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getContext().getResources().getDisplayMetrics()),
+                0, 0);
+
+        senderNameView.setLayoutParams(senderNameParams);
+        if(messageLayoutAttributes.getChatType().equals("Single")) senderNameView.setVisibility(GONE);
+
+        addView(senderNameView);
 
         messageView = new TextView(getContext());
         messageView.setText(messageLayoutAttributes.getMessage());
@@ -71,7 +95,10 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        messageParams.setMargins(dpToPx(20), dpToPx(5), dpToPx(27), 0);
+        messageParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 27, getContext().getResources().getDisplayMetrics()),
+                0);
         messageView.setLayoutParams(messageParams);
         addView(messageView);
 
@@ -84,7 +111,7 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        fileParams.setMargins(0, dpToPx(10), 0, 0);
+        fileParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getContext().getResources().getDisplayMetrics()), 0, 0);
         fileView.setLayoutParams(fileParams);
         addView(fileView);
 
@@ -100,13 +127,11 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        timeParams.setMargins(dpToPx(160), dpToPx(5), 0, dpToPx(5));
+        timeParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
+                0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()));
         timeView.setLayoutParams(timeParams);
         addView(timeView);
-    }
-
-    private int dpToPx(int dp) {
-        float density = getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
     }
 }

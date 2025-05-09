@@ -14,4 +14,5 @@ public class MessageLayoutAttributes {
     Date sendDate;
     String message;
     String filename;
+    String chatType;
 }

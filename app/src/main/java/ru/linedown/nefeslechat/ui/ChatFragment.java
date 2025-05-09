@@ -46,6 +46,8 @@ public class ChatFragment extends Fragment {
         Bundle arguments = getArguments();
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
+        String chatType = arguments.getString("ChatType");
+
         userId = Integer.parseInt(arguments.getString("UserId"));
         Log.d("Id собеседника: ", "" + userId);
 
@@ -63,7 +65,7 @@ public class ChatFragment extends Fragment {
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
                     messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
-                    messageInChatDTO.getFilename());
+                    messageInChatDTO.getFilename(), chatType);
 
             if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
             else typeSender = MessageLayout.COMPANION;
