@@ -80,7 +80,7 @@ public class MessageLayout extends LinearLayout {
                 0, 0);
 
         senderNameView.setLayoutParams(senderNameParams);
-        if(messageLayoutAttributes.getChatType().equals("Single")) senderNameView.setVisibility(GONE);
+        if(messageLayoutAttributes.getChatType().equals("Single")) senderNameView.setVisibility(VISIBLE);
 
         addView(senderNameView);
 

@@ -74,7 +74,8 @@ public class LastMessageLayout extends LinearLayout {
 
         setLayoutParams(layoutParams);
 
-        setBackground(ContextCompat.getDrawable(context, R.drawable.bg_read_chat));
+        if(lma.isReadChat()) setBackground(ContextCompat.getDrawable(context, R.drawable.bg_read_chat));
+        else setBackground(ContextCompat.getDrawable(context, R.drawable.bg_green));
 
         horizontalLayout = new LinearLayout(context);
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);

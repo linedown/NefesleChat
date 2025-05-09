@@ -12,4 +12,5 @@ public class LastMessageAttributes {
     String text;
     String nameChat;
     int chatType;
+    boolean readChat;
 }

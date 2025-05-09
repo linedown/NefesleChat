@@ -58,7 +58,9 @@ public class ChatsFragment extends Fragment {
                     }
                     else chatType = 0;
 
-                    LastMessageAttributes lma = new LastMessageAttributes(chat.getId(), chat.getLastMessage().getText(), chat.getName(), chatType);
+                    boolean isRead = chat.getNotRead() > 0;
+
+                    LastMessageAttributes lma = new LastMessageAttributes(chat.getId(), chat.getLastMessage().getText(), chat.getName(), chatType, isRead);
 
                     LastMessageLayout lml = new LastMessageLayout(getActivity(), lma);
 
@@ -86,22 +88,6 @@ public class ChatsFragment extends Fragment {
 
         disposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 mc::onSuccess, error -> mc.onError(error.getMessage()));
-
-
-//        LastMessageLayout lml = new LastMessageLayout(getActivity(), LastMessageLayout.PREPOD);
-//
-//        lml.setChatName("Олег Проурзин");
-//        lml.setMessage("Я рад, что у вас всё получается");
-//
-//        LinearLayout chatLayout = binding.chatsLayout;
-//
-//        LastMessageLayout lml2 = new LastMessageLayout(getActivity(), LastMessageLayout.STUDENT);
-//
-//        lml.setChatName("Роман Слесарев");
-//        lml.setMessage("Ура заработало!");
-//
-//        chatLayout.addView(lml);
-//        chatLayout.addView(lml2);
 
         return root;
     }
