@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -33,6 +34,7 @@ public class ChatsFragment extends Fragment {
 
     private FragmentChatsBinding binding;
     Disposable disposable;
+    Disposable innerDisposable;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,28 +55,59 @@ public class ChatsFragment extends Fragment {
                 for(ChatDTO chat : result){
                     if(chat.getType() == ChatTypeEnum.GROUP) chatType = LastMessageLayout.GROUP;
                     else if(chat.getType() == ChatTypeEnum.SINGLE){
-                        if(chat.getUserType() == RoleEnum.STUDENT) chatType = LastMessageLayout.STUDENT;
-                        else chatType = LastMessageLayout.PREPOD;
+                        if(chat.getUserType() == RoleEnum.PROFESSOR) {
+                            chatType = LastMessageLayout.PREPOD;
+                            Log.d("For", "!!");
+                        }
+                        else{
+                            Log.d("For", "????????????");
+                            chatType = LastMessageLayout.STUDENT;
+                        }
                     }
                     else chatType = 0;
 
                     boolean isRead = chat.getNotRead() > 0;
-
-                    LastMessageAttributes lma = new LastMessageAttributes(chat.getId(), chat.getLastMessage().getText(), chat.getName(), chatType, isRead);
+                    String lastMessageText = chat.getLastMessage() == null ? "" : chat.getLastMessage().getText();
+                    Date lastMessageDate = chat.getLastMessage() == null ? null : chat.getLastMessage().getCreatedAt();
+                    LastMessageAttributes lma = new LastMessageAttributes
+                            (chat.getId(), lastMessageText, chat.getName(), chatType, isRead, lastMessageDate);
 
                     LastMessageLayout lml = new LastMessageLayout(getActivity(), lma);
 
                     lml.setOnClickListener(view -> {
-                        String chatTypeStr;
-                        if(lml.getLma().getChatType() == LastMessageLayout.GROUP) chatTypeStr = "Group";
-                        else chatTypeStr = "Single";
-                        Bundle bundle = new Bundle();
-                        bundle.putString("TitleToolBar", chat.getName());
-                        bundle.putString("ChatId", String.valueOf(chat.getId()));
-                        bundle.putString("ChatType", chatTypeStr);
-                        if(chat.getType() == ChatTypeEnum.SINGLE) bundle.putString("UserId", "0");
-                        NavController navController = Navigation.findNavController(view);
-                        navController.navigate(R.id.action_global_to_nav_chat, null);
+                        final Bundle bundle = new Bundle();
+
+                        Observable<String> innerObservable = Observable.fromCallable(() -> {
+                            String chatTypeStr;
+                            if(chat.getType() == ChatTypeEnum.GROUP) chatTypeStr = "Group";
+                            else chatTypeStr = "Single";
+                            bundle.putString("TitleToolBar", chat.getName());
+                            Log.d("Имя чата: ", chat.getName());
+                            bundle.putString("ChatId", String.valueOf(chat.getId()));
+                            bundle.putString("ChatType", chatTypeStr);
+                            if(chat.getType() == ChatTypeEnum.SINGLE) bundle.putString("UserId", String.valueOf(chat.getUserId()));
+
+                            return "OK";
+                        });
+
+                        MyCallback<String> mcInner = new MyCallback<>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.d("observableInner", "Ответ: " + result);
+
+                                NavController navController = Navigation.findNavController(view);
+                                navController.navigate(R.id.action_global_to_nav_chat, bundle);
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+                                Log.d("observableInner", "Ошибка получения данных: " + errorMessage);
+                            }
+                        };
+
+                        innerDisposable = innerObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(mcInner::onSuccess, error -> mcInner.onError(error.getMessage()));
+
                     });
 
                     chatsLayout.addView(lml);
@@ -97,6 +130,7 @@ public class ChatsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if(disposable != null && !disposable.isDisposed()) disposable.dispose();
+        if(innerDisposable != null && !innerDisposable.isDisposed()) innerDisposable.dispose();
         binding = null;
     }
 

@@ -50,9 +50,6 @@ public class ChatFragment extends Fragment {
 
         if(chatType.equals("Single")){
             userId = Integer.parseInt(arguments.getString("UserId"));
-            if(userId == 0) {
-                // Решить проблему получения юзера
-            }
             Log.d("Id собеседника: ", "" + userId);
         }
 
@@ -78,7 +75,7 @@ public class ChatFragment extends Fragment {
             chatFormLayout.addView(messageLayout);
         });
 
-        // Что происходит при отправлении файла? ВОПРОС ХОРОШИЙ
+        // Что происходит при нажатии на изображение файла? ВОПРОС ХОРОШИЙ
         sendFileButton.setOnClickListener(view -> {});
 
         sendTextButton.setOnClickListener(view -> {

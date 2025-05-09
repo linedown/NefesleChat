@@ -75,12 +75,12 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
 
-        senderNameParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getContext().getResources().getDisplayMetrics()),
+        senderNameParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6, getContext().getResources().getDisplayMetrics()),
                 0, 0);
 
         senderNameView.setLayoutParams(senderNameParams);
-        if(messageLayoutAttributes.getChatType().equals("Single")) senderNameView.setVisibility(VISIBLE);
+        if(messageLayoutAttributes.getChatType().equals("Single")) senderNameView.setVisibility(GONE);
 
         addView(senderNameView);
 
@@ -94,9 +94,9 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        messageParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getContext().getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 27, getContext().getResources().getDisplayMetrics()),
+        messageParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 27, getContext().getResources().getDisplayMetrics()),
                 0);
         messageView.setLayoutParams(messageParams);
         addView(messageView);
@@ -110,7 +110,7 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        fileParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getContext().getResources().getDisplayMetrics()), 0, 0);
+        fileParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()), 0, 0);
         fileView.setLayoutParams(fileParams);
         addView(fileView);
 
@@ -126,10 +126,10 @@ public class MessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        timeParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getContext().getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
+        timeParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 160, getContext().getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getContext().getResources().getDisplayMetrics()),
                 0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()));
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getContext().getResources().getDisplayMetrics()));
         timeView.setLayoutParams(timeParams);
         addView(timeView);
     }

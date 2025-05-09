@@ -1,5 +1,7 @@
 package ru.linedown.nefeslechat.entity;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +15,5 @@ public class LastMessageAttributes {
     String nameChat;
     int chatType;
     boolean readChat;
+    Date createdOn;
 }

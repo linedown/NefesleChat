@@ -1,6 +1,6 @@
 package ru.linedown.nefeslechat.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -8,12 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class LastMessageDTO {
 
     private MessageTypeEnum type;
@@ -22,6 +24,6 @@ public class LastMessageDTO {
 
     private boolean seen;
 
-    @JsonProperty("created_at")
+    @SerializedName("created_at")
     private Date createdAt;
 }

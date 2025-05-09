@@ -36,5 +36,8 @@ public class MessageAllInfoDTO {
     @JsonProperty("sender_name")
     private String senderName;
 
+    @JsonProperty("chat_name")
+    private String chatName;
+
     private boolean seen;
 }

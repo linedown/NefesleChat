@@ -1,11 +1,12 @@
 package ru.linedown.nefeslechat.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import ru.linedown.nefeslechat.enums.ChatTypeEnum;
 import ru.linedown.nefeslechat.enums.RoleEnum;
 
@@ -13,6 +14,7 @@ import ru.linedown.nefeslechat.enums.RoleEnum;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatDTO {
 
     private int id;
@@ -21,16 +23,19 @@ public class ChatDTO {
 
     private ChatTypeEnum type;
 
-    @JsonProperty("last_message")
+    @SerializedName("last_message")
     private LastMessageDTO lastMessage;
 
-    @JsonProperty("message_from")
+    @SerializedName("message_from")
     private String messageFrom;
 
-    @JsonProperty("user_type")
+    @SerializedName("user_type")
     private RoleEnum userType;
 
-    @JsonProperty("not_read")
+    @SerializedName("not_read")
     private int notRead;
+
+    @SerializedName("user_id")
+    private int userId;
 }
 

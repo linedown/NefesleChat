@@ -60,6 +60,8 @@ public class OkHttpUtil {
     private static final String logoutUrl = "/auth/logout";
     private static final String statusUrl = "/get-online-status/";
     private static final String chatsUrl = "/chats";
+    @Getter
+    private static final String groupChatsUrl = "/topic/chat/";
 
     @Getter
     @Setter
@@ -129,7 +131,7 @@ public class OkHttpUtil {
         Response response = okHttpClient.newCall(request).execute();
         ResponseBody responseBody = response.body();
 
-        List<UserInListDTO> users = new Gson().fromJson(responseBody.string(), new TypeToken<ArrayList<UserInListDTO>>(){}.getType());
+        List<UserInListDTO> users = new Gson().fromJson(responseBody.string(), new TypeToken<List<UserInListDTO>>(){}.getType());
 
         response.close();
         responseBody.close();
@@ -139,9 +141,14 @@ public class OkHttpUtil {
 
     public static List<ChatDTO> getListChats() throws IOException {
         Request request = new Request.Builder().url(baseUrl + chatsUrl).get().build();
+        Log.d("GetListChats", "1");
         Response response = okHttpClient.newCall(request).execute();
+        Log.d("GetListChats", "2");
         ResponseBody responseBody = response.body();
-        List<ChatDTO> chats = new Gson().fromJson(responseBody.string(), new TypeToken<ArrayList<ChatDTO>>(){}.getType());
+        Log.d("GetListChats", "3");
+        List<ChatDTO> chats = new Gson().fromJson(responseBody.string(), new TypeToken<List<ChatDTO>>(){}.getType());
+
+        Log.d("GetListChats", chats.toString());
 
         responseBody.close();
         response.close();
