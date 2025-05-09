@@ -50,6 +50,9 @@ public class ChatFragment extends Fragment {
 
         if(chatType.equals("Single")){
             userId = Integer.parseInt(arguments.getString("UserId"));
+            if(userId == 0) {
+                // Решить проблему получения юзера
+            }
             Log.d("Id собеседника: ", "" + userId);
         }
 

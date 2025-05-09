@@ -72,6 +72,7 @@ public class ChatsFragment extends Fragment {
                         bundle.putString("TitleToolBar", chat.getName());
                         bundle.putString("ChatId", String.valueOf(chat.getId()));
                         bundle.putString("ChatType", chatTypeStr);
+                        if(chat.getType() == ChatTypeEnum.SINGLE) bundle.putString("UserId", "0");
                         NavController navController = Navigation.findNavController(view);
                         navController.navigate(R.id.action_global_to_nav_chat, null);
                     });
