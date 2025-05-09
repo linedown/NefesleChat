@@ -40,6 +40,16 @@ public class LastMessageLayout extends LinearLayout {
         init(context);
     }
 
+    public LastMessageLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public LastMessageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
     private void init(Context context) {
 
         if(lma.getChatType() == STUDENT) icon = R.drawable.man;
@@ -50,7 +60,7 @@ public class LastMessageLayout extends LinearLayout {
         int marginTop = (icon == R.drawable.prepod) ? 5 : 0;
 
         setOrientation(LinearLayout.VERTICAL);
-        setId(lma.getChatId()); // <------------ id сообщения класть
+        setId(lma.getChatId());
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

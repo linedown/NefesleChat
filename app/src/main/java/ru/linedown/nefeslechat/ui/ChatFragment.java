@@ -75,6 +75,9 @@ public class ChatFragment extends Fragment {
             chatFormLayout.addView(messageLayout);
         });
 
+        // Что происходит при отправлении файла? ВОПРОС ХОРОШИЙ
+        sendFileButton.setOnClickListener(view -> {});
+
         sendTextButton.setOnClickListener(view -> {
             Observable<WebSocketDTO> observableInner = Observable.fromCallable(() -> {
                 String text = inputField.getText().toString();

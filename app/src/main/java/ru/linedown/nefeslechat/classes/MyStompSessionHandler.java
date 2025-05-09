@@ -36,10 +36,10 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
                 Log.d("1!!!!!!!!", "!!!!!!");
                 Log.d("2!!!!!!!!", "!!!!!!");
                 Object messagePayloadObj = ((WebSocketDTO) payload).getPayload();
-                MessageAllInfoDTO messageInChatDTO = new ObjectMapper().convertValue(messagePayloadObj, MessageAllInfoDTO.class);
-                Log.d("Сообщение: ", messageInChatDTO.getMessage());
+                MessageAllInfoDTO message = new ObjectMapper().convertValue(messagePayloadObj, MessageAllInfoDTO.class);
+                Log.d("Сообщение: ", message.getMessage());
 
-                messageSubject.onNext(new Gson().toJson(messageInChatDTO));
+                messageSubject.onNext(new Gson().toJson(message));
 
                 Log.d("После onNext ", "работает");
             }
