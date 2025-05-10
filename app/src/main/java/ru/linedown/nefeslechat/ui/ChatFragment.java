@@ -64,7 +64,6 @@ public class ChatFragment extends Fragment {
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
         WebSocketConnection.subscribeOnSendMessageEvent(message -> {
-            //if(!chatType.equals("Single")) WebSocketConnection.getSession().subscribe(OkHttpUtil.getTopicUrl() + chatId, MyStompSessionHandler.sfh);
             int typeSender;
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(

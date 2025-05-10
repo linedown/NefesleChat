@@ -18,7 +18,7 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     private final PublishSubject<String> messageSubject;
-    public StompFrameHandler sfh;
+    public static StompFrameHandler sfh;
     public MyStompSessionHandler(PublishSubject<String> messageSubject) {
         this.messageSubject = messageSubject;
         sfh = new StompFrameHandler() {
