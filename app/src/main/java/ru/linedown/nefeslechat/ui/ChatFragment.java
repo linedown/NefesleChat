@@ -1,18 +1,22 @@
 package ru.linedown.nefeslechat.ui;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -142,13 +146,29 @@ public class ChatFragment extends Fragment {
 
     public void addMessageInChat(MessageAllInfoDTO messageInChatDTO){
         int typeSender;
-        MessageLayoutAttributes mla = new MessageLayoutAttributes(
+        if(messageInChatDTO.getSenderName() == null){
+            TextView joinView = new TextView(getContext());
+            joinView.setTextColor(getResources().getColor(R.color.readChatColor));
+            joinView.setId(messageInChatDTO.getId());
+            joinView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            joinView.setPadding(0,
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
+                    0,
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()));
+            joinView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_light));
+            joinView.setText(messageInChatDTO.getMessage());
+            joinView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+            chatFormLayout.addView(joinView);
+        }
+        else {
+            MessageLayoutAttributes mla = new MessageLayoutAttributes(
                 messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
                 messageInChatDTO.getFilename(), chatType, messageInChatDTO.getSenderName());
 
-        if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
-        else typeSender = MessageLayout.COMPANION;
-        MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
-        chatFormLayout.addView(messageLayout);
+            if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
+            else typeSender = MessageLayout.COMPANION;
+            MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
+            chatFormLayout.addView(messageLayout);
+        }
     }
 }
