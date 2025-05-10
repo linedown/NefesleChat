@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,14 +34,17 @@ import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
 import ru.linedown.nefeslechat.entity.MessageSendDTO;
 import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class ChatFragment extends Fragment {
     final String JWT_TOKEN = "jwt_token";
     private FragmentChatBinding binding;
     private int userId;
     private int chatId;
+    LinearLayout chatFormLayout;
     String chatType;
     Disposable disposableInner;
+    Disposable loadMessageDisposable;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,30 +57,38 @@ public class ChatFragment extends Fragment {
         toolbar.setTitle(toolbarTitle);
         chatType = arguments.getString("ChatType");
 
+        chatId = Integer.parseInt(arguments.getString("ChatId"));
+
         if(chatType.equals("Single")){
             userId = Integer.parseInt(arguments.getString("UserId"));
             Log.d("Id собеседника: ", "" + userId);
-        } else {
-            chatId = Integer.parseInt(arguments.getString("ChatId"));
         }
 
         EditText inputField = binding.messageText;
         ImageView sendTextButton = binding.sendTextButton;
         ImageView sendFileButton = binding.sendFileButton;
-        LinearLayout chatFormLayout = binding.chatFormLayout;
+        chatFormLayout = binding.chatFormLayout;
 
         WebSocketConnection.subscribeOnSendMessageEvent(message -> {
-            int typeSender;
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
-            MessageLayoutAttributes mla = new MessageLayoutAttributes(
-                    messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
-                    messageInChatDTO.getFilename(), chatType, messageInChatDTO.getSenderName());
-
-            if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
-            else typeSender = MessageLayout.COMPANION;
-            MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
-            chatFormLayout.addView(messageLayout);
+            addMessageInChat(messageInChatDTO);
         });
+
+        Observable<List<MessageAllInfoDTO>> observable = Observable.fromCallable(() -> OkHttpUtil.getMessagesInChat(chatId));
+        MyCallback<List<MessageAllInfoDTO>> mcOnMessages = new MyCallback<>() {
+            @Override
+            public void onSuccess(List<MessageAllInfoDTO> result) {
+                for(MessageAllInfoDTO message : result) addMessageInChat(message);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("ChatFragment", "Ошибка с получением сообщений в чате: " + errorMessage);
+            }
+        };
+
+        loadMessageDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mcOnMessages::onSuccess, error -> mcOnMessages.onError(error.getMessage()));
 
         // Что происходит при нажатии на изображение файла? ВОПРОС ХОРОШИЙ
         sendFileButton.setOnClickListener(view -> {});
@@ -117,8 +131,24 @@ public class ChatFragment extends Fragment {
             disposableInner.dispose();
             Log.d("ChatFragment", "Disposable (observableInner) отписан");
         }
+        if(loadMessageDisposable != null && !loadMessageDisposable.isDisposed()){
+            loadMessageDisposable.dispose();
+            Log.d("ChatFragment", "Disposable (messageDisposable) отписан");
+        }
         WebSocketConnection.unSubscribeOnSendMessageEvent();
         binding = null;
         Log.d("ChatFragment", "binding обнулен");
+    }
+
+    public void addMessageInChat(MessageAllInfoDTO messageInChatDTO){
+        int typeSender;
+        MessageLayoutAttributes mla = new MessageLayoutAttributes(
+                messageInChatDTO.getId(), messageInChatDTO.getCreatedAt(), messageInChatDTO.getMessage(),
+                messageInChatDTO.getFilename(), chatType, messageInChatDTO.getSenderName());
+
+        if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
+        else typeSender = MessageLayout.COMPANION;
+        MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
+        chatFormLayout.addView(messageLayout);
     }
 }

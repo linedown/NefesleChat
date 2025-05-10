@@ -30,6 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.entity.ChatDTO;
+import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
@@ -64,6 +65,7 @@ public class OkHttpUtil {
     private static final String groupSubscribeChatsUrl = "/topic/chat/";
     @Getter
     private static final String chatUrl = "/app/chat/";
+    private static final String singleChatUrl = "/get-singlechat-id/";
 
     @Getter
     @Setter
@@ -177,6 +179,35 @@ public class OkHttpUtil {
         Request request = new Request.Builder().url(baseUrl + logoutUrl).post(requestBody).build();
         Response response = okHttpClient.newCall(request).execute();
         response.close();
+    }
+
+    public static List<MessageAllInfoDTO> getMessagesInChat(int chatId) throws IOException {
+        String urlWithChat = "/chat/" + chatId + "/messages?page=0";
+
+        Request request = new Request.Builder().url(baseUrl + urlWithChat).get().build();
+        Response response = okHttpClient.newCall(request).execute();
+        ResponseBody responseBody = response.body();
+        List<MessageAllInfoDTO> messages = new Gson().fromJson(responseBody.string(), new TypeToken<List<MessageAllInfoDTO>>(){}.getType());
+        Log.d("GetMessages", messages.toString());
+
+        responseBody.close();
+        response.close();
+
+        Collections.reverse(messages);
+
+        return messages;
+
+    }
+
+    public static String getIdInChatForProfile(int userId) throws IOException {
+        Request request = new Request.Builder().url(baseUrl + singleChatUrl + userId).get().build();
+        Response response = okHttpClient.newCall(request).execute();
+        ResponseBody responseBody = response.body();
+        String idStr = responseBody.string();
+
+        responseBody.close();
+        response.close();
+        return idStr;
     }
 
 }

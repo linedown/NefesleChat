@@ -34,6 +34,7 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private final int userId = OkHttpUtil.getUserId();
+    private String chatId;
     String firstLastName;
 
     Disposable disposable;
@@ -64,7 +65,10 @@ public class ProfileFragment extends Fragment {
         TextView zvanie = binding.zvanie;
 
 
-        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> OkHttpUtil.getOtherUser(userId));
+        Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
+            chatId = OkHttpUtil.getIdInChatForProfile(userId);
+            return OkHttpUtil.getOtherUser(userId);
+        });
 
         MyCallback<UserDetailsDTO> mcfu = new MyCallback<>() {
             @Override
@@ -115,6 +119,7 @@ public class ProfileFragment extends Fragment {
             bundle.putString("TitleToolBar", firstLastName);
             bundle.putString("UserId", String.valueOf(userId));
             bundle.putString("ChatType", "Single");
+            bundle.putString("ChatId", chatId);
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_global_to_nav_chat, bundle);
         });
