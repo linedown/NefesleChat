@@ -28,6 +28,7 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 public class WebSocketConnection {
     private static Disposable disposable;
     private static Disposable messageDisposable;
+    private static Disposable getMessageInChatsDisposable;
     private static final String JWT_TOKEN = "jwt_token";
     @Getter
     private static StompSession session;
@@ -70,12 +71,25 @@ public class WebSocketConnection {
         disposable = observable.subscribe(myCallback::onSuccess, error -> myCallback.onError(error.getMessage()));
     }
 
-    public static void subscribeOnMessageEvent(Consumer<? super String> consumer){
+    public static void subscribeonGetMessageEvent(Consumer<? super String> consumer){
+        getMessageInChatsDisposable = messageSubject.observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer);
+        Log.w("Состояние getMessageInChatsDisposable", getMessageInChatsDisposable.toString());
+    }
+
+    public static void unSubscribeOnGetMessageEvent(){
+        if(getMessageInChatsDisposable != null && !getMessageInChatsDisposable.isDisposed()){
+            getMessageInChatsDisposable.dispose();
+            Log.d("Мессенджер", "Subscriber getMessage отписан от события");
+        }
+    }
+
+    public static void subscribeOnSendMessageEvent(Consumer<? super String> consumer){
         messageDisposable = messageSubject.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(consumer);
     }
 
-    public static void unSubscribeOnMessageEvent(){
+    public static void unSubscribeOnSendMessageEvent(){
         if(messageDisposable != null && !messageDisposable.isDisposed()){
             messageDisposable.dispose();
             Log.d("Мессенджер", "Subscriber отписан от события");

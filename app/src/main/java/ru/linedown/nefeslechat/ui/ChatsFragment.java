@@ -53,18 +53,16 @@ public class ChatsFragment extends Fragment {
                 int chatType;
 
                 for(ChatDTO chat : result){
-                    if(chat.getType() == ChatTypeEnum.GROUP) chatType = LastMessageLayout.GROUP;
-                    else if(chat.getType() == ChatTypeEnum.SINGLE){
+                    if(chat.getType() == ChatTypeEnum.SINGLE){
                         if(chat.getUserType() == RoleEnum.PROFESSOR) {
                             chatType = LastMessageLayout.PREPOD;
-                            Log.d("For", "!!");
                         }
                         else{
-                            Log.d("For", "????????????");
                             chatType = LastMessageLayout.STUDENT;
                         }
+                    } else{
+                        chatType = LastMessageLayout.GROUP;
                     }
-                    else chatType = 0;
 
                     boolean isRead = chat.getNotRead() > 0;
                     String lastMessageText = chat.getLastMessage() == null ? "" : chat.getLastMessage().getText();

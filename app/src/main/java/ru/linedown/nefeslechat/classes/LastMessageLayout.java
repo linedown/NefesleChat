@@ -1,9 +1,8 @@
+
 package ru.linedown.nefeslechat.classes;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -59,13 +57,13 @@ public class LastMessageLayout extends LinearLayout {
 
     private void init(Context context) {
         String createOnStr;
-        if(lma.getCreatedOn() != null) createOnStr = sdf.format(lma.getCreatedOn());
+        if (lma.getCreatedOn() != null) createOnStr = sdf.format(lma.getCreatedOn());
         else createOnStr = "";
 
         Log.d("Дата отправки соо: ", createOnStr);
 
-        if(lma.getChatType() == STUDENT) icon = R.drawable.man;
-        else if(lma.getChatType() == PREPOD) icon = R.drawable.prepod;
+        if (lma.getChatType() == STUDENT) icon = R.drawable.man;
+        else if (lma.getChatType() == PREPOD) icon = R.drawable.prepod;
         else icon = R.drawable.group;
 
         int dimension = (icon == R.drawable.group) ? 35 : 25;
@@ -86,13 +84,15 @@ public class LastMessageLayout extends LinearLayout {
 
         setLayoutParams(layoutParams);
 
-        if(lma.isReadChat()) setBackground(ContextCompat.getDrawable(context, R.drawable.bg_read_chat));
+        if (lma.isReadChat())
+            setBackground(ContextCompat.getDrawable(context, R.drawable.bg_read_chat));
         else setBackground(ContextCompat.getDrawable(context, R.drawable.bg_green));
 
         horizontalLayout = new LinearLayout(context);
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
+
         LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, // <-- Изменено здесь!
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         horizontalParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics());
@@ -105,11 +105,9 @@ public class LastMessageLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         iconParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics()));
-        iconParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, marginTop, getResources().getDisplayMetrics()),
-                0, 0);
+        iconParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, marginTop, getResources().getDisplayMetrics());
         iconChatView.setLayoutParams(iconParams);
-        iconChatView.setImageDrawable(ContextCompat.getDrawable(context, icon)); // <---- меняется
+        iconChatView.setImageDrawable(ContextCompat.getDrawable(context, icon));
         horizontalLayout.addView(iconChatView);
 
         chatNameView = new TextView(context);
@@ -122,21 +120,28 @@ public class LastMessageLayout extends LinearLayout {
         nameParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6, getResources().getDisplayMetrics());
 
         chatNameView.setLayoutParams(nameParams);
-        chatNameView.setText(lma.getNameChat()); // <---- меняется
+        chatNameView.setText(lma.getNameChat());
         chatNameView.setTextColor(ContextCompat.getColor(context, R.color.white));
         chatNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         chatNameView.setTypeface(ResourcesCompat.getFont(context, R.font.inter_bold));
         horizontalLayout.addView(chatNameView);
+
+        LinearLayout.LayoutParams spaceParams = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT,1f
+        );
+
+        LinearLayout space = new LinearLayout(context);
+        space.setLayoutParams(spaceParams);
+        horizontalLayout.addView(space);
 
         dateView = new TextView(context);
         LinearLayout.LayoutParams dateParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        dateParams.gravity = Gravity.END;
-        dateParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getResources().getDisplayMetrics()));
-        //dateParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics());
 
+        dateParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 4, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 15, getResources().getDisplayMetrics()), 0);
         dateView.setLayoutParams(dateParams);
 
         dateView.setText(createOnStr);

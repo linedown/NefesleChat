@@ -62,7 +62,7 @@ public class ChatFragment extends Fragment {
         ImageView sendFileButton = binding.sendFileButton;
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
-        WebSocketConnection.subscribeOnMessageEvent(message -> {
+        WebSocketConnection.subscribeOnSendMessageEvent(message -> {
             int typeSender;
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
@@ -114,7 +114,7 @@ public class ChatFragment extends Fragment {
             disposableInner.dispose();
             Log.d("ChatFragment", "Disposable (observableInner) отписан");
         }
-        WebSocketConnection.unSubscribeOnMessageEvent();
+        WebSocketConnection.unSubscribeOnSendMessageEvent();
         binding = null;
         Log.d("ChatFragment", "binding обнулен");
     }
