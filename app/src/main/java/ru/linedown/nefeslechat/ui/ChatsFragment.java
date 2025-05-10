@@ -55,9 +55,6 @@ public class ChatsFragment extends Fragment {
 
                 for(ChatDTO chat : result){
                     if(chat.getType() == ChatTypeEnum.SINGLE){
-                        WebSocketConnection.subscribeOnSendMessageEvent(message -> {
-
-                        });
                         if(chat.getUserType() == RoleEnum.PROFESSOR) {
                             chatType = LastMessageLayout.PREPOD;
                         }
@@ -69,7 +66,8 @@ public class ChatsFragment extends Fragment {
                     }
 
                     boolean isRead = chat.getNotRead() > 0;
-                    String lastMessageText = chat.getLastMessage() == null ? "" : chat.getLastMessage().getText();
+                    String lastMessageText = chat.getLastMessage() == null ? "" :
+                            chat.getMessageFrom() + " " + chat.getLastMessage().getText();
                     Date lastMessageDate = chat.getLastMessage() == null ? null : chat.getLastMessage().getCreatedAt();
                     LastMessageAttributes lma = new LastMessageAttributes
                             (chat.getId(), lastMessageText, chat.getName(), chatType, isRead, lastMessageDate);
