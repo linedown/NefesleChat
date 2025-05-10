@@ -23,6 +23,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.LastMessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.databinding.FragmentChatsBinding;
 import ru.linedown.nefeslechat.entity.ChatDTO;
 import ru.linedown.nefeslechat.entity.LastMessageAttributes;
@@ -54,6 +55,9 @@ public class ChatsFragment extends Fragment {
 
                 for(ChatDTO chat : result){
                     if(chat.getType() == ChatTypeEnum.SINGLE){
+                        WebSocketConnection.subscribeOnSendMessageEvent(message -> {
+
+                        });
                         if(chat.getUserType() == RoleEnum.PROFESSOR) {
                             chatType = LastMessageLayout.PREPOD;
                         }
@@ -77,7 +81,8 @@ public class ChatsFragment extends Fragment {
 
                         Observable<String> innerObservable = Observable.fromCallable(() -> {
                             String chatTypeStr;
-                            if(chat.getType() == ChatTypeEnum.GROUP) chatTypeStr = "Group";
+                            Log.d("Чат", chat.getType().toString());
+                            if(chat.getType() == ChatTypeEnum.STUDGROUP) chatTypeStr = "Group";
                             else chatTypeStr = "Single";
                             bundle.putString("TitleToolBar", chat.getName());
                             Log.d("Имя чата: ", chat.getName());

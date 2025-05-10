@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
@@ -35,6 +36,8 @@ public class ChatFragment extends Fragment {
     final String JWT_TOKEN = "jwt_token";
     private FragmentChatBinding binding;
     private int userId;
+    private int chatId;
+    String chatType;
     Disposable disposableInner;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,16 +49,14 @@ public class ChatFragment extends Fragment {
         Bundle arguments = getArguments();
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
-        String chatType = arguments.getString("ChatType");
+        chatType = arguments.getString("ChatType");
 
         if(chatType.equals("Single")){
             userId = Integer.parseInt(arguments.getString("UserId"));
             Log.d("Id собеседника: ", "" + userId);
+        } else {
+            chatId = Integer.parseInt(arguments.getString("ChatId"));
         }
-
-//        OkHttpUtil.setMyId(Integer.parseInt(getActivity()
-//                .getSharedPreferences("LoginInfo", MODE_PRIVATE)
-//                .getString("id", "0")));
 
         EditText inputField = binding.messageText;
         ImageView sendTextButton = binding.sendTextButton;
@@ -63,6 +64,7 @@ public class ChatFragment extends Fragment {
         LinearLayout chatFormLayout = binding.chatFormLayout;
 
         WebSocketConnection.subscribeOnSendMessageEvent(message -> {
+            //if(!chatType.equals("Single")) WebSocketConnection.getSession().subscribe(OkHttpUtil.getTopicUrl() + chatId, MyStompSessionHandler.sfh);
             int typeSender;
             MessageAllInfoDTO messageInChatDTO = new Gson().fromJson(message, MessageAllInfoDTO.class);
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
@@ -91,7 +93,9 @@ public class ChatFragment extends Fragment {
                         if(result == null) return;
                         try {
                             if (WebSocketConnection.isConnected()){
-                                WebSocketConnection.getSession().send(OkHttpUtil.getUserUrl() + userId, result);
+                                Log.w("Ссылка", OkHttpUtil.getChatUrl() + chatId);
+                                if(chatType.equals("Single")) WebSocketConnection.getSession().send(OkHttpUtil.getUserUrl() + userId, result);
+                                else WebSocketConnection.getSession().send(OkHttpUtil.getChatUrl() + chatId, result);
                                 inputField.setText("");
                             }
                             else Log.w("WebSocket", "Соединение WebSocket не активно. Сообщение не отправлено.");

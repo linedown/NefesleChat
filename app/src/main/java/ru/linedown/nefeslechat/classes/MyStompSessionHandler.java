@@ -18,13 +18,10 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     private final PublishSubject<String> messageSubject;
+    public StompFrameHandler sfh;
     public MyStompSessionHandler(PublishSubject<String> messageSubject) {
         this.messageSubject = messageSubject;
-    }
-    @Override
-    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-        Log.d("Мой айди: ", "" + OkHttpUtil.getMyId());
-        session.subscribe(OkHttpUtil.getTopicUrl() + OkHttpUtil.getMyId(), new StompFrameHandler() {
+        sfh = new StompFrameHandler() {
 
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -43,6 +40,12 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Log.d("После onNext ", "работает");
             }
-        });
+        };
+    }
+    @Override
+    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+        Log.d("Мой айди: ", "" + OkHttpUtil.getMyId());
+        session.subscribe(OkHttpUtil.getTopicUrl() + OkHttpUtil.getMyId(), sfh);
+        session.subscribe(OkHttpUtil.getGroupSubscribeChatsUrl() + 1, sfh);
     }
 }

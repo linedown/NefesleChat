@@ -61,7 +61,9 @@ public class OkHttpUtil {
     private static final String statusUrl = "/get-online-status/";
     private static final String chatsUrl = "/chats";
     @Getter
-    private static final String groupChatsUrl = "/topic/chat/";
+    private static final String groupSubscribeChatsUrl = "/topic/chat/";
+    @Getter
+    private static final String chatUrl = "/app/chat/";
 
     @Getter
     @Setter
@@ -141,13 +143,9 @@ public class OkHttpUtil {
 
     public static List<ChatDTO> getListChats() throws IOException {
         Request request = new Request.Builder().url(baseUrl + chatsUrl).get().build();
-        Log.d("GetListChats", "1");
         Response response = okHttpClient.newCall(request).execute();
-        Log.d("GetListChats", "2");
         ResponseBody responseBody = response.body();
-        Log.d("GetListChats", "3");
         List<ChatDTO> chats = new Gson().fromJson(responseBody.string(), new TypeToken<List<ChatDTO>>(){}.getType());
-
         Log.d("GetListChats", chats.toString());
 
         responseBody.close();
