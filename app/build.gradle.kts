@@ -11,7 +11,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "0.31"
+        versionName = "0.35"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -90,4 +90,5 @@ dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.jackson.core)
     implementation(libs.jackson.annotations)
+    implementation(libs.jsoup)
 }

@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 
@@ -28,6 +30,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
+import ru.linedown.nefeslechat.classes.ConfirnDeleteMessageDialogFragment;
 import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.classes.MessageLayout;
@@ -155,7 +159,7 @@ public class ChatFragment extends Fragment {
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
                     0,
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()));
-            joinView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_light));
+            joinView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_medium));
             joinView.setText(messageInChatDTO.getMessage());
             joinView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
             chatFormLayout.addView(joinView);
@@ -168,6 +172,12 @@ public class ChatFragment extends Fragment {
             if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
             else typeSender = MessageLayout.COMPANION;
             MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
+            messageLayout.setOnClickListener(view -> {
+                ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(messageLayout, userId, chatId);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                confirmExitDialogFragment.show(transaction, "dialog");
+            });
             chatFormLayout.addView(messageLayout);
         }
     }

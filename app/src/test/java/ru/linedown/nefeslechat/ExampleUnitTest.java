@@ -1,6 +1,10 @@
 package ru.linedown.nefeslechat;
 
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import android.content.Context;
@@ -27,8 +31,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Type;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -81,34 +93,319 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+    private static final String BASE_URL = "https://rasp.pgups.ru/schedule/group/";
+    private static final String SEARCH_URL = "https://rasp.pgups.ru/search?title=ивб-111&by=group";
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     @Test
-    public void WebSocketTest() throws ExecutionException, InterruptedException, TimeoutException {
-        WebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+    public void parser(){
+        try {
+            List<DaySchedule> schedule = parseSchedulePage();
 
-        String url = "ws://linedown.ru:3254/api/messenger";
+            if (schedule != null) {
+                for (DaySchedule day : schedule) {
+                    System.out.println("День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
+                    for (Lesson lesson : day.getLessons()) {
+                        System.out.println("  Пара: " + lesson.getParaNumber());
+                        if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
+                            System.out.println("  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
+                        } else {
+                            System.out.println("  Время: Не определено");
+                        }
+                        System.out.println("  Кабинет: " + lesson.getRoom());
+                        System.out.println("  Предмет: " + lesson.getSubject());
+                        System.out.println("  Преподаватель: " + lesson.getTeacher());
+                        System.out.println("  Тип занятия: " + lesson.getLessonType());
+                        System.out.println("---");
+                    }
+                    System.out.println("====================");
+                }
+            } else {
+                System.out.println("Не удалось получить расписание.");
+            }
 
-        StompSessionHandler sessionHandler = new MyStompSessionHandler();
-        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-        headers.add("JWT", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZ2dAZ2dnLmNvbSIsImV4cCI6MTc0NzU5MjM3NCwiaWF0IjoxNzQ2Mjc4Mzc0fQ.ebb-DAFSztSOP20JhbiDxn8K1yGDF-jc9HnM84VtI_M3R4bP1WA_NeGQsOSoJsylgOFawsktVi0lK1kY7qSvJw");
-        CompletableFuture<StompSession> connection =  stompClient.connectAsync(url, headers, sessionHandler);
-        StompSession session = connection.get();
+        } catch (IOException e) {
+            System.err.println("Ошибка: " + e.getMessage());
+        }
+    }
 
-        Scanner scanner = new Scanner(System.in);
+    public static List<DaySchedule> parseSchedulePage() throws IOException {
+        List<DaySchedule> schedule = new ArrayList<>();
+        boolean isOddWeek = isOddWeek();
 
-        String text = "Ужас";
-        //if(scanner.nextLine() != null) text = scanner.nextLine();
+        try {
+            Document searchDoc = Jsoup.connect(SEARCH_URL).get();
+            Elements groupLinks = searchDoc.select("#kt_content > div.kt-container.kt-grid__item.kt-grid__item--fluid > div:nth-child(2) > div.kt-portlet__body > div > div > div > a");
 
-//            if(text.equals("!")) {
-//                break;
-//            }
+            if (groupLinks.isEmpty()) {
+                System.err.println("Не найдена ссылка на группу.");
+                return null;
+            }
 
-        MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
-        WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
+            String relativeScheduleUrl = groupLinks.first().attr("href");
+            String groupId = relativeScheduleUrl.substring(relativeScheduleUrl.lastIndexOf("/") + 1);
+            String scheduleUrl = BASE_URL + groupId + "?odd=" + (isOddWeek ? "1" : "0");
 
-        session.send("/app/user/1", webSocketDTO);
+            Document doc = Jsoup.connect(scheduleUrl).get();
+            Elements dayTables = doc.select("div.kt-portlet__body > table.table.m-table.mb-5");
+
+            LocalDate today = LocalDate.now();
+            LocalDate monday = today.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+
+            for (int i = 0; i < dayTables.size(); i++) {
+                Element table = dayTables.get(i);
+                LocalDate currentDate = monday.plusDays(i);
+                DayOfWeek dayOfWeekEnum = currentDate.getDayOfWeek();
+                java.sql.Date date = java.sql.Date.valueOf(String.valueOf(currentDate)); // Получаем дату дня недели
+
+                String dayOfWeek = table.previousElementSibling() != null ? table.previousElementSibling().text() : table.select("td.d-none.d-md-table-cell h4").text().replace(" ", "").replace("\n", "");
+
+                if (dayOfWeek.isEmpty()) {
+                    continue;
+                }
+                DaySchedule daySchedule = new DaySchedule(dayOfWeek, date); //Передаем дату в DaySchedule
+
+                Elements lessons = table.select("tbody > tr");
+
+                for (Element lessonRow : lessons) {
+                    Lesson lesson = new Lesson();
+
+                    Elements paraNumberCell = lessonRow.select("td.d-none.d-md-table-cell div[style*='font-weight: 400']");
+                    if (!paraNumberCell.isEmpty()) {
+                        lesson.setParaNumber(paraNumberCell.first().text().replace("пара", "").trim());
+                    }
+
+                    Elements timeCell = lessonRow.select("td[width='15%'] div span");
+                    if (!timeCell.isEmpty()) {
+                        String timeString = timeCell.first().text();
+                        String[] times = timeString.split("—");
+                        if (times.length == 2) {
+                            String startTimeString = times[0].trim();
+                            String endTimeString = times[1].trim();
+                            try {
+                                LocalTime startTimeLocal = LocalTime.parse(startTimeString, TIME_FORMATTER);
+                                LocalTime endTimeLocal = LocalTime.parse(endTimeString, TIME_FORMATTER);
+
+                                // Объединяем дату и время с использованием Calendar
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(date); // Устанавливаем дату
+                                calendar.set(Calendar.HOUR_OF_DAY, startTimeLocal.getHour());
+                                calendar.set(Calendar.MINUTE, startTimeLocal.getMinute());
+                                calendar.set(Calendar.SECOND, 0);
+                                Date startTime = calendar.getTime();
+
+                                calendar.setTime(date); // Сбрасываем Calendar к той же дате
+                                calendar.set(Calendar.HOUR_OF_DAY, endTimeLocal.getHour());
+                                calendar.set(Calendar.MINUTE, endTimeLocal.getMinute());
+                                calendar.set(Calendar.SECOND, 0);
+                                Date endTime = calendar.getTime();
+
+                                lesson.setStartTime(startTime);
+                                lesson.setEndTime(endTime);
+
+                            } catch (java.time.format.DateTimeParseException e) {
+                                System.err.println("Ошибка при парсинге времени: " + timeString);
+                                lesson.setStartTime(null);
+                                lesson.setEndTime(null);
+                            }
+                        } else {
+                            System.err.println("Неправильный формат времени: " + timeString);
+                            lesson.setStartTime(null);
+                            lesson.setEndTime(null);
+                        }
+                    }
+
+                    Elements roomCell = lessonRow.select("td[width='15%'] div.text-center.mt-2 a");
+                    if (!roomCell.isEmpty()) {
+                        lesson.setRoom(roomCell.first().text().replace("\u00A0", " "));
+                    }
+
+                    Elements subjectCell = lessonRow.select("td.align-middle div.mb-2 span:first-child");
+                    if (!subjectCell.isEmpty()) {
+                        lesson.setSubject(subjectCell.first().text());
+                    }
+
+                    Elements lessonTypeCell = lessonRow.select("td.align-middle div.mb-2 span.badge");
+                    if (!lessonTypeCell.isEmpty()) {
+                        lesson.setLessonType(lessonTypeCell.first().text());
+                    }
+
+                    // Extracting teacher's name
+                    String teacherName = null;
+                    Elements teacherLink = lessonRow.select("td.align-middle div:not(.mb-2) a");
+                    if (!teacherLink.isEmpty()) {
+                        // Teacher's name is in the <a> tag
+                        teacherName = teacherLink.first().text();
+                    } else {
+                        // Teacher's name is directly in the <td> tag or in a <div> inside it
+                        Elements teacherDiv = lessonRow.select("td.align-middle");
+                        if (!teacherDiv.isEmpty()) {
+                            teacherName = teacherDiv.first().ownText();
+                            if (teacherName == null || teacherName.trim().isEmpty()) {
+                                // If still empty, try to get the text from a <div> inside the <td>
+                                Elements innerDiv = teacherDiv.select("div:not(.mb-2)");
+                                if (!innerDiv.isEmpty()) {
+                                    teacherName = innerDiv.first().text();
+                                }
+                            }
+                        }
+                    }
+                    lesson.setTeacher(teacherName);
+
+                    daySchedule.addLesson(lesson);
+                }
+
+                schedule.add(daySchedule);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Ошибка при подключении к странице расписания: " + e.getMessage());
+            return null;
+        }
+        return schedule;
+    }
+
+    private static boolean isOddWeek() {
+        LocalDate today = LocalDate.now();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = today.get(weekFields.weekOfWeekBasedYear());
+        return weekNumber % 2 != 0;
+    }
+
+    static class DaySchedule {
+        private String dayOfWeek;
+        private java.sql.Date date;
+        private List<Lesson> lessons = new ArrayList<>();
+
+        public DaySchedule(String dayOfWeek, java.sql.Date date) {
+            this.dayOfWeek = dayOfWeek;
+            this.date = date;
+        }
+
+        public String getDayOfWeek() {
+            return dayOfWeek;
+        }
+
+        public java.sql.Date getDate() {
+            return date;
+        }
+
+        public List<Lesson> getLessons() {
+            return lessons;
+        }
+
+        public void addLesson(Lesson lesson) {
+            lessons.add(lesson);
+        }
+    }
+
+    static class Lesson {
+        private String paraNumber;
+        private Date startTime;
+        private Date endTime;
+        private String room;
+        private String subject;
+        private String teacher;
+        private String lessonType;
+
+        public String getParaNumber() {
+            return paraNumber;
+        }
+
+        public void setParaNumber(String paraNumber) {
+            this.paraNumber = paraNumber;
+        }
+
+        public Date getStartTime() {
+            return startTime;
+        }
+
+        public void setStartTime(Date startTime) {
+            this.startTime = startTime;
+        }
+
+        public Date getEndTime() {
+            return endTime;
+        }
+
+        public void setEndTime(Date endTime) {
+            this.endTime = endTime;
+        }
+
+        public String getRoom() {
+            return room;
+        }
+
+        public void setRoom(String room) {
+            this.room = room;
+        }
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
+
+        public String getTeacher() {
+            return teacher;
+        }
+
+        public void setTeacher(String teacher) {
+            this.teacher = teacher;
+        }
+
+        public String getLessonType() {
+            return lessonType;
+        }
+
+        public void setLessonType(String lessonType) {
+            this.lessonType = lessonType;
+        }
+
+        @Override
+        public String toString() {
+            return "Lesson{" +
+                    "paraNumber='" + paraNumber + '\'' +
+                    ", startTime=" + startTime +
+                    ", endTime=" + endTime +
+                    ", room='" + room + '\'' +
+                    ", subject='" + subject + '\'' +
+                    ", teacher='" + teacher + '\'' +
+                    ", lessonType='" + lessonType + '\'' +
+                    '}';
+        }
+    }
+}
+
+//    @Test
+//    public void WebSocketTest() throws ExecutionException, InterruptedException, TimeoutException {
+//        WebSocketClient client = new StandardWebSocketClient();
+//        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+//
+//        String url = "ws://linedown.ru:3254/api/messenger";
+//
+//        StompSessionHandler sessionHandler = new MyStompSessionHandler();
+//        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+//        headers.add("JWT", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZ2dAZ2dnLmNvbSIsImV4cCI6MTc0NzU5MjM3NCwiaWF0IjoxNzQ2Mjc4Mzc0fQ.ebb-DAFSztSOP20JhbiDxn8K1yGDF-jc9HnM84VtI_M3R4bP1WA_NeGQsOSoJsylgOFawsktVi0lK1kY7qSvJw");
+//        CompletableFuture<StompSession> connection =  stompClient.connectAsync(url, headers, sessionHandler);
+//        StompSession session = connection.get();
+//
+//        Scanner scanner = new Scanner(System.in);
+//
+//        String text = "Ужас";
+//        //if(scanner.nextLine() != null) text = scanner.nextLine();
+//
+////            if(text.equals("!")) {
+////                break;
+////            }
+//
+//        MessageDTO messageDTO = new MessageDTO(MessageTypeEnum.TEXT, text);
+//        WebSocketDTO webSocketDTO = new WebSocketDTO("sendMessage", messageDTO);
+//
+//        session.send("/app/user/1", webSocketDTO);
 
 //        while(true) {
 //            String text = "Ужас";
@@ -125,10 +422,10 @@ public class ExampleUnitTest {
 //
 //            break;
 //        }
-        session.disconnect();
-        scanner.close();
-    }
-}
+//        session.disconnect();
+//        scanner.close();
+//    }
+//}
 //    @Test
 //    public void testingWedSocket() throws InterruptedException {
 //        WebSocketClient client = new StandardWebSocketClient();
@@ -406,6 +703,8 @@ public class ExampleUnitTest {
 //        this.currency = currency;
 //    }
 //}
+
+
 
 enum MessageTypeEnum {
     TEXT, FILE
