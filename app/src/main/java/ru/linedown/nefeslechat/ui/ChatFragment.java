@@ -47,7 +47,6 @@ import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class ChatFragment extends Fragment {
     final int MS = 69;
-    final String JWT_TOKEN = "jwt_token";
     private FragmentChatBinding binding;
     private int userId;
     private int chatId;
