@@ -173,7 +173,7 @@ public class ChatFragment extends Fragment {
             else typeSender = MessageLayout.COMPANION;
             MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
             messageLayout.setOnClickListener(view -> {
-                ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(messageLayout, userId, chatId);
+                ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 confirmExitDialogFragment.show(transaction, "dialog");

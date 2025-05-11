@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +22,11 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 @AllArgsConstructor
 public class ConfirnDeleteMessageDialogFragment extends DialogFragment {
+    private LinearLayout chatLayout;
     private MessageLayout messageLayout;
     private int chatId;
     private int userId;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -32,7 +35,7 @@ public class ConfirnDeleteMessageDialogFragment extends DialogFragment {
         builder.setMessage("Вы точно хотите удалить сообщение?");
         builder.setPositiveButton("Да", (dialog, which) -> {
             deleteAction(dialog);
-
+            chatLayout.removeView(messageLayout);
         });
         builder.setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
         builder.setCancelable(true);
