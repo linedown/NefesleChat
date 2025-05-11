@@ -44,7 +44,7 @@ public class ConfirnDeleteMessageDialogFragment extends DialogFragment {
     }
 
     private void deleteAction(DialogInterface dialog){
-        int messageId = messageLayout.getMessageLayoutAttributes().getId();
+        int messageId = messageLayout.getId();
         Observable<String> observable = Observable.fromCallable(() -> {
             WebSocketDTO webSocketDTO = new WebSocketDTO("deleteMessage", messageId);
             if (WebSocketConnection.isConnected()){

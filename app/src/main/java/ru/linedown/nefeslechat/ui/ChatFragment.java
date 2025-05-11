@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,9 +33,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.ConfirnDeleteMessageDialogFragment;
-import ru.linedown.nefeslechat.classes.MyStompSessionHandler;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
@@ -64,6 +65,7 @@ public class ChatFragment extends Fragment {
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
         chatType = arguments.getString("ChatType");
+        ScrollView scrollViewInChat = binding.scrollViewInChat;
 
         chatId = Integer.parseInt(arguments.getString("ChatId"));
 
@@ -87,6 +89,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onSuccess(List<MessageAllInfoDTO> result) {
                 for(MessageAllInfoDTO message : result) addMessageInChat(message);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), 69);
             }
 
             @Override
@@ -97,6 +100,7 @@ public class ChatFragment extends Fragment {
 
         loadMessageDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mcOnMessages::onSuccess, error -> mcOnMessages.onError(error.getMessage()));
+
 
         // Что происходит при нажатии на изображение файла? ВОПРОС ХОРОШИЙ
         sendFileButton.setOnClickListener(view -> {});
@@ -172,12 +176,14 @@ public class ChatFragment extends Fragment {
             if(messageInChatDTO.getSenderId() == OkHttpUtil.getMyId()) typeSender = MessageLayout.ME;
             else typeSender = MessageLayout.COMPANION;
             MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
-            messageLayout.setOnClickListener(view -> {
-                ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                confirmExitDialogFragment.show(transaction, "dialog");
-            });
+            if (typeSender == MessageLayout.ME){
+                messageLayout.setOnClickListener(view -> {
+                    ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    confirmExitDialogFragment.show(transaction, "dialog");
+                });
+            }
             chatFormLayout.addView(messageLayout);
         }
     }
