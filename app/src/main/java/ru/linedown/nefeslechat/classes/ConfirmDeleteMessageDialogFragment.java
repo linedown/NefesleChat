@@ -21,7 +21,7 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
 
 
 @AllArgsConstructor
-public class ConfirnDeleteMessageDialogFragment extends DialogFragment {
+public class ConfirmDeleteMessageDialogFragment extends DialogFragment {
     private LinearLayout chatLayout;
     private MessageLayout messageLayout;
     private int chatId;

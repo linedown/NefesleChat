@@ -1,6 +1,5 @@
 package ru.linedown.nefeslechat.ui;
 
-import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
 import android.os.Bundle;
@@ -33,7 +32,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.ConfirnDeleteMessageDialogFragment;
+import ru.linedown.nefeslechat.classes.ConfirmDeleteMessageDialogFragment;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
@@ -178,7 +177,7 @@ public class ChatFragment extends Fragment {
             MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
             if (typeSender == MessageLayout.ME){
                 messageLayout.setOnClickListener(view -> {
-                    ConfirnDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirnDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
+                    ConfirmDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirmDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     confirmExitDialogFragment.show(transaction, "dialog");
