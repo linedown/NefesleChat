@@ -46,6 +46,7 @@ import ru.linedown.nefeslechat.entity.WebSocketDTO;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class ChatFragment extends Fragment {
+    final int MS = 69;
     final String JWT_TOKEN = "jwt_token";
     private FragmentChatBinding binding;
     private int userId;
@@ -90,7 +91,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onSuccess(List<MessageAllInfoDTO> result) {
                 for(MessageAllInfoDTO message : result) addMessageInChat(message);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), 69);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), MS);
             }
 
             @Override
@@ -185,7 +186,7 @@ public class ChatFragment extends Fragment {
                 });
             }
             chatFormLayout.addView(messageLayout);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), 69);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), MS);
         }
     }
 }
