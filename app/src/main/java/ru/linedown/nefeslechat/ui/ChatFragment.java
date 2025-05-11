@@ -54,6 +54,7 @@ public class ChatFragment extends Fragment {
     String chatType;
     Disposable disposableInner;
     Disposable loadMessageDisposable;
+    ScrollView scrollViewInChat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class ChatFragment extends Fragment {
         String toolbarTitle = arguments.getString("TitleToolBar");
         toolbar.setTitle(toolbarTitle);
         chatType = arguments.getString("ChatType");
-        ScrollView scrollViewInChat = binding.scrollViewInChat;
+        scrollViewInChat = binding.scrollViewInChat;
 
         chatId = Integer.parseInt(arguments.getString("ChatId"));
 
@@ -100,7 +101,6 @@ public class ChatFragment extends Fragment {
 
         loadMessageDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mcOnMessages::onSuccess, error -> mcOnMessages.onError(error.getMessage()));
-
 
         // Что происходит при нажатии на изображение файла? ВОПРОС ХОРОШИЙ
         sendFileButton.setOnClickListener(view -> {});
@@ -185,6 +185,7 @@ public class ChatFragment extends Fragment {
                 });
             }
             chatFormLayout.addView(messageLayout);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), 69);
         }
     }
 }
