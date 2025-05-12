@@ -100,6 +100,10 @@ public class WebSocketConnection {
         return session != null && session.isConnected();
     }
 
+    public static void send(String destination, Object payload){
+        session.send(destination, payload);
+    }
+
     public static void disconnect(){
         if (session != null) {
             if (session.isConnected()) {

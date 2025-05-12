@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 ConfirmExitDialogFragment confirmExitDialogFragment = new ConfirmExitDialogFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                confirmExitDialogFragment.show(transaction, "dialog");
+                confirmExitDialogFragment.show(transaction, "ExitDialog");
                 return true;
             }
             else {

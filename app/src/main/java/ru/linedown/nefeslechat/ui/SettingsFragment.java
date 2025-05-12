@@ -109,7 +109,7 @@ public class SettingsFragment extends Fragment {
             ConfirmExitDialogFragment confirmExitDialogFragment = new ConfirmExitDialogFragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            confirmExitDialogFragment.show(transaction, "dialog");
+            confirmExitDialogFragment.show(transaction, "ExitDialog");
         });
         return root;
     }

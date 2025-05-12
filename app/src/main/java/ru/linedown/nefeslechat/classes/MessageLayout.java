@@ -133,4 +133,8 @@ public class MessageLayout extends LinearLayout {
         timeView.setLayoutParams(timeParams);
         addView(timeView);
     }
+
+    public void setTextInMessage(String text){
+        messageView.setText(text);
+    }
 }

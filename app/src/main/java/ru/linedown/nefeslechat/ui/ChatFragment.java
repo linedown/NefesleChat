@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -31,20 +33,27 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.classes.ChoseActionDialogFragment;
 import ru.linedown.nefeslechat.classes.ConfirmDeleteMessageDialogFragment;
+import ru.linedown.nefeslechat.classes.EditMessageDialogFragment;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.classes.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
+import ru.linedown.nefeslechat.entity.EditMessagePayload;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
 import ru.linedown.nefeslechat.entity.MessageSendDTO;
 import ru.linedown.nefeslechat.enums.MessageTypeEnum;
 import ru.linedown.nefeslechat.entity.WebSocketDTO;
+import ru.linedown.nefeslechat.interfaces.ChoseActionListener;
+import ru.linedown.nefeslechat.interfaces.DeleteMessageActionListener;
+import ru.linedown.nefeslechat.interfaces.EditMessageActionListener;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements ChoseActionListener, EditMessageActionListener, DeleteMessageActionListener {
     final int MS = 69;
     private FragmentChatBinding binding;
     private int userId;
@@ -53,7 +62,10 @@ public class ChatFragment extends Fragment {
     String chatType;
     Disposable disposableInner;
     Disposable loadMessageDisposable;
+    Disposable deleteDisposable;
     ScrollView scrollViewInChat;
+    String messageLayoutChooseText;
+    MessageLayout chooseLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -118,7 +130,7 @@ public class ChatFragment extends Fragment {
                         try {
                             if (WebSocketConnection.isConnected()){
                                 Log.w("Ссылка", OkHttpUtil.getChatUrl() + chatId);
-                                if(chatType.equals("Single")) WebSocketConnection.getSession().send(OkHttpUtil.getUserUrl() + userId, result);
+                                if(chatType.equals("Single")) WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, result);
                                 else WebSocketConnection.getSession().send(OkHttpUtil.getChatUrl() + chatId, result);
                                 inputField.setText("");
                             }
@@ -137,6 +149,7 @@ public class ChatFragment extends Fragment {
         super.onDestroyView();
 
         Log.d("ChatFragment", "onDestroyView() вызван");
+        clearAllDialogFragment();
 
         if (disposableInner != null && !disposableInner.isDisposed()) {
             disposableInner.dispose();
@@ -146,6 +159,10 @@ public class ChatFragment extends Fragment {
             loadMessageDisposable.dispose();
             Log.d("ChatFragment", "Disposable (messageDisposable) отписан");
         }
+        if(deleteDisposable != null && !deleteDisposable.isDisposed()){
+            deleteDisposable.dispose();
+            Log.d("ChatFragment", "Disposable (deleteMessageDisposable) отписан");
+        }
         WebSocketConnection.unSubscribeOnSendMessageEvent();
         binding = null;
         Log.d("ChatFragment", "binding обнулен");
@@ -154,18 +171,18 @@ public class ChatFragment extends Fragment {
     public void addMessageInChat(MessageAllInfoDTO messageInChatDTO){
         int typeSender;
         if(messageInChatDTO.getSenderName() == null){
-            TextView joinView = new TextView(getContext());
-            joinView.setTextColor(getResources().getColor(R.color.readChatColor));
-            joinView.setId(messageInChatDTO.getId());
-            joinView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            joinView.setPadding(0,
+            TextView infoView = new TextView(getContext());
+            infoView.setTextColor(getResources().getColor(R.color.readChatColor));
+            infoView.setId(messageInChatDTO.getId());
+            infoView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            infoView.setPadding(0,
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()),
                     0,
                     (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics()));
-            joinView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_medium));
-            joinView.setText(messageInChatDTO.getMessage());
-            joinView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-            chatFormLayout.addView(joinView);
+            infoView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.inter_medium));
+            infoView.setText(messageInChatDTO.getMessage());
+            infoView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+            chatFormLayout.addView(infoView);
         }
         else {
             MessageLayoutAttributes mla = new MessageLayoutAttributes(
@@ -177,14 +194,116 @@ public class ChatFragment extends Fragment {
             MessageLayout messageLayout = new MessageLayout(getActivity(), typeSender, mla);
             if (typeSender == MessageLayout.ME){
                 messageLayout.setOnClickListener(view -> {
-                    ConfirmDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirmDeleteMessageDialogFragment(chatFormLayout, messageLayout, userId, chatId);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    confirmExitDialogFragment.show(transaction, "dialog");
+                    messageLayoutChooseText = messageInChatDTO.getMessage();
+                    chooseLayout = messageLayout;
+                    showChooseActionDialog();
                 });
             }
             chatFormLayout.addView(messageLayout);
             new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), MS);
         }
+    }
+
+    @Override
+    public void onDeleteAction() {
+        showDeleteActionDialog();
+    }
+
+    @Override
+    public void onEditAction() {
+        showEditActionDialog();
+    }
+
+    @Override
+    public void onCancelAction() {
+        Toast.makeText(getContext(), "Действие по выбору отменено", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onApplyDelete() {
+        deleteAction();
+        Toast.makeText(getContext(), "Действие по удалению выполнено", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelDelete() {
+        Toast.makeText(getContext(), "Действие по удалению отменено", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onApplyEdit(String newText) {
+        int messageId = chooseLayout.getId();
+        Observable<String> observable = Observable.fromCallable(() -> {
+            WebSocketDTO webSocketDTO = new WebSocketDTO("editMessage", new EditMessagePayload(messageId, newText));
+            if (WebSocketConnection.isConnected()){
+                if(chooseLayout.getMessageLayoutAttributes().getChatType().equals("Single"))
+                    WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, webSocketDTO);
+                else WebSocketConnection.send(OkHttpUtil.getChatUrl() + chatId, webSocketDTO);
+                return "Успешно изменено";
+            }
+            else Log.w("WebSocket", "Соединение WebSocket не активно. Сообщение не удалено.");
+
+            return "Не получилось изменить";
+        });
+
+        deleteDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                result -> {
+                    Log.d("EditDialog", "Результат: " + result);
+                    chooseLayout.setTextInMessage(newText);
+                },
+                error -> Log.e("Изменение: исключение", "Текст исключения: " + error.getMessage(), error));
+    }
+
+    @Override
+    public void onCancelEdit() {
+        Toast.makeText(getContext(), "Действие по изменению отменено", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showChooseActionDialog(){
+        ChoseActionDialogFragment choseActionDialogFragment = new ChoseActionDialogFragment(this);
+        choseActionDialogFragment.show(getChildFragmentManager(), "ChooseDialog");
+    }
+
+    private void showEditActionDialog(){
+        EditMessageDialogFragment editMessageDialogFragment = new EditMessageDialogFragment(this, messageLayoutChooseText);
+        editMessageDialogFragment.show(getChildFragmentManager(), "EditDialog");
+    }
+
+    private void showDeleteActionDialog(){
+        ConfirmDeleteMessageDialogFragment confirmExitDialogFragment = new ConfirmDeleteMessageDialogFragment(this);
+        confirmExitDialogFragment.show(getChildFragmentManager(), "DeleteDialog");
+    }
+
+    private void clearAllDialogFragment(){
+        FragmentManager fragmentManager = getChildFragmentManager();
+        List<Fragment> dialogFragments = fragmentManager.getFragments();
+        for(Fragment fragment : dialogFragments){
+            if(fragment instanceof DialogFragment dialogFragment){
+                dialogFragment.dismiss();
+            }
+        }
+    }
+
+    private void deleteAction(){
+        int messageId = chooseLayout.getId();
+        Observable<String> observable = Observable.fromCallable(() -> {
+            WebSocketDTO webSocketDTO = new WebSocketDTO("deleteMessage", messageId);
+            if (WebSocketConnection.isConnected()){
+                if(chooseLayout.getMessageLayoutAttributes().getChatType().equals("Single"))
+                    WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, webSocketDTO);
+                else WebSocketConnection.send(OkHttpUtil.getChatUrl() + chatId, webSocketDTO);
+                return "Успешно удалено";
+            }
+            else Log.w("WebSocket", "Соединение WebSocket не активно. Сообщение не удалено.");
+
+            return "Не получилось удалить";
+        });
+
+        deleteDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                result -> {
+                    Log.d("ConfirmDialog", "Результат: " + result);
+                    chatFormLayout.removeView(chooseLayout);
+                },
+                error -> Log.e("Удаление: исключение", "Текст исключения: " + error.getMessage(), error));
     }
 }
