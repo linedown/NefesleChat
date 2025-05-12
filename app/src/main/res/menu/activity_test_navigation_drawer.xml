@@ -26,6 +26,10 @@
             android:icon="@drawable/note_24"
             android:title="@string/item_notes_name" />
         <item
+            android:id="@+id/nav_tasks"
+            android:icon="@drawable/task_24"
+            android:title="@string/tasks"/>
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout_24"
             android:title="@string/exit_item_Str"

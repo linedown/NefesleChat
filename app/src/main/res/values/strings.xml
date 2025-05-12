@@ -60,4 +60,5 @@
     <string name="group_or_academic_str"><u>ИВБ-111 или кандидат наук</u></string>
     <string name="date_expire"><u>01.01.1980</u></string>
     <string name="inputLastname">Введите фамилию пользователя</string>
+    <string name="tasks">Задачи</string>
 </resources>

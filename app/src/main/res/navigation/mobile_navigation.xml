@@ -36,6 +36,11 @@
         android:label="@string/item_notes_name"
         tools:layout="@layout/fragment_notes"/>
     <fragment
+        android:id="@+id/nav_tasks"
+        android:name="ru.linedown.nefeslechat.ui.TasksFragment"
+        android:label="Задачи"
+        tools:layout="@layout/fragment_tasks"/>
+    <fragment
         android:id="@+id/nav_raspisanie"
         android:name="ru.linedown.nefeslechat.ui.RaspisanieFragment"
         android:label="@string/item_raspisanie_name"

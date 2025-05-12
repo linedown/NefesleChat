@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_chats, R.id.nav_search,
-                R.id.nav_notes, R.id.nav_raspisanie, R.id.nav_logout)
+                R.id.nav_notes, R.id.nav_raspisanie, R.id.nav_logout, R.id.nav_tasks)
                 .setOpenableLayout(drawer)
                 .build();
 
