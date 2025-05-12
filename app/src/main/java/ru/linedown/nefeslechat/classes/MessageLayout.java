@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,13 +28,13 @@ public class MessageLayout extends LinearLayout {
     private TextView messageView;
     private ImageView fileView;
     private TextView timeView;
-    private int marginStart;
     private MessageLayoutAttributes messageLayoutAttributes;
+    private int typeUser;
     private final SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm");
 
     public MessageLayout(Context context, int typeUser, MessageLayoutAttributes messageLayoutAttributes) {
         super(context);
-        marginStart = (typeUser == ME) ? 190 : 10;
+        this.typeUser = typeUser;
         this.messageLayoutAttributes = messageLayoutAttributes;
         init();
     }
@@ -58,10 +59,11 @@ public class MessageLayout extends LinearLayout {
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 209, getContext().getResources().getDisplayMetrics()),
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginStart, getContext().getResources().getDisplayMetrics()),
+        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getContext().getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getContext().getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getContext().getResources().getDisplayMetrics()),
                 0);
+        layoutParams.gravity = (typeUser == ME) ? Gravity.END : Gravity.START;
         setLayoutParams(layoutParams);
 
         senderNameView = new TextView(getContext());
