@@ -31,12 +31,12 @@
                 android:id="@+id/info_const_str"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="136dp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/account_label"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -210,7 +210,7 @@
             android:id="@+id/notifications_const_str"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10sp"
+            android:layout_marginStart="20sp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/inter_bold"
             android:text="@string/show_notifications_label"
@@ -226,7 +226,7 @@
             android:layout_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/other_label"
-            tools:layout_marginEnd="10sp" />
+            tools:layout_marginEnd="20sp" />
 
         <TextView
             android:id="@+id/other_label"
