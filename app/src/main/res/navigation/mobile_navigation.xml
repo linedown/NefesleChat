@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/nav_chats"
-        android:name="ru.linedown.nefeslechat.ui.ChatsFragment"
+        android:name="ru.linedown.nefeslechat.fragments.ChatsFragment"
         android:label="@string/menu_chats"
         tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/nav_chat"
-        android:name="ru.linedown.nefeslechat.ui.ChatFragment"
+        android:name="ru.linedown.nefeslechat.fragments.ChatFragment"
         android:label="Чат"
         tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="ru.linedown.nefeslechat.ui.SettingsFragment"
+        android:name="ru.linedown.nefeslechat.fragments.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/nav_search"
-        android:name="ru.linedown.nefeslechat.ui.SearchFragment"
+        android:name="ru.linedown.nefeslechat.fragments.SearchFragment"
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_search">
         <action android:id="@+id/action_nav_to_profile"
@@ -32,22 +32,22 @@
     </fragment>
     <fragment
         android:id="@+id/nav_notes"
-        android:name="ru.linedown.nefeslechat.ui.NotesFragment"
+        android:name="ru.linedown.nefeslechat.fragments.NotesFragment"
         android:label="@string/item_notes_name"
         tools:layout="@layout/fragment_notes"/>
     <fragment
         android:id="@+id/nav_tasks"
-        android:name="ru.linedown.nefeslechat.ui.TasksFragment"
+        android:name="ru.linedown.nefeslechat.fragments.TasksFragment"
         android:label="Задачи"
         tools:layout="@layout/fragment_tasks"/>
     <fragment
         android:id="@+id/nav_raspisanie"
-        android:name="ru.linedown.nefeslechat.ui.RaspisanieFragment"
+        android:name="ru.linedown.nefeslechat.fragments.RaspisanieFragment"
         android:label="@string/item_raspisanie_name"
         tools:layout="@layout/fragment_raspisanie"/>
     <fragment
         android:id="@+id/nav_profile"
-        android:name="ru.linedown.nefeslechat.ui.ProfileFragment"
+        android:name="ru.linedown.nefeslechat.fragments.ProfileFragment"
         android:label="Профиль пользователя"
         tools:layout="@layout/fragment_profile"
         />

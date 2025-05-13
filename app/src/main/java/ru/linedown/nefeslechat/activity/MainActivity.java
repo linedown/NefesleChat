@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.Activity;
+package ru.linedown.nefeslechat.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,9 +26,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.ui.layuots.ConfirmExitDialogFragment;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.WebSocketConnection;
+import ru.linedown.nefeslechat.layuots.ConfirmExitDialogFragment;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
+import ru.linedown.nefeslechat.utils.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
 import ru.linedown.nefeslechat.interfaces.MyCallback;

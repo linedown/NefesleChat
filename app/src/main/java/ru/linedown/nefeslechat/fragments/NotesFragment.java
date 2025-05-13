@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui;
+package ru.linedown.nefeslechat.fragments;
 
 import android.os.Bundle;
 

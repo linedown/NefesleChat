@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.layuots;
+package ru.linedown.nefeslechat.layuots;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,11 +20,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import ru.linedown.nefeslechat.Activity.LoginActivity;
+import ru.linedown.nefeslechat.activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.WebSocketConnection;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
+import ru.linedown.nefeslechat.utils.WebSocketConnection;
 
 public class ConfirmExitDialogFragment extends DialogFragment {
     final String JWT_TOKEN = "jwt_token";

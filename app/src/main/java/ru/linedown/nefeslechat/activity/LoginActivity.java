@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.Activity;
+package ru.linedown.nefeslechat.activity;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityLoginBinding;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.interfaces.MyCallback;

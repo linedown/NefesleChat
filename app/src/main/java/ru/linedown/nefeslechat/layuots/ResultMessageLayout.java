@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui.layuots;
+package ru.linedown.nefeslechat.layuots;
 
 import android.content.Context;
 import android.graphics.Color;

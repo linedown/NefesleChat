@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui;
+package ru.linedown.nefeslechat.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -29,8 +29,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.ui.layuots.ResultMessageLayout;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
+import ru.linedown.nefeslechat.layuots.ResultMessageLayout;
 import ru.linedown.nefeslechat.entity.ResultMessageAttributes;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSearchBinding;

@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.utils;
 
 import android.text.Html;
 import android.widget.TextView;

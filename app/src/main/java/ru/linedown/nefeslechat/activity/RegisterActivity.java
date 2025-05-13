@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.Activity;
+package ru.linedown.nefeslechat.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.ActivityRegisterBinding;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

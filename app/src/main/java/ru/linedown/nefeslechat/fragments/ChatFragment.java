@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.ui;
+package ru.linedown.nefeslechat.fragments;
 
 import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
@@ -33,12 +33,12 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.ui.layuots.ChoseActionDialogFragment;
-import ru.linedown.nefeslechat.ui.layuots.ConfirmDeleteMessageDialogFragment;
-import ru.linedown.nefeslechat.ui.layuots.EditMessageDialogFragment;
-import ru.linedown.nefeslechat.classes.WebSocketConnection;
-import ru.linedown.nefeslechat.ui.layuots.MessageLayout;
-import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.layuots.ChoseActionDialogFragment;
+import ru.linedown.nefeslechat.layuots.ConfirmDeleteMessageDialogFragment;
+import ru.linedown.nefeslechat.layuots.EditMessageDialogFragment;
+import ru.linedown.nefeslechat.utils.WebSocketConnection;
+import ru.linedown.nefeslechat.layuots.MessageLayout;
+import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 import ru.linedown.nefeslechat.entity.EditMessagePayload;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
