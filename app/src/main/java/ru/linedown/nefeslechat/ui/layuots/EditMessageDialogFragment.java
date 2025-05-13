@@ -1,9 +1,10 @@
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.ui.layuots;
 
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;

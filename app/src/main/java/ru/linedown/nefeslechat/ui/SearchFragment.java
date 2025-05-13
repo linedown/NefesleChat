@@ -30,7 +30,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
-import ru.linedown.nefeslechat.classes.ResultMessageLayout;
+import ru.linedown.nefeslechat.ui.layuots.ResultMessageLayout;
 import ru.linedown.nefeslechat.entity.ResultMessageAttributes;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.databinding.FragmentSearchBinding;

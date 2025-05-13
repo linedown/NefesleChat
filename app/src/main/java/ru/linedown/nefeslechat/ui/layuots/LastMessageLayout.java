@@ -1,12 +1,11 @@
 
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.ui.layuots;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;

@@ -26,7 +26,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.ConfirmExitDialogFragment;
+import ru.linedown.nefeslechat.ui.layuots.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;

@@ -1,9 +1,6 @@
 package ru.linedown.nefeslechat.classes;
 
 import android.util.Log;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,15 +8,11 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import lombok.Getter;
 import lombok.Setter;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
@@ -35,7 +28,6 @@ import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.entity.RegistrationForm;
-import ru.linedown.nefeslechat.interfaces.MyCallback;
 
 public class OkHttpUtil {
     private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar

@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.ui.layuots;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

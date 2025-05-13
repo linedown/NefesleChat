@@ -23,7 +23,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 
@@ -33,13 +32,12 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
-import ru.linedown.nefeslechat.classes.ChoseActionDialogFragment;
-import ru.linedown.nefeslechat.classes.ConfirmDeleteMessageDialogFragment;
-import ru.linedown.nefeslechat.classes.EditMessageDialogFragment;
+import ru.linedown.nefeslechat.ui.layuots.ChoseActionDialogFragment;
+import ru.linedown.nefeslechat.ui.layuots.ConfirmDeleteMessageDialogFragment;
+import ru.linedown.nefeslechat.ui.layuots.EditMessageDialogFragment;
 import ru.linedown.nefeslechat.classes.WebSocketConnection;
-import ru.linedown.nefeslechat.classes.MessageLayout;
+import ru.linedown.nefeslechat.ui.layuots.MessageLayout;
 import ru.linedown.nefeslechat.classes.OkHttpUtil;
 import ru.linedown.nefeslechat.databinding.FragmentChatBinding;
 import ru.linedown.nefeslechat.entity.EditMessagePayload;

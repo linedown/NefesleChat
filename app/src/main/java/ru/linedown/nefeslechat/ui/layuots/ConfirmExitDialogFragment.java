@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.classes;
+package ru.linedown.nefeslechat.ui.layuots;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -23,6 +23,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
+import ru.linedown.nefeslechat.classes.OkHttpUtil;
+import ru.linedown.nefeslechat.classes.WebSocketConnection;
 
 public class ConfirmExitDialogFragment extends DialogFragment {
     final String JWT_TOKEN = "jwt_token";
