@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import ru.linedown.nefeslechat.activity.LoginActivity;
+import ru.linedown.nefeslechat.Activity.LoginActivity;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;

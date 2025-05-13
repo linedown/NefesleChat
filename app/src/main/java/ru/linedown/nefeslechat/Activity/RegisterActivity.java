@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.activity;
+package ru.linedown.nefeslechat.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

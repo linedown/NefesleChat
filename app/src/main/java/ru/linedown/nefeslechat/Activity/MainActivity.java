@@ -1,4 +1,4 @@
-package ru.linedown.nefeslechat.activity;
+package ru.linedown.nefeslechat.Activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
