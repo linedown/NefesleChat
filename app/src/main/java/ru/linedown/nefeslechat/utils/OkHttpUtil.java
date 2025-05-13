@@ -24,6 +24,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.linedown.nefeslechat.entity.ChatDTO;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
+import ru.linedown.nefeslechat.entity.TaskDTO;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.entity.UserInListDTO;
 import ru.linedown.nefeslechat.entity.AuthorizationForm;
@@ -32,9 +33,9 @@ import ru.linedown.nefeslechat.entity.RegistrationForm;
 public class OkHttpUtil {
     private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
             (new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
-    private static final String baseUrl = "http://linedown.ru:3254/api";
+    private static final String baseUrl = "http://messenger.nefesle.ru:3254/api";
     @Getter
-    private static final String baseUrlWithoutApi = "linedown.ru";
+    private static final String baseUrlWithoutApi = "messenger.nefesle.ru";
     private static final String domainRegistation = "/auth/register";
     private static final String domainAuthorization = "/auth";
     private static final String userProfilePath = "/user-profile";
@@ -58,6 +59,10 @@ public class OkHttpUtil {
     @Getter
     private static final String chatUrl = "/app/chat/";
     private static final String singleChatUrl = "/get-singlechat-id/";
+    private static final String tasksUrl = "/tasks";
+    private static final String createTaskUrl = "/create";
+    private static final String changeTaskUrl = "/change-status";
+    private static final String deleteTaskUrl = "/delete/";
 
     @Getter
     @Setter
@@ -200,6 +205,62 @@ public class OkHttpUtil {
         responseBody.close();
         response.close();
         return idStr;
+    }
+
+    public static List<TaskDTO> getTasks() throws IOException {
+        Request request = new Request.Builder().url(baseUrl + tasksUrl).get().build();
+        Response response = okHttpClient.newCall(request).execute();
+
+        ResponseBody responseBody = response.body();
+        List<TaskDTO> tasks = new Gson().fromJson(responseBody.string(), new TypeToken<List<TaskDTO>>(){}.getType());
+
+        responseBody.close();
+        response.close();
+        return tasks;
+    }
+
+    public static TaskDTO createTask(String taskText) throws IOException {
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setText(taskText);
+
+        RequestBody requestBody = RequestBody.create(new Gson().toJson(taskDTO), JSON);
+        Request request = new Request.Builder().url(baseUrl + tasksUrl + createTaskUrl).post(requestBody).build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        if(!response.isSuccessful()) {
+            response.close();
+            return null;
+        }
+
+        ResponseBody responseBody = response.body();
+
+        TaskDTO newTask = new Gson().fromJson(responseBody.string(), TaskDTO.class);
+
+        responseBody.close();
+        response.close();
+
+        return newTask;
+    }
+    public static boolean changeTaskStatus(TaskDTO task) throws IOException {
+        task.setText(null);
+        RequestBody requestBody = RequestBody.create(new Gson().toJson(task), JSON);
+        Request request = new Request.Builder().url(baseUrl + tasksUrl + changeTaskUrl).post(requestBody).build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        boolean isSuccess = response.isSuccessful();
+        response.close();
+
+        return isSuccess;
+    }
+
+    public static boolean deleteTask(int taskId) throws IOException {
+        Request request = new Request.Builder().url(baseUrl + tasksUrl + deleteTaskUrl + taskId).delete().build();
+        Response response = okHttpClient.newCall(request).execute();
+
+        boolean isSuccess = response.isSuccessful();
+        response.close();
+
+        return isSuccess;
     }
 
 }
