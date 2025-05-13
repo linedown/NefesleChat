@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         TextView infoInBar = infoBarView.findViewById(R.id.InfoLabel);
         TextView loginInBar = infoBarView.findViewById(R.id.mailLabel);
         TextView userInBar = infoBarView.findViewById(R.id.userLabel);
-        CircleImageView civ = infoBarView.findViewById(R.id.avatar);
         drawerLayout = findViewById(R.id.drawer_layout);
 
         Observable<UserDetailsDTO> observable = Observable.fromCallable(() -> {
@@ -98,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 );
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_chats, R.id.nav_search,
-                R.id.nav_notes, R.id.nav_raspisanie, R.id.nav_logout, R.id.nav_tasks)
+                R.id.nav_chats, R.id.nav_search, R.id.nav_notes,
+                R.id.nav_raspisanie, R.id.nav_logout, R.id.nav_tasks)
                 .setOpenableLayout(drawer)
                 .build();
 
