@@ -241,9 +241,9 @@ public class OkHttpUtil {
 
         return newTask;
     }
-    public static boolean changeTaskStatus(TaskDTO task) throws IOException {
-        task.setText(null);
-        RequestBody requestBody = RequestBody.create(new Gson().toJson(task), JSON);
+    public static boolean changeTaskStatus(int taskId) throws IOException {
+
+        RequestBody requestBody = RequestBody.create(String.valueOf(taskId).getBytes(), JSON);
         Request request = new Request.Builder().url(baseUrl + tasksUrl + changeTaskUrl).post(requestBody).build();
 
         Response response = okHttpClient.newCall(request).execute();

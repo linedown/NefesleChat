@@ -91,7 +91,7 @@ public class TasksFragment extends Fragment implements CreateTaskListener {
         deleteTaskView.setText(deleteTaskText);
 
         changeStatusView.setOnClickListener(view -> {
-            Observable<Boolean> observable = Observable.fromCallable(() -> OkHttpUtil.changeTaskStatus(task));
+            Observable<Boolean> observable = Observable.fromCallable(() -> OkHttpUtil.changeTaskStatus(task.getId()));
             disposableInner = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                         if(result){

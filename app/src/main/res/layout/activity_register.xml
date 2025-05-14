@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="35sp"
-        android:layout_marginTop="189dp"
+        android:layout_marginTop="179dp"
         android:layout_marginEnd="35sp"
         android:autofillHints="@string/prompt_email"
         android:background="@drawable/bg"
@@ -99,31 +99,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mailRegister" />
 
-    <TextView
-        android:id="@+id/registerLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="82dp"
-        android:fontFamily="@font/comic_neue"
-        android:text="@string/register_label_const"
-        android:textColor="@color/neccessarygreen"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="55dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <ImageButton
         android:id="@+id/register_button"
@@ -165,6 +140,42 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_button" />
+
+    <LinearLayout
+        android:id="@+id/registerHeaderLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:layout_marginTop="50sp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/registerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="27sp"
+            android:fontFamily="@font/comic_neue"
+            android:text="@string/register_label_const"
+            android:textColor="@color/neccessarygreen"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
