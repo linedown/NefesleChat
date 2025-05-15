@@ -73,9 +73,9 @@ public class TaskLayout extends ConstraintLayout {
         ConstraintLayout.LayoutParams switchLayoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        textViewLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        textViewLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-        textViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        switchLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        switchLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        switchLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
 
         statusTaskSwitch.setLayoutParams(switchLayoutParams);
 
