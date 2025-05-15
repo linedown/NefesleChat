@@ -22,7 +22,7 @@ public class ConfirmDeleteMessageDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         builder.setTitle("Подтверждение");
-        builder.setMessage("Вы точно хотите удалить сообщение?");
+        builder.setMessage("Вы точно хотите удалить?");
         builder.setPositiveButton("Да", (dialog, which) -> {
             if(deleteMessageActionListener != null) deleteMessageActionListener.onApplyDelete();
         });

@@ -10,8 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,19 +22,24 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.databinding.FragmentTasksBinding;
 import ru.linedown.nefeslechat.entity.TaskDTO;
-import ru.linedown.nefeslechat.interfaces.CreateTaskListener;
-import ru.linedown.nefeslechat.interfaces.EditMessageActionListener;
-import ru.linedown.nefeslechat.layuots.CreateTaskDialogFragment;
+import ru.linedown.nefeslechat.interfaces.DeleteMessageActionListener;
+import ru.linedown.nefeslechat.layuots.ConfirmDeleteMessageDialogFragment;
+import ru.linedown.nefeslechat.layuots.TaskLayout;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
 
-public class TasksFragment extends Fragment implements CreateTaskListener {
+public class TasksFragment extends Fragment implements DeleteMessageActionListener {
 
     private FragmentTasksBinding binding;
     Disposable disposable;
     Disposable disposableInner;
-    LinearLayout tasksLayout;
+    Disposable disposableSwitch;
+    LinearLayout activeTasksLayout;
+    LinearLayout finishedTasksLayout;
+    int taskId;
+    TaskLayout currentTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,8 +48,10 @@ public class TasksFragment extends Fragment implements CreateTaskListener {
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageButton createButton = binding.addTaskButton;
-        tasksLayout = binding.tasksLayout;
+        Button createButton = binding.createTaskButton;
+        activeTasksLayout = binding.activeTasksLayout;
+        finishedTasksLayout = binding.finishedTasksLayout;
+        TextView tasksTextInput = binding.inputTaskText;
 
         Observable<List<TaskDTO>> observable = Observable.fromCallable(OkHttpUtil::getTasks);
 
@@ -53,71 +61,46 @@ public class TasksFragment extends Fragment implements CreateTaskListener {
                         }, error -> Log.e("Получение: исключение", "Текст исключения: " + error.getMessage(), error));
 
         createButton.setOnClickListener(view -> {
-            CreateTaskDialogFragment createTaskDialogFragment = new CreateTaskDialogFragment(this);
-            createTaskDialogFragment.show(getChildFragmentManager(), "CreateDialog");
+            Observable<TaskDTO> observableInner = Observable.fromCallable(() -> OkHttpUtil.createTask(tasksTextInput.getText().toString()));
+
+            disposableInner = observableInner.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::addTask, error -> Log.e("Создание: исключение", "Текст исключения: " + error.getMessage(), error));
         });
 
 
         return root;
     }
-    @Override
-    public void onApplyCreate(String taskText) {
-        Observable<TaskDTO> observable = Observable.fromCallable(() -> OkHttpUtil.createTask(taskText));
-
-        disposableInner = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::addTask, error -> Log.e("Создание: исключение", "Текст исключения: " + error.getMessage(), error));
-    }
-
-    @Override
-    public void onCancelCreate() {
-        Toast.makeText(getContext(), "Действие по созданию задачи отменено", Toast.LENGTH_SHORT).show();
-    }
 
     private void addTask(TaskDTO task){
-        TextView taskView = new TextView(getContext());
-        taskView.setText(task.getText());
-        taskView.setId(task.getId());
+        TaskLayout taskLayout = new TaskLayout(getContext(), task.getId(), task.getText(), task.isCompleted());
+        if(task.isCompleted()) finishedTasksLayout.addView(taskLayout);
+        else activeTasksLayout.addView(taskLayout);
 
-        TextView statusView = new TextView(getContext());
-        String statusStr = task.isCompleted() ? "Выполнено" : "Не выполнено";
-        statusView.setText(statusStr);
+        taskLayout.taskTextView.setOnClickListener(view -> {
+            ConfirmDeleteMessageDialogFragment confirmDeleteMessageDialogFragment = new ConfirmDeleteMessageDialogFragment(this);
+            confirmDeleteMessageDialogFragment.show(getChildFragmentManager(), "DeleteDialog");
+            taskId = task.getId();
+            currentTask = taskLayout;
+        });
 
-        TextView changeStatusView = new TextView(getContext());
-        String changeStatusTaskText = "Изменить статус задания с айди: " + task.getId();
-        changeStatusView.setText(changeStatusTaskText);
-
-        TextView deleteTaskView = new TextView(getContext());
-        String deleteTaskText = "Удалить задание с айди: " + task.getId();
-        deleteTaskView.setText(deleteTaskText);
-
-        changeStatusView.setOnClickListener(view -> {
+        taskLayout.statusTaskSwitch.setOnCheckedChangeListener((view, isChecked) -> {
             Observable<Boolean> observable = Observable.fromCallable(() -> OkHttpUtil.changeTaskStatus(task.getId()));
-            disposableInner = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            disposableSwitch = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                         if(result){
-                            if(statusView.getText().equals("Выполнено")) statusView.setText("Не выполнено");
-                            else statusView.setText("Выполнено");
+                            if(isChecked) {
+                                activeTasksLayout.removeView(taskLayout);
+                                finishedTasksLayout.addView(taskLayout);
+                                taskLayout.setBackgroundResource(R.drawable.bg_read_chat);
+                            }
+                            else {
+                                finishedTasksLayout.removeView(taskLayout);
+                                activeTasksLayout.addView(taskLayout);
+                                taskLayout.setBackgroundResource(R.drawable.bg_green);
+                            }
                         } else Toast.makeText(getContext(), "Действие по изменению статуса задачи отменено", Toast.LENGTH_SHORT).show();
                     }, error -> Log.e("Изменение статуса: исключение", "Текст исключения: " + error.getMessage(), error));
         });
-        deleteTaskView.setOnClickListener(view -> {
-            Observable<Boolean> observable = Observable.fromCallable(() -> OkHttpUtil.deleteTask(task.getId()));
-            disposableInner = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                        if(result){
-                            tasksLayout.removeView(taskView);
-                            tasksLayout.removeView(statusView);
-                            tasksLayout.removeView(changeStatusView);
-                            tasksLayout.removeView(deleteTaskView);
-                        }
-                            else Toast.makeText(getContext(), "Действие по удалению задачи отменено", Toast.LENGTH_SHORT).show();
-                    }, error -> Log.e("Удаление задачи: исключение", "Текст исключения: " + error.getMessage(), error));
-        });
-
-        tasksLayout.addView(taskView);
-        tasksLayout.addView(statusView);
-        tasksLayout.addView(changeStatusView);
-        tasksLayout.addView(deleteTaskView);
     }
 
     private void clearAllDialogFragment(){
@@ -136,5 +119,24 @@ public class TasksFragment extends Fragment implements CreateTaskListener {
         clearAllDialogFragment();
         if(disposable != null && !disposable.isDisposed()) disposable.dispose();
         if(disposableInner != null && !disposableInner.isDisposed()) disposableInner.dispose();
+        if(disposableSwitch != null && !disposableSwitch.isDisposed()) disposableSwitch.dispose();
+    }
+
+    @Override
+    public void onApplyDelete() {
+        Observable<Boolean> observable = Observable.fromCallable(() -> OkHttpUtil.deleteTask(taskId));
+        disposableInner = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if(result){
+                        activeTasksLayout.removeView(currentTask);
+                        finishedTasksLayout.removeView(currentTask);
+                    }
+                    else Toast.makeText(getContext(), "Действие по удалению задачи отменено", Toast.LENGTH_SHORT).show();
+                }, error -> Log.e("Удаление задачи: исключение", "Текст исключения: " + error.getMessage(), error));
+    }
+
+    @Override
+    public void onCancelDelete() {
+        Toast.makeText(getContext(), "Действие по удалению отменено", Toast.LENGTH_SHORT).show();
     }
 }

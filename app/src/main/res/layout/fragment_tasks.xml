@@ -1,26 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/general_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/nedowhite"
+    android:orientation="vertical"
     tools:context=".fragments.TasksFragment">
 
-    <LinearLayout
-        android:id="@+id/tasksLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/create_task_layout"
         android:layout_width="match_parent"
-        android:layout_height="617dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/addTaskButton"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/input_task_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:ems="9"
+            android:fontFamily="@font/noto_sans_thin"
+            android:hint="Новая задача"
+            android:inputType="text"
+            android:paddingStart="15sp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/create_task_button"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5sp"
+            android:backgroundTint="@color/neccessarygreen"
+            android:text="✔"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/input_task_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/activeTasksLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/file"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tasksLayout" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginEnd="10sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20sp"
+            android:fontFamily="@font/noto_sans_bold"
+            android:text="Активные задачи"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/under_active_view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/taskLayout"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="5sp"
+            android:background="@drawable/bg_status_online"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/taskTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:fontFamily="@font/noto_sans_medium"
+                android:text="Выполнить данную задачу"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/status_task_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/finishedTasksLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginEnd="10sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/finishedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20sp"
+            android:fontFamily="@font/noto_sans_bold"
+            android:text="Завершенные задачи"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/under_finished_view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp" />
+    </LinearLayout>
+
+</LinearLayout>

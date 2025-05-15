@@ -6,6 +6,8 @@
         <item>@font/inter_light</item>
         <item>@font/inter_medium</item>
         <item>@font/noto_sans_bold</item>
+        <item>@font/noto_sans_medium</item>
+        <item>@font/noto_sans_thin</item>
         <item>@font/swanky_and_moo_moo</item>
     </array>
 </resources>
