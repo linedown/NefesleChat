@@ -62,7 +62,7 @@ public class TaskLayout extends ConstraintLayout {
         ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        textViewLayoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()), 0, 0 ,0);
+        textViewLayoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics()), 0, 0 ,0);
         textViewLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
         textViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         textViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;

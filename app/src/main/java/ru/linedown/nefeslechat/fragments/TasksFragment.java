@@ -61,7 +61,9 @@ public class TasksFragment extends Fragment implements DeleteMessageActionListen
                         }, error -> Log.e("Получение: исключение", "Текст исключения: " + error.getMessage(), error));
 
         createButton.setOnClickListener(view -> {
-            Observable<TaskDTO> observableInner = Observable.fromCallable(() -> OkHttpUtil.createTask(tasksTextInput.getText().toString()));
+            String tasksText = tasksTextInput.getText().toString();
+            tasksTextInput.setText("");
+            Observable<TaskDTO> observableInner = Observable.fromCallable(() -> OkHttpUtil.createTask(tasksText));
 
             disposableInner = observableInner.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::addTask, error -> Log.e("Создание: исключение", "Текст исключения: " + error.getMessage(), error));
