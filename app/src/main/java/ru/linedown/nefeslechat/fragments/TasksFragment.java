@@ -74,7 +74,7 @@ public class TasksFragment extends Fragment implements DeleteMessageActionListen
     }
 
     private void addTask(TaskDTO task){
-        TaskLayout taskLayout = new TaskLayout(getContext(), task.getId(), task.getText(), task.isCompleted());
+        TaskLayout taskLayout = new TaskLayout(getContext(), task);
         if(task.isCompleted()) finishedTasksLayout.addView(taskLayout);
         else activeTasksLayout.addView(taskLayout);
 
