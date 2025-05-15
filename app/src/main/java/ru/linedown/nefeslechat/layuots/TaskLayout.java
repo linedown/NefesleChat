@@ -18,20 +18,17 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.entity.TaskDTO;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
 
 public class TaskLayout extends ConstraintLayout {
     public TextView taskTextView;
     public Switch statusTaskSwitch;
-    private int taskId;
-    private String taskText;
-    private boolean taskStatus;
+    private TaskDTO taskDTO;
 
-    public TaskLayout(Context context, int taskId, String taskText, boolean taskStatus) {
+    public TaskLayout(Context context, TaskDTO taskDTO) {
         super(context);
-        this.taskStatus = taskStatus;
-        this.taskId = taskId;
-        this.taskText = taskText;
+        this.taskDTO = taskDTO;
         init();
     }
 
@@ -39,10 +36,10 @@ public class TaskLayout extends ConstraintLayout {
         taskTextView = new TextView(getContext());
         statusTaskSwitch = new Switch(getContext());
 
-        setId(taskId);
-        statusTaskSwitch.setChecked(taskStatus);
+        setId(taskDTO.getId());
+        statusTaskSwitch.setChecked(taskDTO.isCompleted());
         taskTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        int backgroundResource = !taskStatus ? R.drawable.bg_green : R.drawable.bg_read_chat;
+        int backgroundResource = !taskDTO.isCompleted() ? R.drawable.bg_green : R.drawable.bg_read_chat;
         Drawable background = ContextCompat.getDrawable(getContext(), backgroundResource);
         setBackground(background);
 
@@ -57,7 +54,7 @@ public class TaskLayout extends ConstraintLayout {
 
         setLayoutParams(layoutParams);
 
-        taskTextView.setText(taskText);
+        taskTextView.setText(taskDTO.getText());
         taskTextView.setTextColor(Color.WHITE);
         ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
