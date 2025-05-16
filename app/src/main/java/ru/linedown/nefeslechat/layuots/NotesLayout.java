@@ -72,7 +72,7 @@ public class NotesLayout extends LinearLayout {
         timeView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.noto_sans_medium));
 
         LinearLayout.LayoutParams timeParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
 
@@ -80,7 +80,7 @@ public class NotesLayout extends LinearLayout {
                 0, 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()), 0
         );
-        layoutParams.gravity = Gravity.END;
+        timeParams.gravity = Gravity.END;
         timeView.setLayoutParams(timeParams);
 
         addView(noteView);

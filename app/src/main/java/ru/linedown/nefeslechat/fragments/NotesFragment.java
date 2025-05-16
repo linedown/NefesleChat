@@ -76,6 +76,8 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
 
         Observable<List<MessageAllInfoDTO>> observable = Observable.fromCallable(() -> {
             chatId = Integer.parseInt(OkHttpUtil.getIdInChatForProfile(myId));
+            Log.d("Мой айди", "" + myId);
+            Log.d("Айди чата", "" + chatId);
             return OkHttpUtil.getMessagesInChat(chatId);
         });
 

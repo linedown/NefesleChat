@@ -78,6 +78,7 @@ public class ChatFragment extends Fragment implements ChoseActionListener, EditM
         scrollViewInChat = binding.scrollViewInChat;
 
         chatId = Integer.parseInt(arguments.getString("ChatId"));
+        Log.d("Айди чата", "" + chatId);
 
         if(chatType.equals("Single")){
             userId = Integer.parseInt(arguments.getString("UserId"));
