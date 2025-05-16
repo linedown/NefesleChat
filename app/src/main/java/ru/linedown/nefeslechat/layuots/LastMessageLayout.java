@@ -91,7 +91,7 @@ public class LastMessageLayout extends LinearLayout {
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, // <-- Изменено здесь!
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         horizontalParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics());

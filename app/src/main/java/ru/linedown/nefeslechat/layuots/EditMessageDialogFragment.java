@@ -31,8 +31,8 @@ public class EditMessageDialogFragment extends DialogFragment {
         editText.setText(actualMessageText);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
 
-        builder.setTitle("Редактирование").setMessage("Изменение текста сообщения").setView(editText)
-                .setPositiveButton("Изменить", (dialog, which) -> {
+        builder.setTitle("Действие").setMessage("Введите новый текст").setView(editText)
+                .setPositiveButton("Применить", (dialog, which) -> {
                     String newText = editText.getText().toString();
                     if(editMessageActionListener != null) editMessageActionListener.onApplyEdit(newText);
                     dismiss();

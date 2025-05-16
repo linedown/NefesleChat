@@ -129,7 +129,7 @@ public class ChatFragment extends Fragment implements ChoseActionListener, EditM
                             if (WebSocketConnection.isConnected()){
                                 Log.w("Ссылка", OkHttpUtil.getChatUrl() + chatId);
                                 if(chatType.equals("Single")) WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, result);
-                                else WebSocketConnection.getSession().send(OkHttpUtil.getChatUrl() + chatId, result);
+                                else WebSocketConnection.send(OkHttpUtil.getChatUrl() + chatId, result);
                                 inputField.setText("");
                             }
                             else Log.w("WebSocket", "Соединение WebSocket не активно. Сообщение не отправлено.");
