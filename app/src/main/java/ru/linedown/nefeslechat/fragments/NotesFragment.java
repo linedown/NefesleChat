@@ -205,7 +205,7 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
 
     @Override
     public void onApplyEdit(String newText) {
-        final WebSocketDTO webSocketDTO;
+        WebSocketDTO webSocketDTO;
         if(!EditMessageDialogFragment.isCreate){
             int messageId = chooseLayout.getId();
             webSocketDTO = new WebSocketDTO("editMessage", new EditMessagePayload(messageId, newText));

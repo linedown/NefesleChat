@@ -63,6 +63,8 @@ public class OkHttpUtil {
     private static final String createTaskUrl = "/create";
     private static final String changeTaskUrl = "/change-status";
     private static final String deleteTaskUrl = "/delete/";
+    @Getter
+    private static final String getSelfChatUrl = "/get-selfchat-id";
 
     @Getter
     @Setter
@@ -197,7 +199,9 @@ public class OkHttpUtil {
     }
 
     public static String getIdInChatForProfile(int userId) throws IOException {
-        Request request = new Request.Builder().url(baseUrl + singleChatUrl + userId).get().build();
+        Request request;
+        if(userId != myId) request = new Request.Builder().url(baseUrl + singleChatUrl + userId).get().build();
+        else request = new Request.Builder().url(baseUrl + getSelfChatUrl).get().build();
         Response response = okHttpClient.newCall(request).execute();
         ResponseBody responseBody = response.body();
         String idStr = responseBody.string();
