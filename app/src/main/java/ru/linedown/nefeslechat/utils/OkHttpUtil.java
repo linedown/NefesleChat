@@ -186,10 +186,9 @@ public class OkHttpUtil {
         Request request = new Request.Builder().url(baseUrl + urlWithChat).get().build();
         Response response = okHttpClient.newCall(request).execute();
         ResponseBody responseBody = response.body();
-        List<MessageAllInfoDTO> messages = new Gson().fromJson(responseBody.string(), new TypeToken<List<MessageAllInfoDTO>>(){}.getType());
-        Log.d("GetMessages", messages.toString());
-
-        responseBody.close();
+        List<MessageAllInfoDTO> messages = Collections.emptyList();
+        messages = new Gson().fromJson(responseBody.string(), new TypeToken<List<MessageAllInfoDTO>>(){}.getType());
+        //Log.d("GetMessages", messages.toString());
         response.close();
 
         Collections.reverse(messages);

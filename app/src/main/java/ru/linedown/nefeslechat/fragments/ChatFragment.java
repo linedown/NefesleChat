@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
 
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -95,7 +96,11 @@ public class ChatFragment extends Fragment implements ChoseActionListener, EditM
             addMessageInChat(messageInChatDTO);
         });
 
-        Observable<List<MessageAllInfoDTO>> observable = Observable.fromCallable(() -> OkHttpUtil.getMessagesInChat(chatId));
+        Observable<List<MessageAllInfoDTO>> observable = Observable.fromCallable(() -> {
+            if(chatId != 0) return OkHttpUtil.getMessagesInChat(chatId);
+            else return Collections.emptyList();
+        }
+        );
         MyCallback<List<MessageAllInfoDTO>> mcOnMessages = new MyCallback<>() {
             @Override
             public void onSuccess(List<MessageAllInfoDTO> result) {
@@ -129,7 +134,7 @@ public class ChatFragment extends Fragment implements ChoseActionListener, EditM
                         try {
                             if (WebSocketConnection.isConnected()){
                                 Log.w("Ссылка", OkHttpUtil.getChatUrl() + chatId);
-                                if(chatType.equals("Single")) WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, result);
+                                if(chatType.equals("Single") || chatId == 0) WebSocketConnection.send(OkHttpUtil.getUserUrl() + userId, result);
                                 else WebSocketConnection.send(OkHttpUtil.getChatUrl() + chatId, result);
                                 inputField.setText("");
                             }
