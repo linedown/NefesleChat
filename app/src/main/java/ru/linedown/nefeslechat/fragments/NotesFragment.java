@@ -63,7 +63,7 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
         binding = FragmentNotesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageButton createBuuton = binding.addNoteButton;
+        ImageButton createButton = binding.addNoteButton;
         onlyNoteLayout = binding.onlyNotesLayout;
 
         myId = OkHttpUtil.getMyId();
@@ -96,7 +96,7 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
                 .subscribe(myCallback::onSuccess, error -> myCallback.onError(error.getMessage()));
 
 
-        createBuuton.setOnClickListener(view -> {
+        createButton.setOnClickListener(view -> {
             noteLayoutChooseText = "";
             chooseLayout = null;
             showEditActionDialog();
@@ -137,9 +137,9 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
             chooseLayout = notesLayout;
             showChooseActionDialog();
         });
-        new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), MS);
-
+        Log.d("Заметка " + messageAllInfoDTO.getId(), messageAllInfoDTO.getMessage());
         onlyNoteLayout.addView(notesLayout);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> scrollViewInChat.fullScroll(View.FOCUS_DOWN), MS);
     }
 
     private void showChooseActionDialog(){
@@ -204,7 +204,7 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
     @Override
     public void onApplyEdit(String newText) {
         final WebSocketDTO webSocketDTO;
-        if(newText.isEmpty()){
+        if(!EditMessageDialogFragment.isCreate){
             int messageId = chooseLayout.getId();
             webSocketDTO = new WebSocketDTO("editMessage", new EditMessagePayload(messageId, newText));
         }
@@ -212,7 +212,8 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
         Observable<String> observable = Observable.fromCallable(() -> {
             if (WebSocketConnection.isConnected()){
                 WebSocketConnection.send(OkHttpUtil.getUserUrl() + myId, webSocketDTO);
-                return "Успешно выполнена операция";
+                String operation = EditMessageDialogFragment.isCreate ? "создания" : "изменения";
+                return "Успешно выполнена операция " + operation;
             }
             else Log.w("WebSocket", "Соединение WebSocket не активно. Операция не сделана.");
 
@@ -222,7 +223,7 @@ public class NotesFragment extends Fragment implements ChoseActionListener, Edit
         deleteDisposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 result -> {
                     Log.d("EditDialog", "Результат: " + result);
-                    if(!newText.isEmpty() && chooseLayout != null) chooseLayout.setTextInMessage(newText);
+                    if(!EditMessageDialogFragment.isCreate) chooseLayout.setTextInMessage(newText);
                 },
                 error -> Log.e("Изменение: исключение", "Текст исключения: " + error.getMessage(), error));
     }

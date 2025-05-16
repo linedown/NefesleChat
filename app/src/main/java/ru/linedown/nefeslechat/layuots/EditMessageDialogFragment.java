@@ -19,6 +19,7 @@ import ru.linedown.nefeslechat.interfaces.EditMessageActionListener;
 public class EditMessageDialogFragment extends DialogFragment {
     EditMessageActionListener editMessageActionListener;
     String actualMessageText;
+    public static boolean isCreate;
 
     @NonNull
     @Override
@@ -28,6 +29,7 @@ public class EditMessageDialogFragment extends DialogFragment {
         editText.setTextColor(Color.BLACK);
         editText.setPadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()),
                 0, 0, 0);
+        isCreate = actualMessageText.isEmpty();
         editText.setText(actualMessageText);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
 

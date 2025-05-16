@@ -50,6 +50,7 @@ public class NotesLayout extends LinearLayout {
         setLayoutParams(layoutParams);
 
         noteView.setText(messageAllInfoDTO.getMessage());
+        noteView.setTextColor(Color.WHITE);
         noteView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.noto_sans_medium));
 
         LinearLayout.LayoutParams noteParams = new LinearLayout.LayoutParams(
@@ -57,7 +58,7 @@ public class NotesLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
 
-        layoutParams.setMargins(
+        noteParams.setMargins(
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 9, getResources().getDisplayMetrics()), 0
@@ -75,7 +76,7 @@ public class NotesLayout extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
 
-        layoutParams.setMargins(
+        timeParams.setMargins(
                 0, 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()), 0
         );
