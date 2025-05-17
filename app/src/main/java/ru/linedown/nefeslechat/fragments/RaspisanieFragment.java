@@ -23,6 +23,7 @@ import ru.linedown.nefeslechat.databinding.FragmentRaspisanieBinding;
 import ru.linedown.nefeslechat.entity.DaySchedule;
 import ru.linedown.nefeslechat.entity.Lesson;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
+import ru.linedown.nefeslechat.interfaces.MyCallback;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.utils.RaspisanieUtils;
 
@@ -36,13 +37,40 @@ public class RaspisanieFragment extends Fragment {
         binding = FragmentRaspisanieBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Observable<String> observable = Observable.fromCallable(() -> {
-            parserRaspisaniya();
-            return "OK";
-        });
+        Observable<List<DaySchedule>> observable = Observable.fromCallable(this::getListDaysOfSchedule);
+
+        MyCallback<List<DaySchedule>> raspisanieCallback = new MyCallback<>() {
+            @Override
+            public void onSuccess(List<DaySchedule> result) {
+                if (result != null) {
+                    for (DaySchedule day : result) {
+                        Log.d("Расписание", "День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
+                        for (Lesson lesson : day.getLessons()) {
+                            Log.d("Расписание", "  Пара: " + lesson.getParaNumber());
+                            if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
+                                Log.d("Расписание", "  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
+                            } else {
+                                Log.i("Расписание", "  Время: Не определено");
+                            }
+                            Log.d("Расписание", "  Кабинет: " + lesson.getRoom());
+                            Log.d("Расписание", "  Предмет: " + lesson.getSubject());
+                            Log.d("Расписание", "  Преподаватель: " + lesson.getTeacher());
+                            Log.d("Расписание", "  Тип занятия: " + lesson.getLessonType());
+                        }
+                    }
+                } else {
+                    Log.w("Расписание", "Не удалось получить расписание");
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("Расписание", "Ошибка" + errorMessage);
+            }
+        };
 
         disposable = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Log.d("Расписание", result), error -> Log.e("Расписание", "Ошибка: " + error.getMessage()));
+                .subscribe(raspisanieCallback::onSuccess, error -> raspisanieCallback.onError(error.getMessage()));
 
         return root;
     }
@@ -53,7 +81,7 @@ public class RaspisanieFragment extends Fragment {
         if(disposable != null && !disposable.isDisposed()) disposable.dispose();
     }
 
-    private void parserRaspisaniya(){
+    private List<DaySchedule> getListDaysOfSchedule(){
         List<DaySchedule> scheduleParse = null;
         if(RaspisanieUtils.schedule != null) scheduleParse = RaspisanieUtils.schedule;
         try {
@@ -64,24 +92,6 @@ public class RaspisanieFragment extends Fragment {
             RaspisanieUtils.schedule = scheduleParse;
         }
 
-        if (scheduleParse != null) {
-            for (DaySchedule day : scheduleParse) {
-                Log.d("Расписание", "День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
-                for (Lesson lesson : day.getLessons()) {
-                    Log.d("Расписание","  Пара: " + lesson.getParaNumber());
-                    if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
-                        Log.d("Расписание","  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
-                    } else {
-                        Log.i("Расписание","  Время: Не определено");
-                    }
-                    Log.d("Расписание","  Кабинет: " + lesson.getRoom());
-                    Log.d("Расписание","  Предмет: " + lesson.getSubject());
-                    Log.d("Расписание","  Преподаватель: " + lesson.getTeacher());
-                    Log.d("Расписание","  Тип занятия: " + lesson.getLessonType());
-                }
-            }
-        } else {
-            Log.w("Расписание", "Не удалось получить расписание");
-        }
+        return scheduleParse;
     }
 }
