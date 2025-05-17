@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.entity.Lesson;
+import ru.linedown.nefeslechat.utils.RaspisanieUtils;
 
 public class LessonLayout extends LinearLayout {
     TextView timeOfLessonView;
@@ -22,7 +23,6 @@ public class LessonLayout extends LinearLayout {
     TextView auditoryView;
     TextView typeOfLessonView;
     TextView prepodOrGroupView;
-
     Lesson lesson;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
@@ -66,8 +66,10 @@ public class LessonLayout extends LinearLayout {
         );
         timeOfLessonParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()));
         timeOfLessonView.setLayoutParams(timeOfLessonParams);
-        String timeBeginAndEnd = sdf.format(lesson.getStartTime()) + " - " + sdf.format(lesson.getEndTime());
-        timeOfLessonView.setText(timeBeginAndEnd);
+        String timeOrNumberPair = (RaspisanieUtils.by.equals("group")) ?
+                sdf.format(lesson.getStartTime()) + " - " + sdf.format(lesson.getEndTime())
+                : lesson.getParaNumber() + " пара";
+        timeOfLessonView.setText(timeOrNumberPair);
         lessonLine1.addView(timeOfLessonView);
 
         LinearLayout.LayoutParams nameOfLessonParams = new LinearLayout.LayoutParams(
@@ -114,7 +116,13 @@ public class LessonLayout extends LinearLayout {
         addView(lessonLine2);
 
         prepodOrGroupView.setGravity(Gravity.CENTER);
-        prepodOrGroupView.setText(lesson.getTeacher());
+        StringBuilder groups = new StringBuilder();;
+        if(RaspisanieUtils.by.equals("teacher")){
+            for(String group : lesson.getGroups()) groups.append(group).append(" ");
+        }
+        String teacherOrGroups = (RaspisanieUtils.by.equals("teacher")) ?
+                String.valueOf(groups) : lesson.getTeacher();
+        prepodOrGroupView.setText(teacherOrGroups);
         addView(prepodOrGroupView);
     }
 

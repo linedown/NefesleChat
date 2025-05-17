@@ -3,7 +3,6 @@ package ru.linedown.nefeslechat.layuots;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -13,12 +12,15 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import java.text.SimpleDateFormat;
+
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.entity.DaySchedule;
 
 public class DayOfWeekLayout extends LinearLayout {
     private TextView dayOfWeekView;
     private DaySchedule daySchedule;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY");
 
     public DayOfWeekLayout(Context context, DaySchedule daySchedule) {
         super(context);
@@ -31,10 +33,8 @@ public class DayOfWeekLayout extends LinearLayout {
 
         dayOfWeekView = createTextView(context, R.font.inter_bold, 16);
         dayOfWeekView.setGravity(Gravity.CENTER);
-        dayOfWeekView.setText(daySchedule.getDayOfWeek() + " (" + daySchedule.getDate() + ")");
+        dayOfWeekView.setText(daySchedule.getDayOfWeek() + " (" + sdf.format(daySchedule.getDate()) + ")");
         addView(dayOfWeekView);
-
-
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

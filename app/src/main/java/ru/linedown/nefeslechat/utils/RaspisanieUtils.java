@@ -8,7 +8,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +60,6 @@ public class RaspisanieUtils {
             for (int i = 0; i < dayTables.size(); i++) {
                 Element table = dayTables.get(i);
                 LocalDate currentDate = monday.plusDays(i);
-                DayOfWeek dayOfWeekEnum = currentDate.getDayOfWeek();
                 java.sql.Date date = java.sql.Date.valueOf(String.valueOf(currentDate));
 
                 String dayOfWeek = table.previousElementSibling() != null ? table.previousElementSibling().text() : table.select("td.d-none.d-md-table-cell h4").text().replace(" ", "").replace("\n", "");
@@ -92,9 +90,8 @@ public class RaspisanieUtils {
                                 LocalTime startTimeLocal = LocalTime.parse(startTimeString, TIME_FORMATTER);
                                 LocalTime endTimeLocal = LocalTime.parse(endTimeString, TIME_FORMATTER);
 
-                                // Объединяем дату и время с использованием Calendar
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(date); // Устанавливаем дату
+                                calendar.setTime(date);
                                 calendar.set(Calendar.HOUR_OF_DAY, startTimeLocal.getHour());
                                 calendar.set(Calendar.MINUTE, startTimeLocal.getMinute());
                                 calendar.set(Calendar.SECOND, 0);
@@ -154,6 +151,14 @@ public class RaspisanieUtils {
                     }
                     lesson.setTeacher(teacherName);
 
+                    if(by.equals("teacher")){
+                        Elements links = lessonRow.select("div.mt-1.mt-md-3 a.btn.btn-sm.btn-elevate.btn-secondary.btn-pill.mr-1.mb-2.py-1.px-2");
+                        List<String> groups = new ArrayList<>();
+                        for (Element groupLink : links) {
+                            groups.add(groupLink.text());
+                        }
+                        lesson.setGroups(groups);
+                    }
                     daySchedule.addLesson(lesson);
                 }
 

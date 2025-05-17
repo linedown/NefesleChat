@@ -43,10 +43,6 @@ public class RaspisanieFragment extends Fragment {
 
         raspisanieLayout = binding.raspisanieLayout;
 
-
-
-
-
         Observable<List<DaySchedule>> observable = Observable.fromCallable(this::getListDaysOfSchedule);
 
         MyCallback<List<DaySchedule>> raspisanieCallback = new MyCallback<>() {

@@ -1,6 +1,7 @@
 package ru.linedown.nefeslechat.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,5 @@ public class Lesson {
     private String subject;
     private String teacher;
     private String lessonType;
+    private List<String> groups;
 }
