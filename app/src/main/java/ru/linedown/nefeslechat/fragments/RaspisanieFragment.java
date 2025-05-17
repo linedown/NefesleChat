@@ -43,15 +43,9 @@ public class RaspisanieFragment extends Fragment {
 
         raspisanieLayout = binding.raspisanieLayout;
 
-        DayOfWeekLayout dayOfWeekLayout = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout.setDayOfWeekText("Понедельник (12.05)");
-        for(int i = 0; i < 4; i++){
-            LessonLayout lessonLayout = new LessonLayout(getContext());
-            lessonLayout.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-            dayOfWeekLayout.addView(lessonLayout);
-        }
 
-        raspisanieLayout.addView(dayOfWeekLayout);
+
+
 
         Observable<List<DaySchedule>> observable = Observable.fromCallable(this::getListDaysOfSchedule);
 
@@ -60,19 +54,12 @@ public class RaspisanieFragment extends Fragment {
             public void onSuccess(List<DaySchedule> result) {
                 if (result != null) {
                     for (DaySchedule day : result) {
-                        Log.d("Расписание", "День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
+                        DayOfWeekLayout dayOfWeekLayout = new DayOfWeekLayout(getContext(), day);
                         for (Lesson lesson : day.getLessons()) {
-                            Log.d("Расписание", "  Пара: " + lesson.getParaNumber());
-                            if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
-                                Log.d("Расписание", "  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
-                            } else {
-                                Log.i("Расписание", "  Время: Не определено");
-                            }
-                            Log.d("Расписание", "  Кабинет: " + lesson.getRoom());
-                            Log.d("Расписание", "  Предмет: " + lesson.getSubject());
-                            Log.d("Расписание", "  Преподаватель: " + lesson.getTeacher());
-                            Log.d("Расписание", "  Тип занятия: " + lesson.getLessonType());
+                            LessonLayout lessonLayout = new LessonLayout(getContext(), lesson);
+                            dayOfWeekLayout.addView(lessonLayout);
                         }
+                        raspisanieLayout.addView(dayOfWeekLayout);
                     }
                 } else {
                     Log.w("Расписание", "Не удалось получить расписание");

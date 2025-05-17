@@ -13,15 +13,16 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import java.util.List;
-
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.entity.DaySchedule;
 
 public class DayOfWeekLayout extends LinearLayout {
     private TextView dayOfWeekView;
+    private DaySchedule daySchedule;
 
-    public DayOfWeekLayout(Context context) {
+    public DayOfWeekLayout(Context context, DaySchedule daySchedule) {
         super(context);
+        this.daySchedule = daySchedule;
         init(context);
     }
 
@@ -30,6 +31,7 @@ public class DayOfWeekLayout extends LinearLayout {
 
         dayOfWeekView = createTextView(context, R.font.inter_bold, 16);
         dayOfWeekView.setGravity(Gravity.CENTER);
+        dayOfWeekView.setText(daySchedule.getDayOfWeek() + " (" + daySchedule.getDate() + ")");
         addView(dayOfWeekView);
 
 
@@ -43,11 +45,6 @@ public class DayOfWeekLayout extends LinearLayout {
         setLayoutParams(layoutParams);
         setBackground(ContextCompat.getDrawable(context, R.drawable.bg_green));
         setOrientation(VERTICAL);
-    }
-
-
-    public void addLesson(LessonLayout lessonLayout){
-        addView(lessonLayout);
     }
 
     private TextView createTextView(Context context, int typefaceStyle, int textSizeSp) {
@@ -64,10 +61,6 @@ public class DayOfWeekLayout extends LinearLayout {
 
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
         return textView;
-    }
-
-    public void setDayOfWeekText(String text) {
-        dayOfWeekView.setText(text);
     }
 
 }

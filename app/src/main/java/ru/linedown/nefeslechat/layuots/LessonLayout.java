@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import java.text.SimpleDateFormat;
+
 import ru.linedown.nefeslechat.R;
+import ru.linedown.nefeslechat.entity.Lesson;
 
 public class LessonLayout extends LinearLayout {
     TextView timeOfLessonView;
@@ -20,8 +23,12 @@ public class LessonLayout extends LinearLayout {
     TextView typeOfLessonView;
     TextView prepodOrGroupView;
 
-    public LessonLayout(Context context){
+    Lesson lesson;
+    private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+
+    public LessonLayout(Context context, Lesson lesson){
         super(context);
+        this.lesson = lesson;
         init(context);
     }
 
@@ -59,6 +66,8 @@ public class LessonLayout extends LinearLayout {
         );
         timeOfLessonParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()));
         timeOfLessonView.setLayoutParams(timeOfLessonParams);
+        String timeBeginAndEnd = sdf.format(lesson.getStartTime()) + " - " + sdf.format(lesson.getEndTime());
+        timeOfLessonView.setText(timeBeginAndEnd);
         lessonLine1.addView(timeOfLessonView);
 
         LinearLayout.LayoutParams nameOfLessonParams = new LinearLayout.LayoutParams(
@@ -69,6 +78,7 @@ public class LessonLayout extends LinearLayout {
         nameOfLessonParams.setMarginEnd((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()));
         nameOfLessonView.setGravity(Gravity.CENTER);
         nameOfLessonView.setLayoutParams(nameOfLessonParams);
+        nameOfLessonView.setText(lesson.getSubject());
         lessonLine1.addView(nameOfLessonView);
 
         addView(lessonLine1);
@@ -87,6 +97,7 @@ public class LessonLayout extends LinearLayout {
         );
         auditoryParams.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()));
         auditoryView.setLayoutParams(auditoryParams);
+        auditoryView.setText(lesson.getRoom());
         lessonLine2.addView(auditoryView);
 
         LinearLayout.LayoutParams typeOfLessonParams = new LinearLayout.LayoutParams(
@@ -96,12 +107,14 @@ public class LessonLayout extends LinearLayout {
         );
         typeOfLessonParams.setMarginEnd((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()));
         typeOfLessonView.setGravity(Gravity.CENTER);
+        typeOfLessonView.setText(lesson.getLessonType());
         typeOfLessonView.setLayoutParams(typeOfLessonParams);
 
         lessonLine2.addView(typeOfLessonView);
         addView(lessonLine2);
 
         prepodOrGroupView.setGravity(Gravity.CENTER);
+        prepodOrGroupView.setText(lesson.getTeacher());
         addView(prepodOrGroupView);
     }
 
@@ -119,33 +132,5 @@ public class LessonLayout extends LinearLayout {
 
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
         return textView;
-    }
-
-    public void addLesson(String time, String name, String auditory, String type, String prepodOrGroup) {
-        setTimeOfLessonText(time);
-        setNameOfLessonText(name);
-        setAuditoryText(auditory);
-        setTypeOfLessonText(type);
-        setPrepodOrGroupText(prepodOrGroup);
-    }
-
-    public void setTimeOfLessonText(String text) {
-        timeOfLessonView.setText(text);
-    }
-
-    public void setNameOfLessonText(String text) {
-        nameOfLessonView.setText(text);
-    }
-
-    public void setAuditoryText(String text) {
-        auditoryView.setText(text);
-    }
-
-    public void setTypeOfLessonText(String text) {
-        typeOfLessonView.setText(text);
-    }
-
-    public void setPrepodOrGroupText(String text) {
-        prepodOrGroupView.setText(text);
     }
 }
