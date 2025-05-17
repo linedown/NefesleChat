@@ -65,7 +65,7 @@ public class RaspisanieFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                Log.e("Расписание", "Ошибка" + errorMessage);
+                Log.e("Расписание", "Ошибка получения: " + errorMessage);
             }
         };
 
@@ -84,12 +84,14 @@ public class RaspisanieFragment extends Fragment {
     private List<DaySchedule> getListDaysOfSchedule(){
         List<DaySchedule> scheduleParse = null;
         if(RaspisanieUtils.schedule != null) scheduleParse = RaspisanieUtils.schedule;
-        try {
+        else{
+            try {
             scheduleParse = RaspisanieUtils.parseSchedulePage();
-        } catch (IOException e) {
-            Log.e("Расписание", "Ошибка" + e.getMessage());
-        } finally {
-            RaspisanieUtils.schedule = scheduleParse;
+            } catch (IOException e) {
+                Log.e("Расписание", "Ошибка: " + e.getMessage());
+            } finally {
+                RaspisanieUtils.schedule = scheduleParse;
+            }
         }
 
         return scheduleParse;
