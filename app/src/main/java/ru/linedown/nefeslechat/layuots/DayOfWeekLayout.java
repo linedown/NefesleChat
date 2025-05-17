@@ -33,12 +33,10 @@ public class DayOfWeekLayout extends LinearLayout {
     private void init(Context context) {
         setOrientation(VERTICAL);
 
-        // Создаем TextView для дня недели
         dayOfWeekView = createTextView(context, R.font.inter_bold, 16);
         dayOfWeekView.setGravity(Gravity.CENTER);
         addView(dayOfWeekView);
 
-        // Создаем LinearLayout для информации об уроке
         lessonLayout = new LinearLayout(context);
         lessonLayout.setOrientation(VERTICAL);
         LinearLayout.LayoutParams lessonLayoutParams = new LinearLayout.LayoutParams(
@@ -47,11 +45,10 @@ public class DayOfWeekLayout extends LinearLayout {
         );
         lessonLayoutParams.setMargins(0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()),
-                0, 0); // marginTop: 10sp
+                0, 0);
         lessonLayout.setLayoutParams(lessonLayoutParams);
         addView(lessonLayout);
 
-        // Создаем элементы LinearLayout для информации об уроке
         timeOfLessonView = createTextView(context, R.font.inter_bold, 14);
         auditoryView = createTextView(context, R.font.inter_bold, 14);
 
@@ -59,7 +56,6 @@ public class DayOfWeekLayout extends LinearLayout {
         typeOfLessonView = createTextView(context, R.font.inter_light, 14);
         prepodView = createTextView(context, R.font.inter_light, 14);
 
-        //Добавляем layout для первой линии урока
         LinearLayout lessonLine1 = new LinearLayout(context);
         lessonLine1.setOrientation(HORIZONTAL);
         LinearLayout.LayoutParams lessonLine1Params = new LinearLayout.LayoutParams(
@@ -88,7 +84,6 @@ public class DayOfWeekLayout extends LinearLayout {
 
         lessonLayout.addView(lessonLine1);
 
-        //Добавляем layout для второй линии урока
         LinearLayout lessonLine2 = new LinearLayout(context);
         lessonLine2.setOrientation(HORIZONTAL);
         LinearLayout.LayoutParams lessonLine2Params = new LinearLayout.LayoutParams(
@@ -121,15 +116,14 @@ public class DayOfWeekLayout extends LinearLayout {
         lessonLayout.addView(prepodView);
 
 
-        // Настройка внешнего вида LinearLayout
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         layoutParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getContext().getResources().getDisplayMetrics()),
-                0, 0); // marginTop: 10dp
+                0, 0);
         setLayoutParams(layoutParams);
-        setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 200, getContext().getResources().getDisplayMetrics())); // minHeight: 200dp
+        //setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 200, getContext().getResources().getDisplayMetrics())); // minHeight: 200dp
         setBackground(ContextCompat.getDrawable(context, R.drawable.bg_green)); // background: @drawable/bg_green
         setOrientation(VERTICAL);
 
