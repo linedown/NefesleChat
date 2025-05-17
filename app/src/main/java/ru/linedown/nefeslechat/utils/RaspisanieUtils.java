@@ -23,44 +23,19 @@ import ru.linedown.nefeslechat.entity.DaySchedule;
 import ru.linedown.nefeslechat.entity.Lesson;
 
 public class RaspisanieUtils {
-    private static final String BASE_URL = "https://rasp.pgups.ru/schedule/group/";
-
+    private static String BASE_URL = "https://rasp.pgups.ru/schedule/";
+    static String BASE_URL_END_URL = "";
     private static final String SEARCH_URL_FIRST_PART = "https://rasp.pgups.ru/search?title=";
     private static final String SEARCH_URL_SECOND_PART = "&by=";
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     public static String title = "";
     public static String by = "";
+    public static List<DaySchedule> schedule = null;
 
-    public static void parser(){
-        try {
-            List<DaySchedule> schedule = parseSchedulePage();
 
-            if (schedule != null) {
-                for (DaySchedule day : schedule) {
-                    Log.d("Расписание", "День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
-                    for (Lesson lesson : day.getLessons()) {
-                        Log.d("Расписание","  Пара: " + lesson.getParaNumber());
-                        if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
-                            Log.d("Расписание","  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
-                        } else {
-                            Log.i("Расписание","  Время: Не определено");
-                        }
-                        Log.d("Расписание","  Кабинет: " + lesson.getRoom());
-                        Log.d("Расписание","  Предмет: " + lesson.getSubject());
-                        Log.d("Расписание","  Преподаватель: " + lesson.getTeacher());
-                        Log.d("Расписание","  Тип занятия: " + lesson.getLessonType());
-                    }
-                }
-            } else {
-                Log.w("Расписание", "Не удалось получить расписание");
-            }
-
-        } catch (IOException e) {
-            Log.e("Расписание", "Ошибка" + e.getMessage());
-        }
-    }
-
-    private static List<DaySchedule> parseSchedulePage() throws IOException {
+    public static List<DaySchedule> parseSchedulePage() throws IOException {
+        BASE_URL_END_URL = (by.equals("group")) ? "group/" : "teacher/";
+        BASE_URL += BASE_URL_END_URL;
         List<DaySchedule> schedule = new ArrayList<>();
         boolean isOddWeek = isOddWeek();
 
@@ -125,7 +100,7 @@ public class RaspisanieUtils {
                                 calendar.set(Calendar.SECOND, 0);
                                 Date startTime = calendar.getTime();
 
-                                calendar.setTime(date); // Сбрасываем Calendar к той же дате
+                                calendar.setTime(date);
                                 calendar.set(Calendar.HOUR_OF_DAY, endTimeLocal.getHour());
                                 calendar.set(Calendar.MINUTE, endTimeLocal.getMinute());
                                 calendar.set(Calendar.SECOND, 0);

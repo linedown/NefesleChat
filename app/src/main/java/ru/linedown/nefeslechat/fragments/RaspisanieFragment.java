@@ -11,11 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.databinding.FragmentRaspisanieBinding;
+import ru.linedown.nefeslechat.entity.DaySchedule;
+import ru.linedown.nefeslechat.entity.Lesson;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.utils.RaspisanieUtils;
@@ -31,15 +37,7 @@ public class RaspisanieFragment extends Fragment {
         View root = binding.getRoot();
 
         Observable<String> observable = Observable.fromCallable(() -> {
-            UserDetailsDTO user = OkHttpUtil.getCurrentUser();
-            if(user.getRole().equals("Преподаватель")){
-                RaspisanieUtils.title = user.getLastName();
-                RaspisanieUtils.by = "teacher";
-            } else if(user.getRole().equals("Студент")){
-                RaspisanieUtils.title = user.getGroupName();
-                RaspisanieUtils.by = "group";
-            }
-            RaspisanieUtils.parser();
+            parserRaspisaniya();
             return "OK";
         });
 
@@ -53,5 +51,37 @@ public class RaspisanieFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(disposable != null && !disposable.isDisposed()) disposable.dispose();
+    }
+
+    private void parserRaspisaniya(){
+        List<DaySchedule> scheduleParse = null;
+        if(RaspisanieUtils.schedule != null) scheduleParse = RaspisanieUtils.schedule;
+        try {
+            scheduleParse = RaspisanieUtils.parseSchedulePage();
+        } catch (IOException e) {
+            Log.e("Расписание", "Ошибка" + e.getMessage());
+        } finally {
+            RaspisanieUtils.schedule = scheduleParse;
+        }
+
+        if (scheduleParse != null) {
+            for (DaySchedule day : scheduleParse) {
+                Log.d("Расписание", "День недели: " + day.getDayOfWeek() + " (" + day.getDate() + ")");
+                for (Lesson lesson : day.getLessons()) {
+                    Log.d("Расписание","  Пара: " + lesson.getParaNumber());
+                    if (lesson.getStartTime() != null && lesson.getEndTime() != null) {
+                        Log.d("Расписание","  Время: " + lesson.getStartTime() + " - " + lesson.getEndTime());
+                    } else {
+                        Log.i("Расписание","  Время: Не определено");
+                    }
+                    Log.d("Расписание","  Кабинет: " + lesson.getRoom());
+                    Log.d("Расписание","  Предмет: " + lesson.getSubject());
+                    Log.d("Расписание","  Преподаватель: " + lesson.getTeacher());
+                    Log.d("Расписание","  Тип занятия: " + lesson.getLessonType());
+                }
+            }
+        } else {
+            Log.w("Расписание", "Не удалось получить расписание");
+        }
     }
 }

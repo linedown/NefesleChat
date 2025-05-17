@@ -28,6 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.layuots.ConfirmExitDialogFragment;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
+import ru.linedown.nefeslechat.utils.RaspisanieUtils;
 import ru.linedown.nefeslechat.utils.WebSocketConnection;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.databinding.ActivityMainBinding;
@@ -78,9 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 if (role.equals("Преподаватель")) {
                     String info = result.getAcademicTitle() + " • " + result.getAcademicDegree();
                     infoInBar.setText(info);
+                    RaspisanieUtils.title = result.getLastName();
+                    RaspisanieUtils.by = "teacher";
                 } else {
                     String info = role + " • " + result.getGroupName();
                     infoInBar.setText(info);
+                    RaspisanieUtils.title = result.getGroupName();
+                    RaspisanieUtils.by = "group";
                 }
                 loginInBar.setText(result.getEmail());
             }
