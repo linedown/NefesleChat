@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10sp"
                 android:minHeight="200sp"
+                android:visibility="gone"
                 android:background="@drawable/bg_green"
 
                 android:orientation="vertical">
