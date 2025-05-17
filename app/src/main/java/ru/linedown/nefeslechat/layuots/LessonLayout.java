@@ -24,7 +24,7 @@ public class LessonLayout extends LinearLayout {
     TextView prepodOrGroupView;
 
     Lesson lesson;
-    private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     public LessonLayout(Context context, Lesson lesson){
         super(context);

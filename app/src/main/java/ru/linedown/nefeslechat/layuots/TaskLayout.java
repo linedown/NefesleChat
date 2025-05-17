@@ -3,23 +3,19 @@ package ru.linedown.nefeslechat.layuots;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.ViewGroup;
+
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.entity.TaskDTO;
-import ru.linedown.nefeslechat.utils.OkHttpUtil;
+
 
 public class TaskLayout extends ConstraintLayout {
     public TextView taskTextView;

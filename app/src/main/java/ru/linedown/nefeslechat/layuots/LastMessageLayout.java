@@ -34,7 +34,7 @@ public class LastMessageLayout extends LinearLayout {
     public static final int STUDENT = -1;
     public static final int PREPOD = -2;
     public static final int GROUP = -3;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY hh:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY HH:mm");
 
     LastMessageAttributes lma;
 

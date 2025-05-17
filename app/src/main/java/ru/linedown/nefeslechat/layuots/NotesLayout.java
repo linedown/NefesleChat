@@ -21,7 +21,7 @@ public class NotesLayout extends LinearLayout {
     MessageAllInfoDTO messageAllInfoDTO;
     private TextView noteView;
     private TextView timeView;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY hh:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY HH:mm");
 
     public NotesLayout(Context context, MessageAllInfoDTO messageAllInfoDTO) {
         super(context);

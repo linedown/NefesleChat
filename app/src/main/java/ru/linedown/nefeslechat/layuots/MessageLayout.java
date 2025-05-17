@@ -30,7 +30,7 @@ public class MessageLayout extends LinearLayout {
     private TextView timeView;
     private MessageLayoutAttributes messageLayoutAttributes;
     private int typeUser;
-    private final SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm");
+    private final SimpleDateFormat formatDate = new SimpleDateFormat("HH:mm");
     public MessageLayout(Context context, int typeUser, MessageLayoutAttributes messageLayoutAttributes) {
         super(context);
         this.typeUser = typeUser;
