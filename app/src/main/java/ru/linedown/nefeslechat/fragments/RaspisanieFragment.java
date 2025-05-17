@@ -26,6 +26,7 @@ import ru.linedown.nefeslechat.entity.Lesson;
 import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 import ru.linedown.nefeslechat.layuots.DayOfWeekLayout;
+import ru.linedown.nefeslechat.layuots.LessonLayout;
 import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.utils.RaspisanieUtils;
 
@@ -44,39 +45,13 @@ public class RaspisanieFragment extends Fragment {
 
         DayOfWeekLayout dayOfWeekLayout = new DayOfWeekLayout(getContext());
         dayOfWeekLayout.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
+        for(int i = 0; i < 4; i++){
+            LessonLayout lessonLayout = new LessonLayout(getContext());
+            lessonLayout.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
+            dayOfWeekLayout.addView(lessonLayout);
+        }
 
         raspisanieLayout.addView(dayOfWeekLayout);
-
-        DayOfWeekLayout dayOfWeekLayout2 = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout2.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout2.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-
-        raspisanieLayout.addView(dayOfWeekLayout2);
-
-        DayOfWeekLayout dayOfWeekLayout3 = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout3.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout3.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-
-        raspisanieLayout.addView(dayOfWeekLayout3);
-
-        DayOfWeekLayout dayOfWeekLayout4 = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout4.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout4.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-
-        raspisanieLayout.addView(dayOfWeekLayout4);
-
-        DayOfWeekLayout dayOfWeekLayout5 = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout5.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout5.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-
-        raspisanieLayout.addView(dayOfWeekLayout5);
-
-        DayOfWeekLayout dayOfWeekLayout6 = new DayOfWeekLayout(getContext());
-        dayOfWeekLayout6.setDayOfWeekText("Понедельник (12.05)");
-        dayOfWeekLayout6.addLesson("9:00 - 10:30", "Человеко-машинное взаимодействие", "1-216", "Практические занятия", "Забродин Андрей Владимирович");
-
-        raspisanieLayout.addView(dayOfWeekLayout6);
 
         Observable<List<DaySchedule>> observable = Observable.fromCallable(this::getListDaysOfSchedule);
 

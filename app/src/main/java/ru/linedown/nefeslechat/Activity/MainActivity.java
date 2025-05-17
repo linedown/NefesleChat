@@ -2,6 +2,8 @@ package ru.linedown.nefeslechat.Activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Disposable disposable;
     DrawerLayout drawerLayout;
+    private final int MS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+
+        new Handler(Looper.getMainLooper()).postDelayed(WebSocketConnection::disconnect, MS);
     }
 
     @Override

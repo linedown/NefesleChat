@@ -24,7 +24,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="25dp">
 
             <TextView
                 android:id="@+id/rasp_text"

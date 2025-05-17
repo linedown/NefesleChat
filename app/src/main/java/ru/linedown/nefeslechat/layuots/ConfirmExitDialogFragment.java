@@ -9,7 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,7 @@ import ru.linedown.nefeslechat.utils.WebSocketConnection;
 
 public class ConfirmExitDialogFragment extends DialogFragment {
     final String JWT_TOKEN = "jwt_token";
+    final int MS = 100;
     SharedPreferences sharedPreferences;
     @NonNull
     @Override
@@ -74,7 +78,7 @@ public class ConfirmExitDialogFragment extends DialogFragment {
 
         dialog.cancel();
         disposable.dispose();
-        WebSocketConnection.disconnect();
+        new Handler(Looper.getMainLooper()).postDelayed(WebSocketConnection::disconnect, MS);
         startActivity(intent);
     }
 }
