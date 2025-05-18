@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -23,11 +22,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.linedown.nefeslechat.databinding.FragmentRaspisanieBinding;
 import ru.linedown.nefeslechat.entity.DaySchedule;
 import ru.linedown.nefeslechat.entity.Lesson;
-import ru.linedown.nefeslechat.entity.UserDetailsDTO;
 import ru.linedown.nefeslechat.interfaces.MyCallback;
 import ru.linedown.nefeslechat.layuots.DayOfWeekLayout;
 import ru.linedown.nefeslechat.layuots.LessonLayout;
-import ru.linedown.nefeslechat.utils.OkHttpUtil;
 import ru.linedown.nefeslechat.utils.RaspisanieUtils;
 
 public class RaspisanieFragment extends Fragment {

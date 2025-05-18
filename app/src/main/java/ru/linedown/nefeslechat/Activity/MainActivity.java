@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;

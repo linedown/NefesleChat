@@ -15,8 +15,7 @@ import java.text.SimpleDateFormat;
 
 import ru.linedown.nefeslechat.R;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
-import ru.linedown.nefeslechat.entity.MessageLayoutAttributes;
-// ChatTypeEnum.SELF
+
 public class NotesLayout extends LinearLayout {
     MessageAllInfoDTO messageAllInfoDTO;
     private TextView noteView;
