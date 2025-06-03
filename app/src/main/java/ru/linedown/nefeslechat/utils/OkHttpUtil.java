@@ -13,6 +13,8 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
@@ -22,6 +24,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.TlsVersion;
 import ru.linedown.nefeslechat.entity.ChatDTO;
 import ru.linedown.nefeslechat.entity.MessageAllInfoDTO;
 import ru.linedown.nefeslechat.entity.TaskDTO;
@@ -31,9 +34,17 @@ import ru.linedown.nefeslechat.entity.AuthorizationForm;
 import ru.linedown.nefeslechat.entity.RegistrationForm;
 
 public class OkHttpUtil {
-    private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar
+    private static OkHttpClient okHttpClient =  new OkHttpClient.Builder().connectionSpecs(Collections
+                    .singletonList(new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_3)
+                    .cipherSuites(
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
+                    .build()))
+            .cookieJar(new JavaNetCookieJar
             (new CookieManager(null, CookiePolicy.ACCEPT_ALL))).build();
-    private static final String baseUrl = "http://messenger.nefesle.ru:3254/api";
+    private static final String baseUrl = "https://messenger.nefesle.ru:3254/api";
     @Getter
     private static final String baseUrlWithoutApi = "messenger.nefesle.ru";
     private static final String domainRegistation = "/auth/register";
@@ -42,7 +53,7 @@ public class OkHttpUtil {
     private static final String myProfilePath = "/my-profile";
     private static final String searchPath = "/users?last-name=";
     @Getter
-    private static final String websocketHeader = "ws://";
+    private static final String websocketHeader = "wss://";
     @Getter
     private static final String afterBaseUrl = ":3254/api";
     @Getter
@@ -87,7 +98,8 @@ public class OkHttpUtil {
 
         RequestBody requestbody = RequestBody.create(jsonStr, JSON);
         Request request;
-        if(regFlag) request = new Request.Builder().url(baseUrl + domainRegistation).post(requestbody).build();
+        if(regFlag) request = new Request.Builder().url(baseUrl + domainRegistation).
+                post(requestbody).build();
         else request = new Request.Builder().url(baseUrl + domainAuthorization).post(requestbody).build();
 
         Response response = okHttpClient.newCall(request).execute();
